@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import './App.scss';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
+        <h6 class="display-5">edit it like this? Or more like this?</h6>
         <a
           className="App-link"
           href="https://reactjs.org"

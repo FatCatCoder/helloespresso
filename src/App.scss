@@ -1,0 +1,9 @@
+// Override default variables before the import
+$body-bg: #000;
+
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
+
+h6.display-5{
+    color: $indigo-400;
+}
