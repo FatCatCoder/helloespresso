@@ -8,8 +8,12 @@ class Body extends React.Component{
         this.state = {
             showingNotes: false,
             showingGuide: false
-        }
+        };
     }
+    handleNewShot = () => {
+        let logShot = {"Dose":"20", "Time":"30", "Yield":"40"};
+        this.props.onNewShot(logShot);
+    };
 
 
     render(){ 
@@ -66,6 +70,7 @@ class Body extends React.Component{
             <img class="img-fluid w-50 mx-auto d-block" src="https://i.pinimg.com/originals/be/e1/a0/bee1a0b7c2397ea6727c9f96df196dae.png" />
                 
             <div class="mx-auto text-center">
+            <button class="btn btn-light p-2 m-2 shadow" type="button" onClick={this.handleNewShot}>Log Shot</button>
             <button class="btn btn-light p-2 m-2 shadow" type="button" onClick={() => this.setState({showingGuide: false, showingNotes: false})}>Pull New Shot</button>
             </div>
                 
