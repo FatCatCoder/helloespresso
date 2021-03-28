@@ -2,43 +2,62 @@ import { render } from '@testing-library/react';
 import React from 'react';
 import './App.scss';
 
+
 class Body extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             showingNotes: false,
-            showingGuide: false
-        };
+            showingGuide: false,
+            Dose: '',
+            Time: '',
+            Yield: ''
+        };   
     }
-    handleNewShot = () => {
-        let logShot = {"Dose":"20", "Time":"30", "Yield":"40"};
-        this.props.onNewShot(logShot);
+
+    handleSubmitShot = (ev) => {
+        ev.preventDefault();
+        var conditionalResult = [this.state.Dose, this.state.Time, this.state.Yield].some((x) => {return x == '';});
+
+        if(conditionalResult){
+            alert('no inputs');
+        }
+        else{
+            
+            let logShot = {"Dose": this.state.Dose, "Time": this.state.Time, "Yield":this.state.Yield};
+            this.props.onNewShot(logShot);
+        }
+        
     };
+
+    
 
 
     render(){ 
         const {showingNotes, showingGuide} = this.state;
         return(
-            
             <>
+            
             <div id="main">
             <button class="btn p-2 m-2 btn-light shadow mx-auto d-block text-muted ">Quick Start</button>
             
-            <form class="mx-auto text-center">
+            
+            <form onSubmit={this.handleSubmitShot} class="mx-auto text-center">
                 
             <label for="dose">Dose</label><br />
-            <input class="shadow border" type="text" id="dose" name="dose" placeholder="Dose..." /><br />
+            <input class="shadow border" value={this.state.Dose} onChange={(e) => this.setState({Dose : e.target.value })} type="text" id="dose" name="dose" placeholder="Dose..." /><br />
                 
             <label for="time">Time</label><br />
-            <input class="shadow border" type="text" id="time" name="time" placeholder="Time..." /><br />
+            <input class="shadow border" value={this.state.Time} onChange={(e) => this.setState({Time : e.target.value })} type="text" id="time" name="time" placeholder="Time..." /><br />
                 
             <label for="yield">Yield</label><br />
-            <input class="shadow border" type="text" id="yield" name="yield" placeholder="Yield..." /><br />
+            <input class="shadow border" value={this.state.Yield} onChange={(e) => this.setState({Yield : e.target.value })} type="text" id="yield" name="yield" placeholder="Yield..." /><br />
                 
             
-            <button class="btn btn-light p-2 m-2 shadow" type="button" onClick={() => this.setState({showingNotes: !showingNotes})}>Click Me!</button>
+            <button class="btn btn-light p-2 m-2 shadow" type="submit" onClick={() => this.setState({showingNotes: !showingNotes})}>Click Me!</button>
             
             </form>
+            
             
             <div id="extractionNotes" class="container col-4 mx-auto text-center" style={{display: (showingNotes ? 'block' : 'none')}}>
                 <h3 class="text-center">Was it?</h3>
