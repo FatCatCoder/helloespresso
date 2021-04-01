@@ -14,7 +14,7 @@ function Header(){
       <div id="navbar" class="text-center mx-auto d-flex justify-content-center border-bottom w-50 pb-2">
         <ul class="nav nav-pills">
           <li class="nav-item">
-            <a class="nav-link active bg-secondary" aria-current="page" href="#">Pull</a>
+            <a class="nav-link active bg-secondary" aria-current="page" href="">Pull</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Journal</a>
