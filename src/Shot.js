@@ -23,6 +23,21 @@ class Shot extends React.Component{
                </h2>
                <div id="collapse1" className={`accordion-collapse collapse ${this.state.isCollapsed ? 'show':'' }` }>
                    <div className="accordion-body">
+
+                   <div className="row">
+                            <div className="card p-0 col-3"><h6 className="card-header">Grind </h6> <p className="card-body">{this.props.Grind}</p></div>
+                            <div className="card p-0 col-3"><h6 className="card-header">Grinder </h6> <p className="card-body">{this.props.Grinder}</p></div>
+                            <div className="card p-0 col-3"><h6 className="card-header">Bean </h6> <p className="card-body">{this.props.Bean}</p></div>
+                            <div className="card p-0 col-3"><h6 className="card-header">Roaster </h6> <p className="card-body">{this.props.Roaster}</p></div>
+                       </div>
+                       <div className="row">
+                            <div className="card p-0 col-3"><h6 className="card-header">Method </h6> <p className="card-body">{this.props.Method}</p></div>
+                            <div className="card p-0 col-3"><h6 className="card-header">Machine </h6> <p className="card-body">{this.props.Machine}</p></div>
+                            <div className="card p-0 col-3"><h6 className="card-header">Style </h6> <p className="card-body">{this.props.Style}</p></div>
+                            <div className="card p-0 col-3"><h6 className="card-header">Creamer </h6> <p className="card-body">{this.props.Creamer}</p></div>
+                       </div>
+
+                       {/*
                        <div className="row">
                             <p className="col-3">Grind: <span className="col-3">{this.props.Grind}</span></p>
                             <p className="col-3">Grinder: <span className="col-3">{this.props.Grinder}</span></p>
@@ -35,7 +50,8 @@ class Shot extends React.Component{
                             <p className="col-3">Style: <span className="col-3">{this.props.Style}</span></p>
                             <p className="col-3">Creamer: <span className="col-3">{this.props.Creamer}</span></p>
                        </div>
-                       
+                       */}
+
                    </div>
                </div>
            </div> 

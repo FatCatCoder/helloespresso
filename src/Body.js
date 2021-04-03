@@ -28,7 +28,8 @@ class Body extends React.Component{
         ev.preventDefault();
         var conditionalResult = [this.state.Dose, this.state.Time, this.state.Yield].some((x) => {return x == '';});
         if(conditionalResult){
-            alert('no inputs');
+            //alert('no inputs');
+            <div data-bs-toggle="popover" data-bs-content="You need to input something first!"></div>
         }
 
         else{
@@ -50,6 +51,7 @@ class Body extends React.Component{
             {/* form for Dose, Time, Yield and Etc.... on submit sends to handleSubmitShot() */}
 
             <div id="main">
+            
             <button class="btn p-2 m-2 btn-light shadow mx-auto d-block text-muted ">Quick Start</button>
             
             
@@ -69,8 +71,8 @@ class Body extends React.Component{
             <button id="extraOptionsBtn" className="btn btn-light shadow" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 <i class="bi bi-grip-horizontal"></i>
             </button>
-            <div id="extraOptionsInputs"className="collapse" id="collapseExample">
-                <div className="container col-6 border p-3">
+            <div id="extraOptionsInputs" className="collapse" id="collapseExample">
+                <div className="container col-4 border p-3">
                     <label for="Grind">Grind</label><br />
                     <input class="shadow border" value={this.state.Grind} onChange={(e) => this.setState({Grind : e.target.value })} type="text" id="Grind" name="Grind" placeholder="Grind Size..." /><br />
 
@@ -98,7 +100,7 @@ class Body extends React.Component{
             </div>    
             
             {/* form submit and show notes */}
-            <button class="btn btn-light p-2 m-2 shadow" type="submit" onClick={() => this.setState({showingNotes: !showingNotes})}>Submit</button>
+            <button id="submitForm" data-bs-toggle="popover" data-bs-toggle="popover" data-bs-content="You need to input something first!" data-bs-content="You need to input something first!" class="btn btn-light p-2 m-2 shadow" role="button" type="button" onClick={() => this.setState({showingNotes: !showingNotes})}>Submit</button>
             
             </form>
             
@@ -110,7 +112,7 @@ class Body extends React.Component{
             <div id="extractionNotes" class="container col-4 mx-auto text-center" style={{display: (showingNotes ? 'block' : 'none')}}>
                 <h3 class="text-center">Was it?</h3>
             <div class="btn-group text-center flex-wrap mx-auto d-flex justify-content-center" role="group" aria-label="Basic radio toggle button group">
-            <input type="checkbox" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked />
+            <input type="checkbox" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" />
             <label class="btn btn-outline-primary" for="btnradio1">Sour</label>
 
             <input type="checkbox" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" />
