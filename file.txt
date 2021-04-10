@@ -1,0 +1,443 @@
+
+------------------ App.js ----------------------------------------------------------------------------------------------------
+
+
+
+// import logo from './logo.svg';
+import React from 'react';
+import { useState } from 'react';
+import './App.css';
+import './App.scss';
+import Header from './Header.js';
+import Body from './Body.js';
+import Footer from './Footer.js';
+
+
+
+class App extends React.Component {
+
+  /* set default list of pulled shots /
+    state={
+      shotList: [{"Dose":"20", "Time":"30", "Yield":"45", "Grind": "10", "Grinder": "Breville Smart Grinder Pro", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Method": "Espresso", "Machine": "1998 Gaggia Coffee", "Style": "Espresso", "Creamer": "Black"},{"Dose":"19", "Time":"30", "Yield":"45", "Grind": "10", "Grinder": "Breville Smart Grinder Pro", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Method": "Espresso", "Machine": "1998 Gaggia Coffee", "Style": "Espresso", "Creamer": "Black"}]
+    };
+
+    /* add to list of pulled shots /
+    addShotToList = (x) => {
+      let shotList = [...this.state.shotList];
+      shotList.push(x);
+      this.setState({ shotList });
+    }
+
+    
+  render(){
+  return (
+    <div className="App">
+      <Header />
+      <Body onNewShot={this.addShotToList} />
+      <Footer shotList={this.state.shotList}/>
+    </div>
+  );
+}
+}
+
+*/
+
+
+
+export default App;
+
+
+
+
+
+
+
+
+
+-----------------------------------Body.js-------------------------------------------
+
+
+
+import { render } from '@testing-library/react';
+import Popover from 'react-bootstrap/Popover';
+import Button from 'react-bootstrap/Button';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Overlay from 'react-bootstrap/Overlay';
+import React from 'react';
+import './App.scss';
+
+
+
+class Body extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            showingNotes: false,
+            showingGuide: false,
+            showPop: false,
+            Dose: '',
+            Time: '',
+            Yield: '',
+            Grind: '',
+            Grinder: '',
+            Roaster: '',
+            Bean: '',
+            Method: '',
+            Machine: '',
+            Style: '',
+            Creamer: ''
+        };   
+    }
+
+    /* when first form submits, if valid, send inputs to new object {logShot} then send back up via props onNewShot to the App.js addToShotList function */
+    handleSubmitShot = (ev) => {
+        ev.preventDefault();
+        var conditionalResult = [this.state.Dose, this.state.Time, this.state.Yield].some((x) => {return x == '';});
+        if(conditionalResult){
+            //alert('no inputs');
+            this.setState({showPop: !this.state.showPop})
+        }
+
+        else{
+            /* send up via props to global shot list */
+            this.setState({showingNotes: true});
+            let logShot = {"Dose": this.state.Dose, "Time": this.state.Time, "Yield":this.state.Yield, "Grind": this.state.Grind, "Grinder": this.state.Grinder, "Machine":this.state.Machine,
+            "Method": this.state.Method, "Roaster": this.state.Roaster, "Style":this.state.Style, "Bean": this.state.Bean, "Creamer": this.state.Creamer};
+            this.props.onNewShot(logShot);
+        }
+    };
+
+     popover = (
+        <Popover id="popover-basic" className="w-25">
+          <Popover.Header as="h3">Hey!</Popover.Header>
+          <Popover.Body>
+            You need to input some numbers first!
+          </Popover.Body>
+        </Popover>
+     );
+
+
+
+    render(){ 
+        const {showingNotes, showingGuide, showPop} = this.state;
+
+        return(
+            <>
+            {/* form for Dose, Time, Yield and Etc.... on submit sends to handleSubmitShot() */}
+
+            <div id="main">
+
+            
+            
+            <button class="btn p-2 m-2 btn-light shadow mx-auto d-block text-muted ">Quick Start</button>
+            
+            
+            <form onSubmit={this.handleSubmitShot} class="mx-auto text-center">
+                
+            <label for="dose">Dose</label><br />
+            <input class="shadow border" value={this.state.Dose} onClick={() => this.setState({showPop: false})} onChange={(e) => this.setState({Dose : e.target.value})} type="text" id="dose" name="dose" placeholder="Dose..." /><br />
+                
+            <label for="time">Time</label><br />
+            <input class="shadow border" value={this.state.Time} onClick={() => this.setState({showPop: false})} onChange={(e) => this.setState({Time : e.target.value })} type="text" id="time" name="time" placeholder="Time..." /><br />
+                
+            <label for="yield">Yield</label><br />
+            <input class="shadow border" value={this.state.Yield} onClick={() => this.setState({showPop: false})} onChange={(e) => this.setState({Yield : e.target.value })} type="text" id="yield" name="yield" placeholder="Yield..." /><br />
+
+            {/* Extra form field options (ie Bean, Roaster, Grind...) via collapse */}
+
+            <button id="extraOptionsBtn" className="btn btn-light shadow" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <i class="bi bi-grip-horizontal"></i>
+            </button>
+            <div id="extraOptionsInputs" className="collapse" id="collapseExample">
+                <div className="container col-4 border p-3">
+                    <label for="Grind">Grind</label><br />
+                    <input class="shadow border" value={this.state.Grind} onChange={(e) => this.setState({Grind : e.target.value })} type="text" id="Grind" name="Grind" placeholder="Grind Size..." /><br />
+
+                    <label for="Grinder">Grinder</label><br />
+                    <input class="shadow border" value={this.state.Grinder} onChange={(e) => this.setState({Grinder : e.target.value })} type="text" id="Grinder" name="Grinder" placeholder="Grinder..." /><br />
+
+                    <label for="Roaster">Roaster</label><br />
+                    <input class="shadow border" value={this.state.Roaster} onChange={(e) => this.setState({Roaster : e.target.value })} type="text" id="Roaster" name="Roaster" placeholder="Roaster..." /><br />
+
+                    <label for="Bean">Bean</label><br />
+                    <input class="shadow border" value={this.state.Bean} onChange={(e) => this.setState({Bean : e.target.value })} type="text" id="Bean" name="Bean" placeholder="Name/Origin..." /><br />
+
+                    <label for="Method">Method</label><br />
+                    <input class="shadow border" value={this.state.Method} onChange={(e) => this.setState({Method : e.target.value })} type="text" id="Method" name="Method" placeholder="Chemex/shots..." /><br />
+
+                    <label for="Machine">Machine</label><br />
+                    <input class="shadow border" value={this.state.Machine} onChange={(e) => this.setState({Machine : e.target.value })} type="text" id="Machine" name="Machine" placeholder="La Marzocco..." /><br />
+
+                    <label for="Style">Style</label><br />
+                    <input class="shadow border" value={this.state.Style} onChange={(e) => this.setState({Style : e.target.value })} type="text" id="Style" name="Style" placeholder="espresso/latte..." /><br />
+
+                    <label for="Creamer">Creamer</label><br />
+                    <input class="shadow border" value={this.state.Creamer} onChange={(e) => this.setState({Creamer : e.target.value })} type="text" id="Creamer" name="Creamer" placeholder="oat/black..." /><br />
+                </div>
+            </div>    
+            
+            {/* form submit and show notes */}
+            <OverlayTrigger trigger="click" rootClose placement="right" show={showPop} overlay={this.popover}>
+                <button class="btn btn-light p-2 m-2 shadow" role="button" type="submit">Submit</button>
+            </OverlayTrigger>
+
+            </form>
+            
+            
+
+
+
+            {/* form for Extraction notes checkboxes */}
+            <div id="extractionNotes" class="container col-4 mx-auto text-center" style={{display: (showingNotes ? 'block' : 'none')}}>
+                <h3 class="text-center">Was it?</h3>
+            <div class="btn-group text-center flex-wrap mx-auto d-flex justify-content-center" role="group" aria-label="Basic radio toggle button group">
+            <input type="checkbox" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" />
+            <label class="btn btn-outline-primary" for="btnradio1">Sour</label>
+
+            <input type="checkbox" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" />
+            <label class="btn btn-outline-primary" for="btnradio2">Bitter</label>
+
+            <input type="checkbox" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" />
+            <label class="btn btn-outline-primary" for="btnradio3">Bland</label>
+                
+            <input type="checkbox" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" />
+            <label class="btn btn-outline-primary" for="btnradio4">Balanced</label>
+                
+            <input type="checkbox" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off" />
+            <label class="btn btn-outline-primary" for="btnradio5">Missing?</label>
+                
+                
+            </div>
+                {/* Toggle the extraction chart and guide section */}
+                <button class="btn btn-light p-2 m-2 shadow" type="button" >Click Me!</button>
+                {/*onClick={() => this.setState({showingGuide: !showingGuide})}*/}
+            </div>
+            
+            
+
+            {/* Extraction Suggestion Guide Section */}
+            <div id="suggestionGuides" class="" style={{display: (showingGuide ? 'block': 'none')}}>
+            <p class="m-5 display-6 text-center">We Suggest you grind finer to Extract more goodies</p>
+            
+            <img class="img-fluid w-50 mx-auto d-block" src="https://i.pinimg.com/originals/be/e1/a0/bee1a0b7c2397ea6727c9f96df196dae.png" />
+                
+            <div class="mx-auto text-center">
+            {/* logShot */}
+            <button class="btn btn-light p-2 m-2 shadow" type="button" onClick={this.handleNewShot}>Log Shot</button>
+            {/* Reset form and close all collapses */}
+            <button class="btn btn-light p-2 m-2 shadow" type="button" onClick={() => this.setState({showingGuide: false, showingNotes: false})}>Pull New Shot</button>
+            </div>
+                
+            </div>
+            
+            
+            
+        </div>
+        </>
+        )
+    }
+}
+
+*/ */
+
+export default Body;
+
+
+
+
+
+
+
+---------------------------------------Footer.js---------------------------------------
+
+
+
+
+
+import React from 'react';
+import Shot from './Shot';
+import App from './App';
+
+class Footer extends React.Component{
+    constructor(props){
+        super(props);
+        
+        this.state = {
+            /*
+            shotList: [{"Dose":"20", "Time":"30", "Yield":"45"},
+                       {"Dose":"19.98", "Time":"32", "Yield":"41"},
+                       {"Dose":"20.22", "Time":"26", "Yield":"39"}]
+            */
+        }
+    }
+    
+
+    render(){
+        const {shotList} = this.props;
+        console.log(shotList);
+        const pulls = shotList.map((pull, index) =>
+            <Shot key={index} listNum={index+1} Dose={pull.Dose} Time={pull.Time} Yield={pull.Yield} Grind={pull.Grind} Grinder={pull.Grinder} Roaster={pull.Roaster} Bean={pull.Bean} Method={pull.Method} Machine={pull.Machine} Style={pull.Style} Creamer={pull.Creamer} /> 
+        );
+        
+
+        return(
+            <>
+           <p class="display-5 text-center">Your Pulled Shots</p>
+           <div class="container p-5 mb-5">
+           <div class="accordion">
+        
+               {pulls}
+
+           </div>
+           </div>
+           </>
+        )
+    }
+}
+
+export default Footer;
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------Header.js----------------------------------------------------------
+
+
+import React from 'react';
+import './App.scss';
+
+function Header(){
+    return(
+        <>
+        <div id="header" class="border-bottom pb-1">
+        <img alt="altLogoImg" class="img-fluid d-block mx-auto w-25" src="https://icons-for-free.com/iconfiles/png/512/coffee+espresso+machine+portafilter+tamper+icon-1320086035176622247.png" />
+
+        <h1 class="text-center">hello coffee</h1>      
+      </div>
+
+
+      <div id="navbar" class="text-center mx-auto d-flex justify-content-center border-bottom w-50 pb-2">
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link active bg-secondary" aria-current="page" href="">Pull</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Journal</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Recipes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">About</a>
+          </li>
+        </ul>
+      </div>
+      </>
+    )
+}
+
+export default Header;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------Shot.js--------------------------------------------------------------------------
+
+
+
+import React from 'react';
+import './App.scss';
+
+class Shot extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            isCollapsed: false
+        }
+    }
+    render(){
+        const { isCollapsed} = this.state;
+        
+        return(
+           <div className="accordion-item text-center" id="accordion-shots">
+               <h2 className="accordion-header">
+                   <button className="accordion-button" type="button" onClick={() => this.setState({isCollapsed: !isCollapsed})}>
+                       Espresso Shot #{this.props.listNum}
+                       <span className="mx-auto pr-2">Dose: {this.props.Dose}g</span>
+                       <span className="mx-auto pr-2">Time: {this.props.Time}s</span>
+                       <span className="mx-auto pr-2">Yield: {this.props.Yield}ml</span>
+                   </button>
+               </h2>
+               <div id="collapse1" className={`accordion-collapse collapse ${this.state.isCollapsed ? 'show':'' }` }>
+                   <div className="accordion-body">
+
+                   <div className="row">
+                            <div className="card p-0 col-3"><h6 className="card-header">Grind </h6> <p className="card-body">{this.props.Grind}</p></div>
+                            <div className="card p-0 col-3"><h6 className="card-header">Grinder </h6> <p className="card-body">{this.props.Grinder}</p></div>
+                            <div className="card p-0 col-3"><h6 className="card-header">Bean </h6> <p className="card-body">{this.props.Bean}</p></div>
+                            <div className="card p-0 col-3"><h6 className="card-header">Roaster </h6> <p className="card-body">{this.props.Roaster}</p></div>
+                       </div>
+                       <div className="row">
+                            <div className="card p-0 col-3"><h6 className="card-header">Method </h6> <p className="card-body">{this.props.Method}</p></div>
+                            <div className="card p-0 col-3"><h6 className="card-header">Machine </h6> <p className="card-body">{this.props.Machine}</p></div>
+                            <div className="card p-0 col-3"><h6 className="card-header">Style </h6> <p className="card-body">{this.props.Style}</p></div>
+                            <div className="card p-0 col-3"><h6 className="card-header">Creamer </h6> <p className="card-body">{this.props.Creamer}</p></div>
+                       </div>
+
+                       {/*
+                       <div className="row">
+                            <p className="col-3">Grind: <span className="col-3">{this.props.Grind}</span></p>
+                            <p className="col-3">Grinder: <span className="col-3">{this.props.Grinder}</span></p>
+                            <p className="col-3">Bean: <span className="col-3">{this.props.Bean}</span></p>
+                            <p className="col-3">Roaster: <span className="col-3">{this.props.Roaster}</span></p>
+                       </div>
+                       <div className="row">
+                            <p className="col-3">Method: <span className="col-3">{this.props.Method}</span></p>
+                            <p className="col-3">Machine: <span className="col-3">{this.props.Machine}</span></p>
+                            <p className="col-3">Style: <span className="col-3">{this.props.Style}</span></p>
+                            <p className="col-3">Creamer: <span className="col-3">{this.props.Creamer}</span></p>
+                       </div>
+                       */}
+
+                   </div>
+               </div>
+           </div> 
+        )
+    }
+}
+
+export default Shot;
+
+
+
+
+
+
+------------------------------ newer footer.js ---------------
+
+
+
+   <div id="Footer">
+        <h1 className="display-5 text-center">Your Pulled Shots</h1>
+        <div className="container p-5 mb-5">
+            <div className="accordion">
+                {pulls}
+            </div>
+        </div>
+    </div>

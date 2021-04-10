@@ -1,0 +1,121 @@
+.main {
+	position:relative;
+	width:200px;
+	height:200px;
+	margin:0 auto;
+    transform: scale(1.5);
+}
+
+.quarter {
+	position:absolute;
+	width:50%;
+	height:50%;
+	transition:background-color 0.2s ease-in-out;
+}
+.quarter:hover {
+	background-color:pink;
+}
+.quarter1 {
+	top:0;
+	left:0;
+	background-color:red;
+	border-radius:100% 0 0 0;
+}
+.quarter2 {
+	top:0;
+	right:0;
+	background-color:blue;
+	border-radius:0 100% 0 0 ;
+}
+.quarter3 {
+	bottom:0;
+	left:0;
+	background-color:orange;
+	border-radius:0 0 0 100%;
+}
+.quarter4 {
+	bottom:0;
+	right:0;
+	background-color:green;
+	border-radius:0 0 100% 0 ;
+}
+.cutout {
+	width:50%;
+	height:50%;
+	background-color:white;
+	position:absolute;
+	top:25%;
+	left:25%;
+	border-radius:50%;
+    transform: scale(1.5);
+	pointer-events:none;
+	}
+          #circle { 
+               width: 140px;
+               height: 140px;
+               background: grey; 
+               -moz-border-radius: 70px; 
+               -webkit-border-radius: 70px; 
+               border-radius: 70px;
+            }
+          .quarter-circle-top-left{
+            width: 100px;
+            height: 100px;
+            background: #f4f6ff;
+            border-radius: 0 0 100px 0;
+            -moz-border-radius: 0 0 100px 0;
+            -webkit-border-radius: 0 0 100px 0;
+        }
+        .quarter-circle-top-right{
+             width: 100px;
+             height: 100px;
+             background: #E7F1FF;
+             border-radius: 0 0 0 100px;
+             -moz-border-radius: 0 0 0 100px;
+             -webkit-border-radius: 0 0 0 100px;
+        }
+        .quarter-circle-bottom-left{
+             width: 100px;
+             height: 100px;
+             background: #E7F1FF;
+             border-radius: 0 100px 0 0;
+             -moz-border-radius: 0 100px 0 0;
+             -webkit-border-radius: 0 100px 0 0;
+        }
+        .quarter-circle-bottom-right{
+             width: 100px;
+             height: 100px;
+             background: #f4f6ff;
+             border-radius: 100px 0 0 0;
+             -moz-border-radius: 100px 0 0 0;
+             -webkit-border-radius: 100px 0 0 0;
+        }
+
+
+        #innerCir{
+          transform: scale(.5);
+          
+      }
+
+      .focusTopRight{
+          transform: translate(-25px, 25px) scale(1.5) !important;
+      }
+      .focusTopLeft{
+          transform: translate(-25px, -25px) scale(1.5) !important;
+      }
+      
+      #middleTextInnerCirTop{ 
+          position: relative;
+          top: 50px;
+          left: 0px;
+          
+      }
+      #middleTextInnerCirBottom{ 
+          position: relative;
+          top: 20px;
+          left: 0px; 
+      }
+
+      
+      
+  

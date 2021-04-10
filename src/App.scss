@@ -1,9 +1,28 @@
 // Override default variables before the import
 // $body-bg: #000;
 
+$offcanvas-vertical-height: auto;
+
+
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
 
+.offcanvas-bottom {
+    right: 0;
+    left: 0;
+    height: $offcanvas-vertical-height;
+    max-height: 70%;
+    border-top: $offcanvas-border-width solid $offcanvas-border-color;
+    transform: translateY(100%);
+  }
+
+  .offcanvas-body{
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+  }
+  
+  .offcanvas-body::-webkit-scrollbar { width: 0 !important }
+  
 h6.display-5{
     color: $indigo-400;
 }

@@ -1,42 +1,41 @@
 import React from 'react';
 import Shot from './Shot';
 import App from './App';
+import './App.scss';
 
-class Footer extends React.Component{
-    constructor(props){
-        super(props);
-        
-        this.state = {
-            /*
-            shotList: [{"Dose":"20", "Time":"30", "Yield":"45"},
-                       {"Dose":"19.98", "Time":"32", "Yield":"41"},
-                       {"Dose":"20.22", "Time":"26", "Yield":"39"}]
-            */
-        }
-    }
-    
-
-    render(){
-        const {shotList} = this.props;
-        console.log(shotList);
-        const pulls = shotList.map((pull, index) =>
+function Footer (props){
+    const pulls = props.shotList.map((pull, index) =>
             <Shot key={index} listNum={index+1} Dose={pull.Dose} Time={pull.Time} Yield={pull.Yield} Grind={pull.Grind} Grinder={pull.Grinder} Roaster={pull.Roaster} Bean={pull.Bean} Method={pull.Method} Machine={pull.Machine} Style={pull.Style} Creamer={pull.Creamer} /> 
         );
+    
+
+    return(
+        <div id="Footer" className="text-center mx-auto">
+
+            <div className="btn p-2 bi bi-chevron-compact-up" data-bs-toggle="offcanvas" data-bs-target="#shotlist" aria-controls="shotlist">
+                <span className="row display-6 p-2" data-bs-toggle="offcanvas" data-bs-target="#shotlist" aria-controls="shotlist">Shot List</span>
+            </div>
+            
+
+            <div class="offcanvas offcanvas-bottom container" tabindex="-1" id="shotlist" data-bs-backdrop="false" data-bs-scroll="false" aria-labelledby="shotlist">
+
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title mx-auto col-12" id="shotlist">Shot List</h5>
+                    <button type="button" class="btn-close text-reset my-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+
+                <div class="offcanvas-body small">
+                    {pulls}
+                </div>
+                
+            </div>
+        </div>
+
+ 
+        
         
 
-        return(
-            <>
-           <p class="display-5 text-center">Your Pulled Shots</p>
-           <div class="container p-5 mb-5">
-           <div class="accordion">
-        
-               {pulls}
-
-           </div>
-           </div>
-           </>
-        )
-    }
+    )
 }
 
 export default Footer;
