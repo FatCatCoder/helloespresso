@@ -7,7 +7,7 @@ function ShotFormPageThree({newShot, handleInputChange, handleSubmit, setStep, h
             <h3 className="text-center">Was it?</h3>
 
             <div className="btn-group col-10 col-xl-6 text-center flex-wrap mx-auto d-flex justify-content-center" role="group" aria-label="Basic radio toggle button group">
-                <input type="checkbox" value={true} onChange={handleCheckboxChange} className="btn-check" name="Sour" id="btnradio1" autocomplete="off" />
+                <input type="checkbox" value={'true'} onChange={handleCheckboxChange} className="btn-check" name="Sour" id="btnradio1" autocomplete="off" />
                 <label className="btn btn-outline-primary" for="btnradio1">Sour</label>
 
                 <input type="checkbox" value={'true'} onChange={handleCheckboxChange} className="btn-check" name="Bitter" id="btnradio2" autocomplete="off" />

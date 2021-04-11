@@ -20,19 +20,19 @@ function Navbar(props) {
 
 
     return(
-    <div id="navbar" className="text-center mx-auto d-flex justify-content-center border-bottom col-xl-2 col-10 col-md-5 pt-2 pb-2">
+    <div id="navbar" className="text-center mx-auto d-flex justify-content-center border-bottom col-xl-3 col-lg-4 col-10 col-md-5 pt-2 pb-2">
         <ul className="nav nav-pills">
           <li className="nav-item">
-            <a className={`nav-link ${currPage == {'/': true} ? 'active': ''}`} name={'/'} active={false} aria-current="page" onClick={handleNav}>Pull</a>
+            <a className={`nav-link ${currPage['/'] == true ? 'active': ''}`} name={'/'} active={false} aria-current="page" onClick={handleNav}>Pull</a>
           </li>
           <li className="nav-item">
-            <a className={`nav-link ${currPage ? 'active': ''}`} name={'/journal'} active={false} onClick={handleNav}>Journal</a>
+            <a className={`nav-link ${currPage['/journal'] == true ? 'active': ''}`} name={'/journal'} active={false} onClick={handleNav}>Journal</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" name={'/recipes'} active={false} onClick={handleNav}>Recipes</a>
+            <a className={`nav-link ${currPage['/recipes'] == true ? 'active': ''}`} name={'/recipes'} active={false} onClick={handleNav}>Recipes</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" name={'/about'} active={false} onClick={handleNav}>About</a>
+            <a className={`nav-link ${currPage['/about'] == true ? 'active': ''}`} name={'/about'} active={false} onClick={handleNav}>About</a>
           </li>
         </ul>
       </div>
