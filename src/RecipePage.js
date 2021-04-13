@@ -41,7 +41,7 @@ function RecipePage(props){
                     <div className="card p-0 col-6 col-md-3"><h6 className="card-header">Method </h6> <p className="card-body">{props.recipe[id].Method}</p></div>
                     <div className="card p-0 col-6 col-md-3"><h6 className="card-header">Machine </h6> <p className="card-body">{props.recipe[id].Machine}</p></div>
                     <div className="card p-0 col-6 col-md-3"><h6 className="card-header">Style </h6> <p className="card-body">{props.recipe[id].Style}</p></div>
-                    <div className="card p-0 col-6 col-md-3"><h6 className="card-header">Creamer </h6> <p className="card-body">{props.recipe[id].Creamer}</p></div>
+                    <div className="card p-0 col-6 col-md-3"><h6 className="card-header">Notes </h6> <p className="card-body">{props.recipe[id].UserNotes}</p></div>
                 </div>
             </div>
 

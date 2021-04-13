@@ -27,6 +27,40 @@ function App (){
     setShotList([...shotList, addShot]);
   };
 
+
+  const [newShot, setNewShot] = useState({});
+
+    const handleCheckboxChange = (e) => {
+        if(e.target.checked){
+            setNewShot((prevProps) => ({
+                ...prevProps,
+                [e.target.name]: true
+            }));
+        }
+        if(e.target.checked === false){
+            setNewShot((prevProps) => (delete prevProps[e.target.name], { 
+                ...prevProps
+            }));
+        }
+    };
+
+    const handleInputChange = (e) => {
+        setNewShot((prevProps) => ({
+            ...prevProps,
+            [e.target.name]: e.target.value
+        }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        addShotToList(newShot);
+        setNewShot({});
+        setStep(3); 
+    }
+
+
+    const [step, setStep] = useState(0);
+
   return (
     <Router>
       <ScrollToTop />
@@ -35,12 +69,12 @@ function App (){
 
       <Switch>
         <Route path="/" exact>
-          <Body  onNewShot={addShotToList} />
+          <Body  onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} step={step} setStep={setStep} />
           <Footer shotList={shotList} />
         </Route>
 
         <Route path="/journal">
-          <Journal />
+          <Journal onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
         </Route>
 
         <Route path="/recipes">

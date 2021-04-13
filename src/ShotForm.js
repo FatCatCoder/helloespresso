@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 
 function ShotForm({newShot, handleInputChange, handleSubmit, setStep, step, handleCheckboxChange}){
 
-    
 
     function renderPage(){
         switch(step){
@@ -22,6 +21,7 @@ function ShotForm({newShot, handleInputChange, handleSubmit, setStep, step, hand
                 console.log('error on loading wizrd form page, step not submitted');
     };
 };
+
     
     return (
         <div>

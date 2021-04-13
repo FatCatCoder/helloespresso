@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import {useHistory} from 'react-router-dom'; 
 import JournalBtnGrp from './JournalBtnGrp.js';
 import RecipeCard from './RecipeCard.js';
 import RecipePage from './RecipePage.js';
+import NewRecipe from './NewRecipe.js';
+import JournalPagination from './JournalPagination.js';
 
 import {
     BrowserRouter as Router,
@@ -13,13 +16,20 @@ import {
   } from "react-router-dom";
 
 
-function Journal(){
+
+function Journal({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot}){
+
+    const history = useHistory();
 
     const [myRecipes, setMyRecipes] = useState([]);
     
+    const handleSubmit = (event) => {
+        event.preventDefault(); 
+        addRecipe(newShot)
+        history.push('/journal');
+    }
     
-    
-    const addRecipe = async () => {
+    const addRecipe = async (recipe) => {
         const res = await fetch('http://10.0.0.41:5000/recipes', {
             method: 'POST',
             mode: 'cors',
@@ -27,7 +37,7 @@ function Journal(){
                 'Accept': 'application/json',
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({Bean: "Test POST"})
+            body: JSON.stringify(recipe)
         })
 
         const data = await res.json()
@@ -64,46 +74,27 @@ function Journal(){
     return(
 
         <div className="text-center pb-5">
-            
-
             <Switch>
-            <Route exact path={match.path}>
-            <h1 className="display-2">Journal</h1>
-            <p>Here for all your espresso brewing needs.</p>
-                <JournalBtnGrp add={addRecipe} />
-                
+                <Route exact path={match.path}>
+                    <h1 className="display-2">Journal</h1>
+                    <p>Here for all your espresso brewing needs.</p>
+                    <JournalBtnGrp  goTo={() => history.push(`${match.path}/new`)}/>
+                    <div className="container row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
+                        {myRecipes.map(x => <RecipeCard key={x.id} recipe={x}/>)}
+                    </div>
+                    <JournalPagination />
+                </Route>
 
-                <div className="container row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
-                    {myRecipes.map(x => <RecipeCard key={x.id} recipe={x}/>)}
-                </div>
-            </Route>
+                <Route exact path={`${match.path}/new`}>
+                    <form onSubmit={handleSubmit} className="mx-auto text-center">
+                        <NewRecipe add={addRecipe} onNewShot={onNewShot} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+                    </form>
+                </Route>
 
-            <Route path={`${match.path}/:id`}>
-                <RecipePage recipe={myRecipes}/>
-            </Route>
-
+                <Route path={`${match.path}/:id`}>
+                    <RecipePage recipe={myRecipes}/>
+                </Route>
             </Switch>
-
-
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center m-3">
-                    <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                    </li>
-                </ul>
-            </nav>
-
-
         </div>
     )
 }

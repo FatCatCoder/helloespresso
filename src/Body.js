@@ -9,52 +9,7 @@ import './App.scss';
 
 
 
-function Body (props) {
-    const emptyShot = {
-        Dose: '',
-        Time: '',
-        Yield: '',
-        Grind: '',
-        Grinder: '',
-        Roaster: '',
-        Bean: '',
-        Method: '',
-        Machine: '',
-        Style: '',
-        Creamer: ''
-    };
-
-
-    const [newShot, setNewShot] = useState({});
-
-    const handleCheckboxChange = (e) => {
-        if(e.target.checked){
-            setNewShot((prevProps) => ({
-                ...prevProps,
-                [e.target.name]: true
-            }));
-        }
-        if(e.target.checked === false){
-            setNewShot((prevProps) => (delete prevProps[e.target.name], { 
-                ...prevProps
-            }));
-        }
-    };
-
-    const handleInputChange = (e) => {
-        setNewShot((prevProps) => ({
-            ...prevProps,
-            [e.target.name]: e.target.value
-        }));
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        props.onNewShot(newShot);
-        setNewShot({});
-        setStep(3); 
-    }
-    const [step, setStep] = useState(0);
+function Body ({newShot, setNewShot, handleCheckboxChange, handleInputChange, handleSubmit, step, setStep}) {
     console.log(step);
 
 

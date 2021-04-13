@@ -1,7 +1,7 @@
 function JournalBtnGrp(props){
     return(
         <div className="container border mx-auto mb-3">
-                <button onClick={props.add} className="btn btn-primary m-2">New</button>
+                <button onClick={props.goTo} className="btn btn-primary m-2">New</button>
 
                 <div class="btn-group">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
