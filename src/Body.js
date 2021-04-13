@@ -64,7 +64,6 @@ function Body (props) {
         <div className="mx-auto text-center">
             <form onSubmit={handleSubmit} className="mx-auto text-center">
                 <ShotForm newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} handleCheckboxChange={handleCheckboxChange} setStep={setStep} step={step}/>
-                <p> here is Sour: {newShot.Sour}</p>
             </form>
             {/*
             <form onSubmit={handleSubmit} className="mx-auto text-center">

@@ -1,0 +1,85 @@
+{
+  "recipes": [
+    {
+      "id": 1,
+      "Bean": "Ethiopia",
+      "Roaster": "Buddy Brew",
+      "Region": "Agaro, Duromina",
+      "Notes": "baked peaches, citrus florals, demerara sugar",
+      "Date": "4/7/21",
+      "Dose": "20",
+      "Time": "30",
+      "Yield": "45",
+      "Grind": "10",
+      "Grinder": "Breville Smart Grinder Pro",
+      "Method": "Espresso",
+      "Machine": "1998 Gaggia Coffee",
+      "Style": "Espresso",
+      "Creamer": "Black"
+    },
+    {
+      "id": 2,
+      "Bean": "Brazil",
+      "Roaster": "Buddy Brew",
+      "Region": "Cerrado",
+      "Notes": "Walnut, chocolate, clean finish",
+      "Date": "3/18/21",
+      "Dose": "20",
+      "Time": "30",
+      "Yield": "45",
+      "Grind": "10",
+      "Grinder": "Breville Smart Grinder Pro",
+      "Method": "Espresso",
+      "Machine": "1998 Gaggia Coffee",
+      "Style": "Espresso",
+      "Creamer": "Black"
+    },
+    {
+      "id": 3
+    },
+    {
+      "id": 4
+    },
+    {
+      "id": 5
+    },
+    {
+      "id": 6
+    },
+    {
+      "id": 7
+    },
+    {
+      "id": 8
+    },
+    {
+      "id": 9
+    },
+    {
+      "id": 10
+    },
+    {
+      "id": 11
+    },
+    {
+      "id": 12
+    },
+    {
+      "id": 13
+    },
+    {
+      "Bean": "Test POST",
+      "id": 14
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

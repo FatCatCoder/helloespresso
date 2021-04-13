@@ -10,9 +10,15 @@ import Footer from './Footer.js';
 import About from './About.js';
 import Journal from './Journal.js';
 import Recipes from './Recipes.js';
+import RecipeTest from './RecipeTest.js';
+import ScrollToTop from './ScrollToTop.js';
 
 function App (){
-  const history = useHistory ();
+  let thisPage = window.location.pathname;
+  const history = useHistory();
+  const [currPage, setCurrPage] = useState({[thisPage]: true});
+
+  
 
   /*set default list of pulled shots */
   const [shotList, setShotList] = useState([{"Dose":"20", "Time":"30", "Yield":"45", "Grind": "10", "Grinder": "Breville Smart Grinder Pro", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Method": "Espresso", "Machine": "1998 Gaggia Coffee", "Style": "Espresso", "Creamer": "Black"},{"Dose":"19", "Time":"30", "Yield":"45", "Grind": "10", "Grinder": "Breville Smart Grinder Pro", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Method": "Espresso", "Machine": "1998 Gaggia Coffee", "Style": "Espresso", "Creamer": "Black"}])
@@ -23,8 +29,9 @@ function App (){
 
   return (
     <Router>
+      <ScrollToTop />
     <div className="App">
-      <Header />
+      <Header currPage={currPage} setCurrPage={setCurrPage}/>
 
       <Switch>
         <Route path="/" exact>
@@ -42,6 +49,10 @@ function App (){
 
         <Route path="/about">
           <About />
+        </Route>
+
+        <Route path="/test">
+          <RecipeTest recipe={shotList[0]}/>
         </Route>
       </Switch>
       

@@ -1,20 +1,39 @@
 import React from 'react';
 import './App.scss';
+import { useState } from 'react';
 import Navbar from './Navbar.js';
+import { Link, useHistory } from 'react-router-dom';
 
 
-function Header(props){
+function Header({currPage, setCurrPage}){
+  const history = useHistory();
+
+  
+
+    const handleNav = (e) => {
+        setCurrPage((prevProps) => ({
+            [e.target.name]: true
+        }));
+
+        /*
+        history.push(e.target.name);
+        */
+    }
+
+
     return(
         <>
         <div id="header" className="border-bottom pb-1">
         <div className="container-xl">
-          <img alt="altLogoImg" className="img-fluid d-block mx-auto w-25" src="https://icons-for-free.com/iconfiles/png/512/coffee+espresso+machine+portafilter+tamper+icon-1320086035176622247.png" />
+          <Link to={"/"}>
+          <img alt="altLogoImg" onClick={handleNav} name={'/'} className="img-fluid d-block mx-auto w-25" src="https://icons-for-free.com/iconfiles/png/512/coffee+espresso+machine+portafilter+tamper+icon-1320086035176622247.png" />
+          </Link>
         </div>
 
         <h1 className="text-center">hello coffee</h1>      
       </div>
 
-      <Navbar />
+      <Navbar currPage={currPage} setCurrPage={setCurrPage} handleNav={handleNav}/>
 
       </>
     )

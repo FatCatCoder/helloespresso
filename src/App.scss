@@ -7,6 +7,14 @@ $offcanvas-vertical-height: auto;
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
 
+body{
+  font-size:  1.2rem;
+}
+
+p.smaller-text{
+  font-size: 1rem;
+}
+
 .offcanvas-bottom {
     right: 0;
     left: 0;
