@@ -1,6 +1,6 @@
 
 
-function JournalFormPageTwo({newShot, handleInputChange, handleSubmit, setStep}){
+function RecipeFormPageTwo({newShot, handleInputChange, handleSubmit, setStep}){
 
     return(
         <>
@@ -23,4 +23,4 @@ function JournalFormPageTwo({newShot, handleInputChange, handleSubmit, setStep})
     )
 }
 
-export default JournalFormPageTwo;
+export default RecipeFormPageTwo;

@@ -68,6 +68,23 @@
       "Machine": "1998 gaggia classic",
       "Style": "espresso",
       "id": 5
+    },
+    {
+      "Bean": "Ethiopia ",
+      "Roaster": "Buddy brew",
+      "Region": "Agaro, Duromina",
+      "Date": "I forgot :3",
+      "Dose": "19.5",
+      "Yield": "42",
+      "Time": "30",
+      "Grind": "8",
+      "Grinder": "Breville Smart Pro",
+      "Method": "espresso",
+      "Machine": "1998 gaggia classic",
+      "Style": "espresso",
+      "Notes": "Peachy, roasty, light florals",
+      "UserNotes": "This was a difficult bean to dial, I'm still not happy with this recipe but it works the best so far. 18 and 18.5g pulled a bit better even but more on the sour side, but not oppressively sour.",
+      "id": 6
     }
   ],
   "comments": [

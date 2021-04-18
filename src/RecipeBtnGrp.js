@@ -1,4 +1,4 @@
-function JournalBtnGrp(props){
+function RecipeBtnGrp(props){
     return(
         <div className="container border mx-auto mb-3">
                 <button onClick={props.goTo} className="btn btn-primary m-2">New</button>
@@ -20,4 +20,4 @@ function JournalBtnGrp(props){
     )
 }
 
-export default JournalBtnGrp;
+export default RecipeBtnGrp;

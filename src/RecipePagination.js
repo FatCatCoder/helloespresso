@@ -1,4 +1,4 @@
-function JournalPagination() {
+function RecipePagination() {
     return(
         <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center m-3">
@@ -21,4 +21,4 @@ function JournalPagination() {
     
 }
 
-export default JournalPagination;
+export default RecipePagination;

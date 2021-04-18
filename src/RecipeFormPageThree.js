@@ -1,6 +1,6 @@
 
 
-function JournalFormPageThree({newShot, handleInputChange, handleSubmit, setStep}){
+function RecipeFormPageThree({newShot, handleInputChange, handleSubmit, setStep}){
 
     return(
         <>
@@ -24,4 +24,4 @@ function JournalFormPageThree({newShot, handleInputChange, handleSubmit, setStep
     )
 }
 
-export default JournalFormPageThree;
+export default RecipeFormPageThree;

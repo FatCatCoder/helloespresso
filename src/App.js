@@ -21,7 +21,8 @@ function App (){
   
 
   /*set default list of pulled shots */
-  const [shotList, setShotList] = useState([{"Dose":"20", "Time":"30", "Yield":"45", "Grind": "10", "Grinder": "Breville Smart Grinder Pro", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Method": "Espresso", "Machine": "1998 Gaggia Coffee", "Style": "Espresso", "Creamer": "Black"},{"Dose":"19", "Time":"30", "Yield":"45", "Grind": "10", "Grinder": "Breville Smart Grinder Pro", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Method": "Espresso", "Machine": "1998 Gaggia Coffee", "Style": "Espresso", "Creamer": "Black"}])
+  const [shotList, setShotList] = useState([{"Dose":"20", "Time":"30", "Yield":"45", "Grind": "10", "Grinder": "Breville Smart Grinder Pro", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Method": "Espresso", "Machine": "1998 Gaggia Coffee", "Style": "Espresso", "Creamer": "Black", "Notes": "bitter, overextracted."},
+  {"Dose":"19", "Time":"30", "Yield":"45", "Grind": "10", "Grinder": "Breville Smart Grinder Pro", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Method": "Espresso", "Machine": "1998 Gaggia Coffee", "Style": "Espresso", "Creamer": "Black", "Notes": "tastes like sour/sweet fruit, pulled a little watery."}])
 
   const addShotToList = (addShot) => {
     setShotList([...shotList, addShot]);
@@ -55,7 +56,7 @@ function App (){
         event.preventDefault();
         addShotToList(newShot);
         setNewShot({});
-        setStep(3); 
+        setStep(2); 
     }
 
 
@@ -70,15 +71,15 @@ function App (){
       <Switch>
         <Route path="/" exact>
           <Body  onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} step={step} setStep={setStep} />
-          <Footer shotList={shotList} />
+          <Footer shotList={shotList} setShotList={setShotList} />
         </Route>
 
         <Route path="/journal">
-          <Journal onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+          <Journal />
         </Route>
 
         <Route path="/recipes">
-          <Recipes />
+          <Recipes onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
         </Route>
 
         <Route path="/about">

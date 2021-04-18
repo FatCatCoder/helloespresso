@@ -1,39 +1,38 @@
 
 
-function ShotFormPageTwo({newShot, handleInputChange, handleSubmit, setStep}){
+function ShotFormPageThree({newShot, handleInputChange, handleSubmit, setStep, handleCheckboxChange}){
 
     return(
-        <>
+        <div className="container col-10 col-xl-6 mx-auto text-center d-block">
+            <h3 className="text-center">Was it?</h3>
 
-                    <label for="Grind">Grind</label><br />
-                    <input class="shadow border" value={newShot.Grind} onChange={handleInputChange} type="text" id="Grind" name="Grind" placeholder="Grind Size..." /><br />
+            <div className="btn-group col-10 col-xl-6 text-center flex-wrap mx-auto d-flex justify-content-center" role="group" aria-label="Basic radio toggle button group">
+                <input type="checkbox" value={'true'} onChange={handleCheckboxChange} className="btn-check" name="Sour" id="btnradio1" autocomplete="off" />
+                <label className="btn btn-outline-primary" for="btnradio1">Sour</label>
 
-                    <label for="Grinder">Grinder</label><br />
-                    <input class="shadow border" value={newShot.Grinder} onChange={handleInputChange} type="text" id="Grinder" name="Grinder" placeholder="Grinder..." /><br />
+                <input type="checkbox" value={'true'} onChange={handleCheckboxChange} className="btn-check" name="Bitter" id="btnradio2" autocomplete="off" />
+                <label className="btn btn-outline-primary" for="btnradio2">Bitter / Ashy</label>
 
-                    <label for="Roaster">Roaster</label><br />
-                    <input class="shadow border" value={newShot.Roaster} onChange={handleInputChange} type="text" id="Roaster" name="Roaster" placeholder="Roaster..." /><br />
-
-                    <label for="Bean">Bean</label><br />
-                    <input class="shadow border" value={newShot.Bean} onChange={handleInputChange} type="text" id="Bean" name="Bean" placeholder="Name/Origin..." /><br />
-
-                    <label for="Method">Method</label><br />
-                    <input class="shadow border" value={newShot.Method} onChange={handleInputChange} type="text" id="Method" name="Method" placeholder="Chemex/shots..." /><br />
-
-                    <label for="Machine">Machine</label><br />
-                    <input class="shadow border" value={newShot.Machine} onChange={handleInputChange} type="text" id="Machine" name="Machine" placeholder="La Marzocco..." /><br />
-
-                    <label for="Style">Style</label><br />
-                    <input class="shadow border" value={newShot.Style} onChange={handleInputChange} type="text" id="Style" name="Style" placeholder="espresso/latte..." /><br />
-
-                    <label for="Creamer">Creamer</label><br />
-                    <input class="shadow border" value={newShot.Creamer} onChange={handleInputChange} type="text" id="Creamer" name="Creamer" placeholder="oat/black..." /><br />
-
-                    <button className="btn btn-primary m-2 mx-auto" type="button" onClick={() => setStep(0)}>back</button>
-                    <button className="btn btn-primary m-2" type="button" onClick={() => setStep(2)}>next</button>
+                <input type="checkbox" value={'true'} onChange={handleCheckboxChange} className="btn-check" name="Weak" id="btnradio3" autocomplete="off" />
+                <label className="btn btn-outline-primary" for="btnradio3">Bland / Weak</label>
                     
-                </>
+                <input type="checkbox" value={'true'} onChange={handleCheckboxChange} className="btn-check" name="Balanced" id="btnradio4" autocomplete="off" />
+                <label className="btn btn-outline-primary" for="btnradio4">Balanced</label>
+                    
+                <input type="checkbox" value={'true'} onChange={handleCheckboxChange} className="btn-check" name="Missing" id="btnradio5" autocomplete="off" />
+                <label className="btn btn-outline-primary" for="btnradio5">Missing?</label>
+
+                <div className="row">
+                    <label for="Notes" className="form-label">Notes</label><br />
+                    <textarea className="shadow border form-control" value={newShot.Notes} onChange={handleInputChange} type="text" id="Notes" name="Notes" placeholder="Notes..." /><br />
+                </div>
+            </div>
+
+            <button className="btn btn-primary m-2" type="button" onClick={() => setStep(0)}>back</button>
+            <button className="btn btn-primary" type="submit">Pull Shot!</button>
+                                
+        </div>
     )
 }
 
-export default ShotFormPageTwo;
+export default ShotFormPageThree;

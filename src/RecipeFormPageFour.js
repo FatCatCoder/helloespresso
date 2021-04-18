@@ -1,6 +1,6 @@
 
 
-function JournalFormPageFour({newShot, handleInputChange, handleSubmit, setStep, handleCheckboxChange}){
+function RecipeFormPageFour({newShot, handleInputChange, handleSubmit, setStep, handleCheckboxChange}){
 
     return(
         <div className="container col-10 col-xl-6 mx-auto text-center d-block">
@@ -25,4 +25,4 @@ function JournalFormPageFour({newShot, handleInputChange, handleSubmit, setStep,
     )
 }
 
-export default JournalFormPageFour;
+export default RecipeFormPageFour;

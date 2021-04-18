@@ -5,7 +5,7 @@ import './App.scss';
 
 function Footer (props){
     const pulls = props.shotList.map((pull, index) =>
-            <Shot key={index} listNum={index+1} Dose={pull.Dose} Time={pull.Time} Yield={pull.Yield} Grind={pull.Grind} Grinder={pull.Grinder} Roaster={pull.Roaster} Bean={pull.Bean} Method={pull.Method} Machine={pull.Machine} Style={pull.Style} Creamer={pull.Creamer} /> 
+            <Shot key={index} listNum={index+1} Dose={pull.Dose} Time={pull.Time} Yield={pull.Yield} Grind={pull.Grind} Grinder={pull.Grinder} Roaster={pull.Roaster} Bean={pull.Bean} Method={pull.Method} Machine={pull.Machine} Style={pull.Style} Creamer={pull.Creamer} Notes={pull.Notes} /> 
         );
     
 
@@ -23,6 +23,10 @@ function Footer (props){
                     <h5 class="offcanvas-title mx-auto col-12" id="shotlist">Shot List</h5>
                     <button type="button" class="btn-close text-reset my-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
+
+            <div className="container">
+                <button onClick={() => props.setShotList([])} className="mx-auto col-xs-2 col-md-1 col-xl-1 btn btn-danger">clear</button>
+            </div>
 
                 <div class="offcanvas-body small">
                     {pulls}
