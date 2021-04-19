@@ -10,20 +10,20 @@ function ExtractionWheel(props) {
 
 
     return(
-    <div class="main mt-5 mb-5">
+    <div className="main mt-5 mb-5">
                     <div>
-                        <div class="quarter quarter1" id="Tooltip1" ></div>    
+                        <div className="quarter quarter1" id="Tooltip1" ></div>    
                     </div>
                     <div>  
-                        <div class="quarter quarter2" id="Tooltip2" ></div>
+                        <div className="quarter quarter2" id="Tooltip2" ></div>
                         </div>
                     <div>
-                        <div class="quarter quarter3" id="Tooltip3" ></div>
+                        <div className="quarter quarter3" id="Tooltip3" ></div>
                         </div>
                     <div>
-                        <div class="quarter quarter4" id="Tooltip4" ></div>
+                        <div className="quarter quarter4" id="Tooltip4" ></div>
                     </div>
-                        <div class="cutout"></div>
+                        <div className="cutout"></div>
 
 
                         <UncontrolledTooltip show={tooltipOpen} placement="left" target="Tooltip1" trigger="hover">
@@ -69,15 +69,15 @@ function ExtractionWheel(props) {
 
 
 
-                        <div id="innerCir" class="container text-center">
-                            <div class="row">
-                                <div class="quarter-circle-bottom-right focusTopLeft"><span id="middleTextInnerCirTop">Sour</span></div>
-                                <div class="quarter-circle-bottom-left"><span id="middleTextInnerCirTop">Bitter</span></div>
+                        <div id="innerCir" className="container text-center">
+                            <div className="row">
+                                <div className="quarter-circle-bottom-right focusTopLeft"><span id="middleTextInnerCirTop">Sour</span></div>
+                                <div className="quarter-circle-bottom-left"><span id="middleTextInnerCirTop">Bitter</span></div>
                             </div>
 
-                            <div class="row">
-                                <div class="quarter-circle-top-right"><span id="middleTextInnerCirBottom">Flat</span></div>
-                                <div class="quarter-circle-top-left"><span id="middleTextInnerCirBottom">Intense</span></div>
+                            <div className="row">
+                                <div className="quarter-circle-top-right"><span id="middleTextInnerCirBottom">Flat</span></div>
+                                <div className="quarter-circle-top-left"><span id="middleTextInnerCirBottom">Intense</span></div>
                             </div>
 
                         </div>

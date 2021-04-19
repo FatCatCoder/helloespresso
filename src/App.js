@@ -75,7 +75,7 @@ function App (){
         </Route>
 
         <Route path="/journal">
-          <Journal />
+          <Journal shotList={shotList}/>
         </Route>
 
         <Route path="/recipes">
@@ -96,40 +96,6 @@ function App (){
     </Router>
   );
 }
-
-
-
-
-/*
-
-class App extends React.Component {
-
-  /* set default list of pulled shots /
-    state={
-      shotList: [{"Dose":"20", "Time":"30", "Yield":"45", "Grind": "10", "Grinder": "Breville Smart Grinder Pro", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Method": "Espresso", "Machine": "1998 Gaggia Coffee", "Style": "Espresso", "Creamer": "Black"},{"Dose":"19", "Time":"30", "Yield":"45", "Grind": "10", "Grinder": "Breville Smart Grinder Pro", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Method": "Espresso", "Machine": "1998 Gaggia Coffee", "Style": "Espresso", "Creamer": "Black"}]
-    };
-
-    /* add to list of pulled shots /
-    addShotToList = (x) => {
-      let shotList = [...this.state.shotList];
-      shotList.push(x);
-      this.setState({ shotList });
-    }
-
-    
-  render(){
-  return (
-    <div className="App">
-      <Header />
-      <Body onNewShot={this.addShotToList} />
-      <Footer shotList={this.state.shotList}/>
-    </div>
-  );
-}
-}
-
-*/
-
 
 
 export default App;

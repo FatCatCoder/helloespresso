@@ -21,6 +21,11 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     const history = useHistory();
 
     const [myRecipes, setMyRecipes] = useState([]);
+    const [currPage, setCurrPage] = useState(1);
+    const [recipesPerPage, setRecipesPerPage] = useState(8);
+
+
+
     
     const handleSubmit = (event) => {
         event.preventDefault(); 
@@ -50,13 +55,9 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     useEffect(() => {
         const getRecipes = async () => {
             const recipesFromServer = await fetchRecipes()
-            setMyRecipes(recipesFromServer.map(x => x))
-            console.log('useEffect after fetch precall', myRecipes)
-            
+            setMyRecipes(recipesFromServer.map(x => x))         
         }
-        getRecipes()
-        console.log('useEffect after fetch postcall', myRecipes)
-        
+        getRecipes()   
     }, [])
 
 
@@ -69,6 +70,12 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
 
     let match = useRouteMatch();
 
+    const indexOfLastPost = currPage * recipesPerPage;
+    const indexOfFirstPost = indexOfLastPost - recipesPerPage;
+    const currRecipes = myRecipes.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = (pageNumber) => setCurrPage(pageNumber);
+
 
     return(
 
@@ -79,9 +86,9 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                     <p>Here for all your espresso brewing needs.</p>
                     <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)}/>
                     <div className="container row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
-                        {myRecipes.map(x => <RecipeCard key={x.id} recipe={x}/>)}
+                        {currRecipes.map(x => <RecipeCard key={x.id} recipe={x}/>)}
                     </div>
-                    <RecipePagination />
+                    <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={myRecipes.length} paginate={paginate} />
                 </Route>
 
                 <Route exact path={`${match.path}/new`}>

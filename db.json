@@ -85,16 +85,58 @@
       "Notes": "Peachy, roasty, light florals",
       "UserNotes": "This was a difficult bean to dial, I'm still not happy with this recipe but it works the best so far. 18 and 18.5g pulled a bit better even but more on the sour side, but not oppressively sour.",
       "id": 6
+    },
+    {
+      "Bean": "Ethiopia",
+      "Roaster": "Kuma",
+      "Region": "Bedhatu Jibicho (Natural)",
+      "Date": "4/12/21",
+      "Dose": "18.08",
+      "Yield": "42",
+      "Time": "18",
+      "Grind": "10",
+      "Grinder": "Breville Smart Pro",
+      "Method": "espresso",
+      "Machine": "1998 gaggia classic",
+      "Style": "espresso",
+      "Notes": "Sour Strawberries, bitter after taste like eating the leafy part of the berry. Watery.",
+      "UserNotes": "pulled too fast, too watery, can taste some of the notes, decent crema just disappears very fast and light-colored, definitely under-extracted, Will increase grind and try again.",
+      "id": 7
+    },
+    {
+      "id": 8
+    },
+    {
+      "id": 9
+    },
+    {
+      "Bean": "ethiopia",
+      "Roaster": "kuma",
+      "Region": "Bedhatu Jibicho (Natural)",
+      "Date": "4/12/21",
+      "Dose": "18.04",
+      "Yield": "39.78",
+      "Time": "20",
+      "Grind": "8",
+      "Grinder": "Breville Smart Pro",
+      "Method": "espresso",
+      "Machine": "1998 gaggia classic",
+      "Style": "espresso",
+      "Notes": "cacao nibs, fruit?",
+      "UserNotes": "sour is present but only very minimally, mostly more bitter, not overly but like pure cocoa, fruit notes are mostly gone. Very little scent to it",
+      "id": 10
     }
   ],
-  "comments": [
+  "users": [
     {
       "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "name": "fatcatcoder",
+      "password": "123456"
     }
   ],
-  "profile": {
-    "name": "typicode"
-  }
+  "journal": [
+    {
+      "id": 1
+    }
+  ]
 }
