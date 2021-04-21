@@ -1,35 +1,13 @@
 
 
 import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, FormText, Label, Input } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
 
-function AddToJournalModal (props){
+function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleModalInputChange, journalEntry, setJournalEntry, todaysDate }){
 
-    const {
-        buttonLabel,
-        className,
-        
-      } = props;
-
-
-    const todayDate = new Date().toLocaleDateString();
-    const [journalEntry, setJournalEntry] = useState({"Date": todayDate});
+  // add shotlist to journal as new entry
+  
     
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        toggle();
-        console.log(journalEntry.Bean, journalEntry.Date);
-        setJournalEntry({"Date": todayDate})
-    }
-
-        const handleModalInputChange = (e) => {
-            console.log(e.target.name, e.target.value, e.target)
-            setJournalEntry((prevProps) => ({
-                ...prevProps,
-                [e.target.name]: e.target.value
-            }));
-        };
 
   const [modal, setModal] = useState(false);
 
@@ -39,33 +17,33 @@ function AddToJournalModal (props){
   return (
     <>
       <Button color="primary" className="mx-auto p-1 col-xs-2 col-md-1 col-xl-1 btn" data-bs-dismiss="offcanvas" onClick={toggle}>{buttonLabel}</Button>
-      <Form onSubmit={handleSubmit} inline>
+      <form onSubmit={handleModalSubmit} id="modalForm" inline>
       <Modal isOpen={modal} toggle={toggle} className={className} centered={true}>
         <ModalHeader toggle={toggle}>Add to Journal</ModalHeader>
         <ModalBody>
             
                 <div className="mb-3">
                     <FormGroup>
-                        <Label for="bean" className="form-label">Bean</Label>
-                        <Input value={journalEntry.Bean} onChange={handleModalInputChange} type="text" className="form-control" id="Bean" name="Bean" placeholder="Bean..."></Input>
+                        <label for="bean" className="form-label">Bean</label>
+                        <input value={journalEntry.Bean} onChange={handleModalInputChange} type="text" className="form-control" id="Bean" name="Bean" placeholder="Bean..."></input>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="Region" className="form-label">Region</Label>
-                        <Input value={journalEntry.Region} onChange={handleModalInputChange} type="text" className="form-control" id="Region" name="Region" aria-describedby="Region" placeholder="Region..."></Input>
+                        <label for="Region" className="form-label">Region</label>
+                        <input value={journalEntry.Region} onChange={handleModalInputChange} type="text" className="form-control" id="Region" name="Region" aria-describedby="Region" placeholder="Region..."></input>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="roaster" className="form-label">Roaster</Label>
-                        <Input value={journalEntry.roaster} onChange={handleModalInputChange} type="text" className="form-control" id="roaster" name="roaster" aria-describedby="roaster" placeholder="Roaster..."></Input>
+                        <label for="roaster" className="form-label">Roaster</label>
+                        <input value={journalEntry.Roaster} onChange={handleModalInputChange} type="text" className="form-control" id="Roaster" name="roaster" aria-describedby="roaster" placeholder="Roaster..."></input>
                     </FormGroup>
                 </div> 
           
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleSubmit}>Confirm</Button>{' '}
+          <button className="btn btn-primary"  type="submit" form="modalForm" value="Submit" onClick={toggle}>Confirm</button>{' '}
           <Button color="secondary" onClick={toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
-      </Form>
+      </form>
     </>
   );
 }

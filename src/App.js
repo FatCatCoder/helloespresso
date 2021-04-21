@@ -1,5 +1,6 @@
 // import logo from './logo.svg';
 import React from 'react';
+import axios from 'axios';
 import { useState } from 'react';
 import {BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import './App.css';
@@ -31,36 +32,66 @@ function App (){
 
   const [newShot, setNewShot] = useState({});
 
-    const handleCheckboxChange = (e) => {
-        if(e.target.checked){
-            setNewShot((prevProps) => ({
-                ...prevProps,
-                [e.target.name]: true
-            }));
-        }
-        if(e.target.checked === false){
-            setNewShot((prevProps) => (delete prevProps[e.target.name], { 
-                ...prevProps
-            }));
-        }
-    };
+  const handleCheckboxChange = (e) => {
+      if(e.target.checked){
+          setNewShot((prevProps) => ({
+              ...prevProps,
+              [e.target.name]: true
+          }));
+      }
+      if(e.target.checked === false){
+          setNewShot((prevProps) => (delete prevProps[e.target.name], { 
+              ...prevProps
+          }));
+      }
+  };
 
-    const handleInputChange = (e) => {
-        setNewShot((prevProps) => ({
+  const handleInputChange = (e) => {
+      setNewShot((prevProps) => ({
+          ...prevProps,
+          [e.target.name]: e.target.value
+      }));
+  };
+
+  const handleSubmit = (event) => {
+      event.preventDefault();
+      addShotToList(newShot);
+      setNewShot({});
+      setStep(2); 
+  }
+
+    const [step, setStep] = useState(0);
+
+    // Footer modal form shot logging to journal 
+    const todaysDate = new Date().toLocaleDateString();
+    const [journalEntry, setJournalEntry] = useState({"Date": todaysDate});
+    
+
+    const handleModalSubmit = (event) => {
+        event.preventDefault();
+        addEntryToJournal(journalEntry);
+        setJournalEntry({"Date": todaysDate})
+    }
+
+    const handleModalInputChange = (e) => {
+        setJournalEntry((prevProps) => ({
             ...prevProps,
             [e.target.name]: e.target.value
         }));
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        addShotToList(newShot);
-        setNewShot({});
-        setStep(2); 
-    }
+    // add new entry to journal
+    const addEntryToJournal = (entry) => {
+      axios({
+          method: 'POST',
+          url: 'http://10.0.0.41:5000/journal?_sort=id&_order=desc',
+          data: {...entry, "ShotLog": shotList}
+      })
+  }
 
 
-    const [step, setStep] = useState(0);
+  
+  
 
   return (
     <Router>
@@ -71,7 +102,7 @@ function App (){
       <Switch>
         <Route path="/" exact>
           <Body  onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} step={step} setStep={setStep} />
-          <Footer shotList={shotList} setShotList={setShotList} />
+          <Footer shotList={shotList} setShotList={setShotList} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} setJournalEntry={setJournalEntry} todaysDate={todaysDate} />
         </Route>
 
         <Route path="/journal">

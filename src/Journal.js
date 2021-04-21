@@ -1,6 +1,8 @@
 import JournalItemContent from './JournalItemContent.js';
 import JournalItem from './JournalItem.js';
 import {useHistory} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import axios from 'axios';
 
 import {
     BrowserRouter as Router,
@@ -16,11 +18,19 @@ function Journal({shotList}){
     const history = useHistory();
     let match = useRouteMatch();
 
-    const handleClick = (e) => {
-        e.preventDefault();
-        
-        history.push(`${match.path}/item`)
-    }
+    const [myEntries, setMyEntries] = useState([]);
+
+
+    useEffect(() => {
+        const fetchJournalEntries = () => { axios.get('http://10.0.0.41:5000/journal?_sort=id&_order=desc')
+            .then(res =>{
+                const data = res.data;
+                setMyEntries(data.map(x => x))
+            })}
+        fetchJournalEntries()
+    }, [])
+
+
 
     return(
 
@@ -30,31 +40,14 @@ function Journal({shotList}){
                     <h1 className="display-2">Journal</h1>
                     <div className="container">
                         <div class="list-group">
-                            <a href="" onClick={handleClick} class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Ethiopia (Bedhatu Jibicho) - Kuma</h5>
-                                <small class="text-muted">4/19/21</small>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Brazil (Cerrado) - Buddy Brew</h5>
-                                <small class="text-muted">4/03/21</small>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                                <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Ethiopia (Agaro, Duromina) - Buddy Brew</h5>
-                                <small class="text-muted">3/28/21</small>
-                                </div>
-                            </a>
-                            <JournalItem Bean={'Cubano'} Region={'Blend'} Roaster={'Buddy Brew'} Date={'3/23/21'} id={'item'} route={handleClick}/> 
+                            {myEntries.map((x, y) => <JournalItem key={x.id} id={y+1} Bean={x.Bean} Region={x.Region} Roaster={x.Roaster} Date={x.Date} /> )}
                         </div>
                     </div>
                 </Route>
 
-                <Route exact path={`${match.path}/item`}>
-                    <JournalItemContent shotList={shotList}/>
+
+                <Route exact path={`${match.path}/:id`}>
+                    <JournalItemContent myEntries={myEntries}/>
                 </Route>
             </Switch>
         </div>

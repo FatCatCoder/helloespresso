@@ -1,11 +1,15 @@
 import React from 'react';
 import Shot from './Shot';
 import AddToJournalModal from './AddToJournalModal.js';
+
 import {useState} from 'react';
 import './App.scss';
 
-function Footer (props){
-    const pulls = props.shotList.map((pull, index) =>
+function Footer ({shotList, setShotList, handleModalSubmit, handleModalInputChange, journalEntry, setJournalEntry, todaysDate}){
+
+
+
+    const pulls = shotList.map((pull, index) =>
             <Shot key={index} listNum={index+1} Dose={pull.Dose} Time={pull.Time} Yield={pull.Yield} Grind={pull.Grind} Grinder={pull.Grinder} Roaster={pull.Roaster} Bean={pull.Bean} Method={pull.Method} Machine={pull.Machine} Style={pull.Style} Creamer={pull.Creamer} Notes={pull.Notes} /> 
         );
 
@@ -30,8 +34,8 @@ function Footer (props){
             <div className="container col-4">
                 <div className="col">
                 
-                    <AddToJournalModal buttonLabel={'Log'}/>
-                    <button onClick={() => props.setShotList([])} className="mx-auto p-1 col-xs-2 col-md-1 col-xl-1 btn btn-danger">clear</button>
+                    <AddToJournalModal buttonLabel={'Log'} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} setJournalEntry={setJournalEntry} todaysDate={todaysDate}/>
+                    <button onClick={() => setShotList([])} className="mx-auto p-1 col-xs-2 col-md-1 col-xl-1 btn btn-danger">clear</button>
                 </div>
             </div>
 

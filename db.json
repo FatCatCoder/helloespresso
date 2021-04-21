@@ -153,7 +153,112 @@
   ],
   "journal": [
     {
-      "id": 1
+      "id": 1,
+      "Bean": "Cubano",
+      "Region": "Cuba",
+      "Roaster": "Buddy Brew",
+      "Date": "3/23/21",
+      "ShotLog": [
+        {
+          "Dose": "20",
+          "Yield": "45",
+          "Time": "30",
+          "Grind": "10",
+          "Notes": "Taste Good"
+        },
+        {
+          "Dose": "20",
+          "Yield": "43",
+          "Time": "28",
+          "Grind": "9",
+          "Notes": "Taste Good"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "Bean": "Ethiopia",
+      "Region": "Agaro, Duromina",
+      "Roaster": "Buddy Brew",
+      "Date": "3/28/21",
+      "ShotLog": [
+        {
+          "Dose": "20",
+          "Yield": "45",
+          "Time": "30",
+          "Grind": "10",
+          "Notes": "Taste Good"
+        },
+        {
+          "Dose": "20",
+          "Yield": "43",
+          "Time": "28",
+          "Grind": "9",
+          "Notes": "Taste Good"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "Bean": "Brazil",
+      "Region": "Cerrado",
+      "Roaster": "Buddy Brew",
+      "Date": "4/03/21",
+      "ShotLog": [
+        {
+          "Dose": "20",
+          "Yield": "45",
+          "Time": "30",
+          "Grind": "10",
+          "Notes": "Taste Good"
+        },
+        {
+          "Dose": "20",
+          "Yield": "43",
+          "Time": "28",
+          "Grind": "9",
+          "Notes": "Taste Good"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "Bean": "Ethiopia",
+      "Region": "Bedhatu Jibicho",
+      "Roaster": "Kuma",
+      "Date": "4/12/21",
+      "ShotLog": [
+        {
+          "Dose": "18",
+          "Yield": "42",
+          "Time": "18",
+          "Grind": "10",
+          "Notes": "Taste Good"
+        },
+        {
+          "Dose": "20",
+          "Yield": "38",
+          "Time": "23",
+          "Grind": "9",
+          "Notes": "Taste Good"
+        }
+      ]
+    },
+    {
+      "Date": "4/21/2021",
+      "Bean": "Ethiopia",
+      "Region": "natural",
+      "roaster": "kuma",
+      "ShotLog": [
+        {
+          "Dose": "3",
+          "Yield": "3",
+          "Time": "34",
+          "Grind": "10",
+          "Bitter": true
+        }
+      ],
+      "id": 5
     }
   ]
 }
