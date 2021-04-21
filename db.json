@@ -125,6 +125,23 @@
       "Notes": "cacao nibs, fruit?",
       "UserNotes": "sour is present but only very minimally, mostly more bitter, not overly but like pure cocoa, fruit notes are mostly gone. Very little scent to it",
       "id": 10
+    },
+    {
+      "Bean": "Ethiopia",
+      "Roaster": "Kuma",
+      "Region": "Bedhatu Jibicho (Natural)",
+      "Date": "4/12/21",
+      "Dose": "20",
+      "Yield": "38",
+      "Time": "24",
+      "Grind": "10",
+      "Grinder": "Breville Smart Pro",
+      "Method": "espresso",
+      "Machine": "1998 gaggia classic",
+      "Style": "espresso",
+      "Notes": "Strawberry, cocoa nibs",
+      "UserNotes": "crema was light-colored but the bean was decent. It could be better, sour was nice, not overly bitter, notes could be more pronounced.",
+      "id": 11
     }
   ],
   "users": [

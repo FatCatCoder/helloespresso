@@ -7,11 +7,11 @@ function JournalItemContent({shotList}){
 
     return(
         <div className="text-center pb-5">
-            <h1>Ethiopia - Kuma</h1>
-            <h3>logged on: 4/19/21</h3>
-            <ul>
+            <h1 className="display-4">Ethiopia - Kuma</h1>
+            <h3 className="fs-4 fw-light text-muted">logged on: 4/19/21</h3>
+            <div className="container">
                 {pulls}
-            </ul>
+            </div>
         </div>
     )
 }
