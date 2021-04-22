@@ -6,6 +6,10 @@ function Shot (props){
     const toggleShow = () => {
         toggleCollapsed(isCollapsed => !isCollapsed)
     }
+    // look for ["Sour", "Bitter", "Weak", "Balanced", "Strong"] with val of true
+    const tastNotes = Object.keys(props).filter(val => props[val] === true).join(', ');
+    //const tastNotes = props.Sour;
+    console.log(tastNotes);
 
     return(
         <div className="accordion-item text-center" id="accordion-shots">
@@ -21,7 +25,7 @@ function Shot (props){
             <div id="collapse1" className={`accordion-collapse collapse ${isCollapsed ? 'show':'' }` }>
                 <div className="accordion-body">
                     <div className="row">
-                        <div className="card p-0 col-12"><h6 className="card-header">Notes</h6><p className="card-body">{props.Notes}</p></div>
+                        <div className="card p-0 col-12"><h6 className="card-header">Notes</h6><p className="card-body"><span className="row pb-2 text-primary fw-light fs-5 justify-content-center">{tastNotes}</span>{props.Notes}</p></div>
                     </div>
                 </div>
             </div>

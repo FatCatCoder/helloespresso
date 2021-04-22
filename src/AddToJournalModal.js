@@ -32,8 +32,8 @@ function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleM
                         <input value={journalEntry.Region} onChange={handleModalInputChange} type="text" className="form-control" id="Region" name="Region" aria-describedby="Region" placeholder="Region..."></input>
                     </FormGroup>
                     <FormGroup>
-                        <label for="roaster" className="form-label">Roaster</label>
-                        <input value={journalEntry.Roaster} onChange={handleModalInputChange} type="text" className="form-control" id="Roaster" name="roaster" aria-describedby="roaster" placeholder="Roaster..."></input>
+                        <label for="Roaster" className="form-label">Roaster</label>
+                        <input value={journalEntry.Roaster} onChange={handleModalInputChange} type="text" className="form-control" id="Roaster" name="Roaster" aria-describedby="Roaster" placeholder="Roaster..."></input>
                     </FormGroup>
                 </div> 
           

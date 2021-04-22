@@ -142,6 +142,23 @@
       "Notes": "Strawberry, cocoa nibs",
       "UserNotes": "crema was light-colored but the bean was decent. It could be better, sour was nice, not overly bitter, notes could be more pronounced.",
       "id": 11
+    },
+    {
+      "Bean": "Ethiopia",
+      "Roaster": "Kuma",
+      "Region": "Bedhatu Jibicho",
+      "Date": "4/12/21",
+      "Dose": "18",
+      "Yield": "?",
+      "Time": "?",
+      "Grind": "5",
+      "Grinder": "Breville Smart Pro",
+      "Method": "espresso",
+      "Machine": "1998 gaggia classic",
+      "Style": "espresso",
+      "Notes": "Sour fruit, raw cacao",
+      "UserNotes": "Light sour that doesn't overpower, light-medium body, could be more. I didn't time or weight the shot  ",
+      "id": 12
     }
   ],
   "users": [
@@ -247,8 +264,8 @@
     {
       "Date": "4/21/2021",
       "Bean": "Ethiopia",
-      "Region": "natural",
-      "roaster": "kuma",
+      "Region": "Bedhatu Jibicho",
+      "Roaster": "Kuma",
       "ShotLog": [
         {
           "Dose": "3",
@@ -259,6 +276,23 @@
         }
       ],
       "id": 5
+    },
+    {
+      "Date": "4/22/2021",
+      "Bean": "Ethiopia",
+      "Region": "Bedhatu Jibicho",
+      "Roaster": "Kuma",
+      "ShotLog": [
+        {
+          "Dose": "18",
+          "Grind": "10",
+          "Sour": true,
+          "Weak": true,
+          "Balanced": true,
+          "Notes": "not bad"
+        }
+      ],
+      "id": 6
     }
   ]
 }

@@ -22,8 +22,8 @@ function App (){
   
 
   /*set default list of pulled shots */
-  const [shotList, setShotList] = useState([{"Dose":"20", "Time":"30", "Yield":"45", "Grind": "10", "Grinder": "Breville Smart Grinder Pro", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Method": "Espresso", "Machine": "1998 Gaggia Coffee", "Style": "Espresso", "Creamer": "Black", "Notes": "bitter, overextracted."},
-  {"Dose":"19", "Time":"30", "Yield":"45", "Grind": "10", "Grinder": "Breville Smart Grinder Pro", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Method": "Espresso", "Machine": "1998 Gaggia Coffee", "Style": "Espresso", "Creamer": "Black", "Notes": "tastes like sour/sweet fruit, pulled a little watery."}])
+  const [shotList, setShotList] = useState([{"Dose":"20", "Time":"30", "Yield":"45", "Grind": "10", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Bitter": true, "Strong": true, "Notes": "too strong and overextracted, no tasting notes present."},
+  {"Dose":"19", "Time":"30", "Yield":"45", "Grind": "10", "Roaster": "Buddy Brew", "Bean": "Ethiopia", "Sour": true, "Balanced": true, "Weak": true, "Notes": "tastes like sour/sweet fruit, pulled a little watery."}])
 
   const addShotToList = (addShot) => {
     setShotList([...shotList, addShot]);
