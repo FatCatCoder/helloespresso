@@ -20,6 +20,7 @@ import {
 function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot}){
     const history = useHistory();
 
+    // for pagination
     const [myRecipes, setMyRecipes] = useState([]);
     const [currPage, setCurrPage] = useState(1);
     const [recipesPerPage, setRecipesPerPage] = useState(8);

@@ -3,9 +3,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
 
-function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleModalInputChange, journalEntry, setJournalEntry, todaysDate }){
-
-  // add shotlist to journal as new entry
+function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleModalInputChange, journalEntry }){
   
     
 

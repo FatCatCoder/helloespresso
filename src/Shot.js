@@ -9,7 +9,7 @@ function Shot (props){
     // look for ["Sour", "Bitter", "Weak", "Balanced", "Strong"] with val of true
     const tastNotes = Object.keys(props).filter(val => props[val] === true).join(', ');
     //const tastNotes = props.Sour;
-    console.log(tastNotes);
+    //console.log(tastNotes);
 
     return(
         <div className="accordion-item text-center" id="accordion-shots">

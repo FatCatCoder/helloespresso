@@ -26,7 +26,7 @@ function Header({currPage, setCurrPage}){
         <div id="header" className="border-bottom pb-1">
         <div className="container-xl">
           <Link to={"/"}>
-          <img alt="altLogoImg" onClick={handleNav} name={'/'} className="img-fluid d-block mx-auto w-25" src="https://icons-for-free.com/iconfiles/png/512/coffee+espresso+machine+portafilter+tamper+icon-1320086035176622247.png" />
+          <img alt="altLogoImg" onClick={handleNav} name={'/'} className="img-fluid d-block mx-auto w-15" src="Logo.png" />
           </Link>
         </div>
 

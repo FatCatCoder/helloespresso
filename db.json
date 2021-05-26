@@ -159,6 +159,23 @@
       "Notes": "Sour fruit, raw cacao",
       "UserNotes": "Light sour that doesn't overpower, light-medium body, could be more. I didn't time or weight the shot  ",
       "id": 12
+    },
+    {
+      "Bean": "Ethiopia",
+      "Roaster": "Kuma",
+      "Region": "Bedhatu Jibicho (Natural)",
+      "Dose": "18",
+      "Yield": "39",
+      "Time": "26",
+      "Grind": "6",
+      "Grinder": "Breville Smart Pro",
+      "Method": "espresso",
+      "Machine": "1998 gaggia classic",
+      "Style": "espresso",
+      "Date": "04/12/21",
+      "Notes": "Delicious... very fruity.",
+      "UserNotes": "Delicious... pulled perfect, althought maybe just a tiny bit more body and sour but pretty darn good.",
+      "id": 13
     }
   ],
   "users": [
@@ -293,6 +310,64 @@
         }
       ],
       "id": 6
+    },
+    {
+      "Date": "4/30/2021",
+      "Bean": "settest",
+      "Region": "test",
+      "Roaster": "test",
+      "ShotLog": [
+        {
+          "Dose": "20",
+          "Time": "30",
+          "Yield": "45",
+          "Grind": "10",
+          "Roaster": "Buddy Brew",
+          "Bean": "Ethiopia",
+          "Bitter": true,
+          "Strong": true,
+          "Notes": "too strong and overextracted, no tasting notes present."
+        },
+        {
+          "Dose": "19",
+          "Time": "30",
+          "Yield": "45",
+          "Grind": "10",
+          "Roaster": "Buddy Brew",
+          "Bean": "Ethiopia",
+          "Sour": true,
+          "Balanced": true,
+          "Weak": true,
+          "Notes": "tastes like sour/sweet fruit, pulled a little watery."
+        },
+        {
+          "Dose": "43",
+          "Yield": "4",
+          "Time": "2",
+          "Grind": "10",
+          "Bitter": true,
+          "Notes": "set test"
+        }
+      ],
+      "id": 7
+    },
+    {
+      "Date": "5/25/2021",
+      "Bean": "panema",
+      "Region": "idk",
+      "Roaster": "Buddy brew",
+      "ShotLog": [
+        {
+          "Dose": "43",
+          "Yield": "4",
+          "Time": "2",
+          "Grind": "10",
+          "Balanced": true,
+          "Missing": true,
+          "Notes": "YES it was"
+        }
+      ],
+      "id": 8
     }
   ]
 }

@@ -3,6 +3,11 @@ import React from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 import {BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
+import * as yup from 'yup';
+import useShotFormStore from './store.js';
+
+
+// components
 import './App.css';
 import './App.scss';
 import Header from './Header.js';
@@ -53,11 +58,37 @@ function App (){
       }));
   };
 
+
+
+  const schema = yup.object().shape({
+    Dose: yup.number().required(),
+    Yield: yup.number().required(),
+    Time: yup.number().required(),
+    Grind: yup.number().required(),
+  })
+
+
+  const formErrors = useShotFormStore(state => state.formError);
+  const setFormErrors = useShotFormStore(state => state.setFormError);
+
   const handleSubmit = (event) => {
       event.preventDefault();
-      addShotToList(newShot);
-      setNewShot({});
-      setStep(2); 
+      schema.validate({
+        Dose: newShot.Dose,
+        Yield: newShot.Yield,
+        Time: newShot.Time,
+        Grind: newShot.Grind,
+      }, { abortEarly: false }).then(function () {
+        console.log('Submitted!')
+        addShotToList(newShot);
+        setNewShot({});
+        setStep(2);
+      }).catch(function (err) {
+        setFormErrors(err.errors);
+        console.log(formErrors)
+      })
+
+         
   }
 
     const [step, setStep] = useState(0);
@@ -94,6 +125,7 @@ function App (){
   
 
   return (
+    
     <Router>
       <ScrollToTop />
     <div className="App">
@@ -102,7 +134,7 @@ function App (){
       <Switch>
         <Route path="/" exact>
           <Body  onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} step={step} setStep={setStep} />
-          <Footer shotList={shotList} setShotList={setShotList} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} setJournalEntry={setJournalEntry} todaysDate={todaysDate} />
+          <Footer shotList={shotList} setShotList={setShotList} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry}  />
         </Route>
 
         <Route path="/journal">
@@ -125,6 +157,7 @@ function App (){
       
     </div>
     </Router>
+    
   );
 }
 

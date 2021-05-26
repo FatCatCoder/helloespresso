@@ -2,6 +2,7 @@ import JournalItemContent from './JournalItemContent.js';
 import JournalItem from './JournalItem.js';
 import {useHistory} from 'react-router-dom';
 import {useEffect, useState} from 'react';
+import RecipePagination from './RecipePagination.js';
 import axios from 'axios';
 
 import {
@@ -20,6 +21,11 @@ function Journal({shotList}){
 
     const [myEntries, setMyEntries] = useState([]);
 
+    // for pagination
+    const [currPage, setCurrPage] = useState(1);
+    const [recipesPerPage, setRecipesPerPage] = useState(8);
+
+
 
     useEffect(() => {
         const fetchJournalEntries = () => { axios.get('http://10.0.0.41:5000/journal?_sort=id&_order=desc')
@@ -29,6 +35,14 @@ function Journal({shotList}){
             })}
         fetchJournalEntries()
     }, [])
+
+    
+
+    const indexOfLastPost = currPage * recipesPerPage;
+    const indexOfFirstPost = indexOfLastPost - recipesPerPage;
+    const currRecipes = myEntries.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = (pageNumber) => setCurrPage(pageNumber);
 
 
 
@@ -40,9 +54,10 @@ function Journal({shotList}){
                     <h1 className="display-2">Journal</h1>
                     <div className="container">
                         <div class="list-group">
-                            {myEntries.map((x, y) => <JournalItem key={x.id} id={y+1} Bean={x.Bean} Region={x.Region} Roaster={x.Roaster} Date={x.Date} /> )}
+                            {currRecipes.map((x, y) => <JournalItem key={x.id} id={y+1} Bean={x.Bean} Region={x.Region} Roaster={x.Roaster} Date={x.Date} /> )}
                         </div>
                     </div>
+                    <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={myEntries.length} paginate={paginate} />
                 </Route>
 
 

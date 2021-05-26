@@ -1,6 +1,28 @@
 // Override default variables before the import
 // $body-bg: #000;
 
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/utilities";
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "width": map-merge(
+      map-get($utilities, "width"),
+      (
+        values: map-merge(
+          map-get(map-get($utilities, "width"), "values"),
+          (10: 10%,
+          15: 15%,
+          20: 20%),
+          
+        ),
+      ),
+    ),
+  )
+);
+
 $offcanvas-vertical-height: auto;
 
 
