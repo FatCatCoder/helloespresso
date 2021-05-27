@@ -61,10 +61,10 @@ function App (){
 
 
   const schema = yup.object().shape({
-    Dose: yup.number().required(),
-    Yield: yup.number().required(),
-    Time: yup.number().required(),
-    Grind: yup.number().required(),
+    Dose: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Dose is not a reasonable number"),
+    Yield: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Yield is not a reasonable number"),
+    Time: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Time is not a reasonable number"),
+    Grind: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Grind is not a reasonable number"),
   })
 
 
@@ -85,7 +85,7 @@ function App (){
         setStep(2);
       }).catch(function (err) {
         setFormErrors(err.errors);
-        console.log(formErrors)
+        console.log(Object.keys(err), err.name, err.value, err.path, err.type, err.errors, err.inner)
       })
 
          
