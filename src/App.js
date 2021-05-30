@@ -71,8 +71,24 @@ function App (){
   const formErrors = useShotFormStore(state => state.formError);
   const setFormErrors = useShotFormStore(state => state.setFormError);
 
+  const pullValidation = () => {
+    schema.validate({
+      Dose: newShot.Dose,
+      Yield: newShot.Yield,
+      Time: newShot.Time,
+      Grind: newShot.Grind,
+    }, { abortEarly: false }).then(function () {
+      setFormErrors([]);
+      setStep(1);
+    }).catch(function (err) {
+      setFormErrors(err.errors);
+      console.log(Object.keys(err), err.name, err.value, err.path, err.type, err.errors, err.inner)
+    })
+  }
+
   const handleSubmit = (event) => {
       event.preventDefault();
+      console.log(newShot.Dose)
       schema.validate({
         Dose: newShot.Dose,
         Yield: newShot.Yield,
@@ -115,7 +131,7 @@ function App (){
     const addEntryToJournal = (entry) => {
       axios({
           method: 'POST',
-          url: 'http://10.0.0.41:5000/journal?_sort=id&_order=desc',
+          url: '/journal?_sort=id&_order=desc',
           data: {...entry, "ShotLog": shotList}
       })
   }
@@ -133,7 +149,7 @@ function App (){
 
       <Switch>
         <Route path="/" exact>
-          <Body  onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} step={step} setStep={setStep} />
+          <Body  pullValidation={pullValidation} onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} step={step} setStep={setStep} />
           <Footer shotList={shotList} setShotList={setShotList} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry}  />
         </Route>
 

@@ -28,7 +28,7 @@ function Journal({shotList}){
 
 
     useEffect(() => {
-        const fetchJournalEntries = () => { axios.get('http://10.0.0.41:5000/journal?_sort=id&_order=desc')
+        const fetchJournalEntries = () => { axios.get('/journal?_sort=id&_order=desc')
             .then(res =>{
                 const data = res.data;
                 setMyEntries(data.map(x => x))

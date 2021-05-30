@@ -35,7 +35,7 @@ function Footer ({shotList, setShotList, handleModalSubmit, handleModalInputChan
                 <div className="col">
                 
                     <AddToJournalModal buttonLabel={'Log'} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} />
-                    <button onClick={() => setShotList([])} className="mx-auto p-1 col-xs-2 col-md-1 col-xl-1 btn btn-danger">clear</button>
+                    <button onClick={() => setShotList([])} className="mx-auto p-1 col-xs-2 col-md-3 col-lg-1 col-xl-1 btn btn-danger">clear</button>
                 </div>
             </div>
 

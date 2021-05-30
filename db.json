@@ -176,6 +176,26 @@
       "Notes": "Delicious... very fruity.",
       "UserNotes": "Delicious... pulled perfect, althought maybe just a tiny bit more body and sour but pretty darn good.",
       "id": 13
+    },
+    {
+      "Bean": "Burundi ",
+      "Roaster": "Buddy brew",
+      "Region": "Mutana / Long Miles Coffee Project",
+      "Date": "05/25/21",
+      "Dose": "18",
+      "Yield": "39.8",
+      "Time": "30",
+      "Grind": "4",
+      "Grinder": "Breville Smart Pro",
+      "Method": "espresso",
+      "Machine": "1998 gaggia classic",
+      "Style": "espresso",
+      "Notes": "Dark Cherries, Rich fruit and chocolate",
+      "UserNotes": "Perfect pull, a great sour note in the jaw.",
+      "id": 14
+    },
+    {
+      "id": 15
     }
   ],
   "users": [
@@ -368,6 +388,23 @@
         }
       ],
       "id": 8
+    },
+    {
+      "Date": "5/29/2021",
+      "Bean": "Burundi ",
+      "Region": "Mutana, long miles coffee project",
+      "Roaster": "Buddy brew",
+      "ShotLog": [
+        {
+          "Dose": "18",
+          "Yield": "39.8",
+          "Time": "30",
+          "Grind": "4",
+          "Notes": "barely tamped on it, perfect dialed in espresso",
+          "Balanced": true
+        }
+      ],
+      "id": 9
     }
   ]
 }

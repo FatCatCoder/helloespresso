@@ -3,13 +3,13 @@ import ShotFormPageTwo from './ShotFormPageTwo.js';
 import ShotFormPageFinal from './ShotFormPageFinal.js';
 import React, { useState } from 'react';
 
-function ShotForm({newShot, handleInputChange, handleSubmit, setStep, step, handleCheckboxChange}){
+function ShotForm({newShot, handleInputChange, handleSubmit, setStep, step, handleCheckboxChange, pullValidation}){
 
 
     function renderPage(){
         switch(step){
             case 0:
-                return <ShotFormPageOne newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} setStep={setStep} step={step}/>;
+                return <ShotFormPageOne pullValidation={pullValidation} newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} setStep={setStep} step={step}/>;
             case 1:
                 return <ShotFormPageTwo newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} handleCheckboxChange={handleCheckboxChange} setStep={setStep} step={step}/>;
             case 2:

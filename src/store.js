@@ -5,5 +5,10 @@ const useShotFormStore = create((set, get) => ({
     setFormError: (error) => set(state => ({formError: error}))
   }))
 
+const useNewRecipeStore = create((set, get) => ({
 
-  export default useShotFormStore;
+}))
+
+
+export default useShotFormStore;
+  
