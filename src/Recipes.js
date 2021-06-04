@@ -5,6 +5,7 @@ import RecipeCard from './RecipeCard.js';
 import RecipePage from './RecipePage.js';
 import NewRecipe from './NewRecipe.js';
 import RecipePagination from './RecipePagination.js';
+import useShotFormStore from './store.js';
 import * as yup from 'yup';
 
 import {
@@ -20,32 +21,43 @@ import {
 
 function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot}){
     const history = useHistory();
-    const prox = 'http://10.0.0.41:5000/'
 
     // for pagination
     const [myRecipes, setMyRecipes] = useState([]);
     const [currPage, setCurrPage] = useState(1);
     const [recipesPerPage, setRecipesPerPage] = useState(8);
 
-    const schemaDose = yup.object().shape({
-        Dose: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Dose is not a reasonable number"),
-        Yield: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Yield is not a reasonable number"),
-        Time: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Time is not a reasonable number"),
-        Grind: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Grind is not a reasonable number"),
-      })
-
-    const schemaBean = yup.object().shape({
-        Bean: yup.string().required(),
-        Roaster: yup.string().required(),
-        Region: yup.string().required(),
-        Date: yup.date()
+    const schema = yup.object().shape({
+        Grinder: yup.string().required(),
+        Machine: yup.string().required(),
+        Notes: yup.string().required(),
+        UserNotes: yup.date()
     })
 
+    const schemaData = {
+        Grinder: newShot.Grinder,
+        Machine: newShot.Machine,
+        Notes: newShot.Notes,
+        UserNotes: newShot.UserNotes
+    }
+
+    
+    const formErrors = useShotFormStore(state => state.formError);
+    const setFormErrors = useShotFormStore(state => state.setFormError);
     
     const handleSubmit = (event) => {
-        event.preventDefault(); 
-        addRecipe(newShot)
-        history.push('/recipes');
+        event.preventDefault();
+        schema.validate(schemaData, { abortEarly: false })
+            .then(function () {
+                setFormErrors([]);
+                addRecipe(newShot)
+                history.push('/recipes');
+            })
+            .catch(function (err) {
+                setFormErrors(err.errors);
+                console.log(Object.keys(err), err.name, err.value, err.path, err.type, err.errors, err.inner)
+            })
+        
     }
     
     const addRecipe = async (recipe) => {

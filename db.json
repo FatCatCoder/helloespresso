@@ -196,6 +196,25 @@
     },
     {
       "id": 15
+    },
+    {
+      "id": 16
+    },
+    {
+      "UserNotes": "",
+      "Bean": "i am a test bean please ",
+      "Roaster": "ignore me",
+      "id": 17
+    },
+    {
+      "Bean": "cubano",
+      "Roaster": "Buddy brew",
+      "Region": "natural",
+      "Dose": "43",
+      "Yield": "7",
+      "Time": "34",
+      "Grind": "10",
+      "id": 18
     }
   ],
   "users": [

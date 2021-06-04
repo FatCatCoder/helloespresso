@@ -23,6 +23,7 @@ function App (){
   let thisPage = window.location.pathname;
   const history = useHistory();
   const [currPage, setCurrPage] = useState({[thisPage]: true});
+  console.log(thisPage, currPage, /(recipes)/.test(thisPage))
 
   
 
