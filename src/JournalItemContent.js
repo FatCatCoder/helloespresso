@@ -11,7 +11,7 @@ function JournalItemContent({myEntries}){
         );
 
     return(
-        <div className="text-center pb-5">
+        <div className="container text-center pb-5">
             <h1 className="display-4">{myEntries[id].Bean} ({myEntries[id].Region}) - {myEntries[id].Roaster}</h1>
             <h3 className="fs-4 fw-light text-muted">logged on: {myEntries[id].Date}</h3>
             <div className="container">

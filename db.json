@@ -6,7 +6,8 @@
       "Roaster": "Buddy Brew",
       "Region": "Agaro, Duromina",
       "Notes": "baked peaches, citrus florals, demerara sugar",
-      "Date": "4/7/21",
+      "Date": "4-7-21",
+      "DatePosted": "2021-06-07",
       "Dose": "20",
       "Time": "30",
       "Yield": "45",
@@ -23,7 +24,8 @@
       "Roaster": "Buddy Brew",
       "Region": "Cerrado",
       "Notes": "Walnut, chocolate, clean finish",
-      "Date": "3/18/21",
+      "Date": "3-18-21",
+      "DatePosted": "2021-06-07",
       "Dose": "20",
       "Time": "30",
       "Yield": "45",
@@ -41,7 +43,8 @@
       "Bean": "cubano",
       "Roaster": "Buddy brew",
       "Region": "cuba",
-      "Date": "4/3/21",
+      "Date": "4-3-21",
+      "DatePosted": "2021-06-07",
       "Dose": "43",
       "Yield": "45",
       "Time": "34",
@@ -58,7 +61,8 @@
       "Bean": "cubano",
       "Roaster": "Buddy brew",
       "Region": "cuba",
-      "Date": "04/12/2021",
+      "Date": "04-12-2021",
+      "DatePosted": "2021-06-07",
       "Dose": "43",
       "Yield": "d",
       "Time": "34",
@@ -74,6 +78,7 @@
       "Roaster": "Buddy brew",
       "Region": "Agaro, Duromina",
       "Date": "I forgot :3",
+      "DatePosted": "2021-06-07",
       "Dose": "19.5",
       "Yield": "42",
       "Time": "30",
@@ -90,7 +95,8 @@
       "Bean": "Ethiopia",
       "Roaster": "Kuma",
       "Region": "Bedhatu Jibicho (Natural)",
-      "Date": "4/12/21",
+      "Date": "4-12-21",
+      "DatePosted": "2021-06-07",
       "Dose": "18.08",
       "Yield": "42",
       "Time": "18",
@@ -113,7 +119,8 @@
       "Bean": "ethiopia",
       "Roaster": "kuma",
       "Region": "Bedhatu Jibicho (Natural)",
-      "Date": "4/12/21",
+      "Date": "4-12-21",
+      "DatePosted": "2021-06-07",
       "Dose": "18.04",
       "Yield": "39.78",
       "Time": "20",
@@ -130,7 +137,8 @@
       "Bean": "Ethiopia",
       "Roaster": "Kuma",
       "Region": "Bedhatu Jibicho (Natural)",
-      "Date": "4/12/21",
+      "Date": "4-12-21",
+      "DatePosted": "2021-06-07",
       "Dose": "20",
       "Yield": "38",
       "Time": "24",
@@ -147,7 +155,8 @@
       "Bean": "Ethiopia",
       "Roaster": "Kuma",
       "Region": "Bedhatu Jibicho",
-      "Date": "4/12/21",
+      "Date": "4-12-21",
+      "DatePosted": "2021-06-07",
       "Dose": "18",
       "Yield": "?",
       "Time": "?",
@@ -172,7 +181,8 @@
       "Method": "espresso",
       "Machine": "1998 gaggia classic",
       "Style": "espresso",
-      "Date": "04/12/21",
+      "Date": "04-12-21",
+      "DatePosted": "2021-06-07",
       "Notes": "Delicious... very fruity.",
       "UserNotes": "Delicious... pulled perfect, althought maybe just a tiny bit more body and sour but pretty darn good.",
       "id": 13
@@ -180,8 +190,9 @@
     {
       "Bean": "Burundi ",
       "Roaster": "Buddy brew",
-      "Region": "Mutana / Long Miles Coffee Project",
-      "Date": "05/25/21",
+      "Region": "Mutana - Long Miles Coffee Project",
+      "Date": "05-25-21",
+      "DatePosted": "2021-06-07",
       "Dose": "18",
       "Yield": "39.8",
       "Time": "30",
@@ -195,26 +206,19 @@
       "id": 14
     },
     {
+      "Bean": "databaseERD",
+      "Roaster": "ERD",
+      "Region": "test",
+      "Date": "2021-06-08",
+      "Dose": "2",
+      "Yield": "2",
+      "Time": "2",
+      "Grind": "2",
+      "Grinder": "u",
+      "Machine": "u",
+      "Notes": "u",
+      "DatePosted": "2021-06-08",
       "id": 15
-    },
-    {
-      "id": 16
-    },
-    {
-      "UserNotes": "",
-      "Bean": "i am a test bean please ",
-      "Roaster": "ignore me",
-      "id": 17
-    },
-    {
-      "Bean": "cubano",
-      "Roaster": "Buddy brew",
-      "Region": "natural",
-      "Dose": "43",
-      "Yield": "7",
-      "Time": "34",
-      "Grind": "10",
-      "id": 18
     }
   ],
   "users": [
@@ -424,6 +428,46 @@
         }
       ],
       "id": 9
+    },
+    {
+      "Date": "2021-06-08",
+      "Bean": "test",
+      "Region": "erd",
+      "Roaster": "database",
+      "ShotLog": [
+        {
+          "Dose": "20",
+          "Time": "30",
+          "Yield": "45",
+          "Grind": "10",
+          "Roaster": "Buddy Brew",
+          "Bean": "Ethiopia",
+          "Bitter": true,
+          "Strong": true,
+          "Notes": "too strong and overextracted, no tasting notes present."
+        },
+        {
+          "Dose": "19",
+          "Time": "30",
+          "Yield": "45",
+          "Grind": "10",
+          "Roaster": "Buddy Brew",
+          "Bean": "Ethiopia",
+          "Sour": true,
+          "Balanced": true,
+          "Weak": true,
+          "Notes": "tastes like sour/sweet fruit, pulled a little watery."
+        },
+        {
+          "Dose": "43",
+          "Yield": "2",
+          "Time": "2",
+          "Grind": "2",
+          "Bitter": true,
+          "Weak": true
+        }
+      ],
+      "id": 10
     }
   ]
 }

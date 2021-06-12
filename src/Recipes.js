@@ -19,7 +19,7 @@ import {
 
 
 
-function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot}){
+function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot, todaysDate}){
     const history = useHistory();
 
     // for pagination
@@ -44,12 +44,27 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     
     const formErrors = useShotFormStore(state => state.formError);
     const setFormErrors = useShotFormStore(state => state.setFormError);
+
+    const setTodate = () => {
+        setNewShot((prevProps) => ({...prevProps, ["DatePosted"]: todaysDate}))
+        console.log(newShot.DatePosted)
+    }
+
     
-    const handleSubmit = (event) => {
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        
+        await setTodate();
+
         schema.validate(schemaData, { abortEarly: false })
-            .then(function () {
-                setFormErrors([]);
+            .then(() => {
+                setFormErrors([]); 
+                //var TodaysDate = new Date().toISOString().split('T')[0];
+                
+                        
+            })
+            .then(() => {
                 addRecipe(newShot)
                 history.push('/recipes');
             })
@@ -120,7 +135,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
 
                 <Route exact path={`${match.path}/new`}>
                     <form onSubmit={handleSubmit} className="mx-auto text-center">
-                        <NewRecipe add={addRecipe} onNewShot={onNewShot} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+                        <NewRecipe setTodate={setTodate} add={addRecipe} onNewShot={onNewShot} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
                     </form>
                 </Route>
 

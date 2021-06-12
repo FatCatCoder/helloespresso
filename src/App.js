@@ -23,7 +23,7 @@ function App (){
   let thisPage = window.location.pathname;
   const history = useHistory();
   const [currPage, setCurrPage] = useState({[thisPage]: true});
-  console.log(thisPage, currPage, /(recipes)/.test(thisPage))
+  
 
   
 
@@ -111,7 +111,7 @@ function App (){
     const [step, setStep] = useState(0);
 
     // Footer modal form shot logging to journal 
-    const todaysDate = new Date().toLocaleDateString();
+    const todaysDate = new Date().toISOString().split('T')[0];
     const [journalEntry, setJournalEntry] = useState({"Date": todaysDate});
     
 
@@ -159,7 +159,7 @@ function App (){
         </Route>
 
         <Route path="/recipes">
-          <Recipes onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+          <Recipes onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} todaysDate={todaysDate} />
         </Route>
 
         <Route path="/about">
