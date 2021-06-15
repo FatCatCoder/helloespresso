@@ -3,6 +3,7 @@
     {
       "id": 1,
       "Bean": "Ethiopia",
+      "Roast": "Light",
       "Roaster": "Buddy Brew",
       "Region": "Agaro, Duromina",
       "Notes": "baked peaches, citrus florals, demerara sugar",
@@ -21,6 +22,7 @@
     {
       "id": 2,
       "Bean": "Brazil",
+      "Roast": "Light",
       "Roaster": "Buddy Brew",
       "Region": "Cerrado",
       "Notes": "Walnut, chocolate, clean finish",
@@ -41,6 +43,7 @@
     },
     {
       "Bean": "cubano",
+      "Roast": "Light",
       "Roaster": "Buddy brew",
       "Region": "cuba",
       "Date": "4-3-21",
@@ -59,6 +62,7 @@
     },
     {
       "Bean": "cubano",
+      "Roast": "Light",
       "Roaster": "Buddy brew",
       "Region": "cuba",
       "Date": "04-12-2021",
@@ -75,6 +79,7 @@
     },
     {
       "Bean": "Ethiopia ",
+      "Roast": "Light",
       "Roaster": "Buddy brew",
       "Region": "Agaro, Duromina",
       "Date": "I forgot :3",
@@ -93,6 +98,7 @@
     },
     {
       "Bean": "Ethiopia",
+      "Roast": "Light",
       "Roaster": "Kuma",
       "Region": "Bedhatu Jibicho (Natural)",
       "Date": "4-12-21",
@@ -117,6 +123,7 @@
     },
     {
       "Bean": "ethiopia",
+      "Roast": "Light",
       "Roaster": "kuma",
       "Region": "Bedhatu Jibicho (Natural)",
       "Date": "4-12-21",
@@ -135,6 +142,7 @@
     },
     {
       "Bean": "Ethiopia",
+      "Roast": "Light",
       "Roaster": "Kuma",
       "Region": "Bedhatu Jibicho (Natural)",
       "Date": "4-12-21",
@@ -153,6 +161,7 @@
     },
     {
       "Bean": "Ethiopia",
+      "Roast": "Light",
       "Roaster": "Kuma",
       "Region": "Bedhatu Jibicho",
       "Date": "4-12-21",
@@ -171,6 +180,7 @@
     },
     {
       "Bean": "Ethiopia",
+      "Roast": "Light",
       "Roaster": "Kuma",
       "Region": "Bedhatu Jibicho (Natural)",
       "Dose": "18",
@@ -189,6 +199,7 @@
     },
     {
       "Bean": "Burundi ",
+      "Roast": "Light",
       "Roaster": "Buddy brew",
       "Region": "Mutana - Long Miles Coffee Project",
       "Date": "05-25-21",
@@ -207,6 +218,7 @@
     },
     {
       "Bean": "databaseERD",
+      "Roast": "Light",
       "Roaster": "ERD",
       "Region": "test",
       "Date": "2021-06-08",

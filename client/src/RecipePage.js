@@ -23,8 +23,12 @@ function RecipePage(props){
             <div className="my-2">
                 <h1 className="display-3">{props.recipe[id].Bean} - {props.recipe[id].Roaster}</h1>
                 <h2 className="text-muted">Region: {props.recipe[id].Region}</h2>
-                <p className="text-muted fs-6">Roasted: {dateRoasted}</p>
-                <p className="text-muted fs-6">Posted: {datePosted}</p>
+                <div className="card">
+                    <p className="text-muted">Roast: {props.recipe[id].Roast}</p>
+                    <p className="text-muted">Process: {props.recipe[id].Process}</p>
+                    <p className="text-muted fs-6">Roasted: {dateRoasted}</p>
+                    <p className="text-muted fs-6">Posted: {datePosted}</p>
+                </div>
                 
             </div>
 

@@ -1,61 +1,15 @@
 {
-  "name": "extraction-app-react",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@popperjs/core": "^2.9.1",
-    "@testing-library/jest-dom": "^5.11.10",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.8.3",
-    "autoprefixer": "^10.2.5",
-    "axios": "^0.21.1",
-    "badwords-list": "^1.0.0",
-    "bootstrap": "^5.0.0-beta3",
-    "bootstrap-icons": "^1.4.1",
-    "concurrently": "^6.0.1",
-    "env-cmd": "^10.1.0",
-    "json-server": "^0.16.3",
-    "react": "^17.0.2",
-    "react-bootstrap": "^2.0.0-alpha.0",
-    "react-dom": "^17.0.2",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
-    "reactstrap": "^8.9.0",
-    "sass": "^1.32.8",
-    "sass-loader": "^11.0.1",
-    "web-vitals": "^1.1.1",
-    "yup": "^0.32.9",
-    "zustand": "^3.5.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "dbServer": "json-server --watch --port 5000 db.json",
-    "dbServerHome": "json-server --watch --host 10.0.0.41 --port 5000 db.json",
-    "dbServerOther": "json-server --watch --host 10.0.0.251 --port 5000 db.json",
-    "dev": "concurrently --kill-others \"npm run dbServer\" \"npm run start\"",
-    "devHome": "concurrently --kill-others \"npm run dbServerHome\" \"npm run start\"",
-    "devOther": "concurrently --kill-others \"npm run dbServerOther\" \"npm run start\""
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "proxy": "http://10.0.0.251:5000"
+    "dependencies": {
+        "argon2": "^0.28.2",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "express-jwt": "^6.0.0",
+        "helmet": "^4.6.0",
+        "jsonwebtoken": "^8.5.1",
+        "pg": "^8.6.0"
+    },
+    "scripts": {
+        "server": "nodemon index.js"
+    }
 }
