@@ -54,7 +54,7 @@ function Journal({shotList}){
                     <h1 className="display-2">Journal</h1>
                     <div className="container">
                         <div class="list-group">
-                            {currRecipes.map((x, y) => <JournalItem key={x.id} id={y+1} Bean={x.Bean} Region={x.Region} Roaster={x.Roaster} Date={x.Date} /> )}
+                            {currRecipes.map((x, y) => <JournalItem key={x.id} id={y+1} Bean={x.bean} Region={x.region} Roaster={x.roaster} Date={x.postDate} /> )}
                         </div>
                     </div>
                     <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={myEntries.length} paginate={paginate} />

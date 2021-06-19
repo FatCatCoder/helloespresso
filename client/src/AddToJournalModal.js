@@ -23,15 +23,15 @@ function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleM
                 <div className="mb-3">
                     <FormGroup>
                         <label for="bean" className="form-label">Bean</label>
-                        <input value={journalEntry.Bean} onChange={handleModalInputChange} type="text" className="form-control" id="Bean" name="Bean" placeholder="Bean..."></input>
+                        <input value={journalEntry.Bean} onChange={handleModalInputChange} type="text" className="form-control" id="bean" name="bean" placeholder="Bean..."></input>
                     </FormGroup>
                     <FormGroup>
-                        <label for="Region" className="form-label">Region</label>
-                        <input value={journalEntry.Region} onChange={handleModalInputChange} type="text" className="form-control" id="Region" name="Region" aria-describedby="Region" placeholder="Region..."></input>
+                        <label for="region" className="form-label">Region</label>
+                        <input value={journalEntry.Region} onChange={handleModalInputChange} type="text" className="form-control" id="region" name="region" aria-describedby="Region" placeholder="Region..."></input>
                     </FormGroup>
                     <FormGroup>
-                        <label for="Roaster" className="form-label">Roaster</label>
-                        <input value={journalEntry.Roaster} onChange={handleModalInputChange} type="text" className="form-control" id="Roaster" name="Roaster" aria-describedby="Roaster" placeholder="Roaster..."></input>
+                        <label for="roaster" className="form-label">Roaster</label>
+                        <input value={journalEntry.Roaster} onChange={handleModalInputChange} type="text" className="form-control" id="roaster" name="roaster" aria-describedby="Roaster" placeholder="Roaster..."></input>
                     </FormGroup>
                 </div> 
           

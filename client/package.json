@@ -32,9 +32,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dbServer": "json-server --watch --port 5001 db.json",
-    "dbServerHome": "json-server --watch --host 10.0.0.41 --port 5001 db.json",
-    "dbServerOther": "json-server --watch --host 10.0.0.251 --port 5001 db.json",
+    "dbServer": "json-server --watch --port 5000 db.json",
+    "dbServerHome": "json-server --watch --host 10.0.0.41 --port 5000 db.json",
+    "dbServerOther": "json-server --watch --host 10.0.0.251 --port 5000 db.json",
     "dev": "concurrently --kill-others \"npm run dbServer\" \"npm run start\"",
     "devHome": "concurrently --kill-others \"npm run dbServerHome\" \"npm run start\"",
     "devOther": "concurrently --kill-others \"npm run dbServerOther\" \"npm run start\""
@@ -57,5 +57,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://10.0.0.251:5001"
+  "proxy": "http://10.0.0.251:5000"
 }

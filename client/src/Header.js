@@ -26,11 +26,14 @@ function Header({currPage, setCurrPage}){
         <div id="header" className="border-bottom pb-1">
         <div className="container-xl">
           <Link to={"/"}>
-          <img alt="altLogoImg" onClick={handleNav} name={'/'} className="img-fluid d-block mx-auto w-15" src="Logo.png" />
+          <img alt="altLogoImg" onClick={handleNav} name={'/'} className="img-fluid d-block mx-auto w-15" src={process.env.PUBLIC_URL + 'Logo.png'} />
           </Link>
         </div>
 
-        <h1 className="text-center">hello coffee</h1>      
+        
+        <h1 className="text-center">hello coffee</h1>
+
+        
       </div>
 
       <Navbar currPage={currPage} setCurrPage={setCurrPage} handleNav={handleNav}/>

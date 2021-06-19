@@ -14,13 +14,16 @@ import {
     Route,
     Link,
     useRouteMatch,
-    useParams
+    useLocation,
+    useParams,
+    Redirect
   } from "react-router-dom";
 
 
 
-function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot, todaysDate}){
+function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot, todaysDate, isAuth}){
     const history = useHistory();
+    let location = useLocation();
 
     // for pagination
     const [myRecipes, setMyRecipes] = useState([]);
@@ -28,17 +31,17 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     const [recipesPerPage, setRecipesPerPage] = useState(8);
 
     const schema = yup.object().shape({
-        Grinder: yup.string().required(),
-        Machine: yup.string().required(),
-        Notes: yup.string().required(),
-        UserNotes: yup.date()
+        grinder: yup.string().required(),
+        machine: yup.string().required(),
+        tastingNotes: yup.string().required(),
+        notes: yup.date()
     })
 
     const schemaData = {
-        Grinder: newShot.Grinder,
-        Machine: newShot.Machine,
-        Notes: newShot.Notes,
-        UserNotes: newShot.UserNotes
+        grinder: newShot.grinder,
+        Machine: newShot.machine,
+        tastingNotes: newShot.tastingNotes,
+        notes: newShot.notes
     }
 
     
@@ -46,8 +49,8 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     const setFormErrors = useShotFormStore(state => state.setFormError);
 
     const setTodate = () => {
-        setNewShot((prevProps) => ({...prevProps, ["DatePosted"]: todaysDate}))
-        console.log(newShot.DatePosted)
+        setNewShot((prevProps) => ({...prevProps, ["postDate"]: todaysDate}))
+        console.log(newShot.postDate)
     }
 
     
@@ -128,16 +131,22 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                     <p>Here for all your espresso brewing needs.</p>
                     <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)}/>
                     <div className="container row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
-                        {currRecipes.map(x => <RecipeCard key={x.id} recipe={x}/>)}
+                        {currRecipes.map((x, y) => <RecipeCard key={x.id} number={y} recipe={x}/>)}
                     </div>
                     <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={myRecipes.length} paginate={paginate} />
                 </Route>
 
-                <Route exact path={`${match.path}/new`}>
+                <Route exact path={`${match.path}/new`} 
+                    render={props => isAuth ? 
+                        (
                     <form onSubmit={handleSubmit} className="mx-auto text-center">
                         <NewRecipe setTodate={setTodate} add={addRecipe} onNewShot={onNewShot} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
                     </form>
-                </Route>
+                    )
+                     : (<Redirect
+                        to="/login"
+                      />)} 
+                />
 
                 <Route path={`${match.path}/:id`}>
                     <RecipePage recipe={myRecipes}/>

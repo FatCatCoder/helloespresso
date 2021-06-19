@@ -19,7 +19,7 @@ router.get('/testdb', async(req, res) => {
 
 router.post('/login', async(req, res) => {
     try {
-        // destructor req.body
+        // destructor req.body 
         const { email, password } = req.body;
 
         // check user existence
@@ -80,9 +80,14 @@ router.get("/verify-auth", jwtValidate({secret: process.env.SECRET, algorithms: 
         console.log('verify-auth good');
         res.json({"verified": true});
     } catch (error) {
+        if (err.name === 'UnauthorizedError') {
         console.log('verify-auth error');
-        console.error(error.message);
-        res.status(500).json({"verified": false});
+        //console.error(error.message);
+        res.status(401).json({"verified": false});
+        }
+        else{
+            res.status(500).json({"verified": false})
+        }
     }
 })
 

@@ -23,8 +23,8 @@ function ShotFormPageThree({newShot, handleInputChange, handleSubmit, setStep, h
                 <label className="btn btn-outline-primary" for="btnradio5">Missing?</label>
 
                 <div className="row">
-                    <label for="Notes" className="form-label">Notes</label><br />
-                    <textarea className="shadow border form-control" value={newShot.Notes} onChange={handleInputChange} type="text" id="Notes" name="Notes" placeholder="Notes..." /><br />
+                    <label for="notes" className="form-label">Notes</label><br />
+                    <textarea className="shadow border form-control" value={newShot.notes} onChange={handleInputChange} type="text" id="notes" name="notes" placeholder="Notes..." /><br />
                 </div>
             </div>
 

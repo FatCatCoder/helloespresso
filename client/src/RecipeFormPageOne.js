@@ -1,21 +1,44 @@
 import useShotFormStore from './store.js';
 
+
 function RecipeFormPageOne({newShot, handleInputChange, handleSubmit, setStep, nextStep}){
     const formErrors = useShotFormStore(state => state.formError);
 
     return(
         <>
-            <label for="Bean">Bean</label><br />
-            <input className="shadow border" value={newShot.Bean} onChange={handleInputChange} type="text" id="Bean" name="Bean" placeholder="Name/Origin..." /><br />
+            <label for="bean">Bean</label><br />
+            <input className="shadow border" value={newShot.bean} onChange={handleInputChange} type="text" id="bean" name="bean" placeholder="Name/Origin..." /><br />
 
-            <label for="Roaster">Roaster</label><br />
-            <input className="shadow border" value={newShot.Roaster} onChange={handleInputChange} type="text" id="Roaster" name="Roaster" placeholder="Roaster..." /><br />
+            <label for="roaster">Roaster</label><br />
+            <input className="shadow border" value={newShot.roaster} onChange={handleInputChange} type="text" id="roaster" name="roaster" placeholder="Roaster..." /><br />
 
-            <label for="Region">Region</label><br />
-            <input className="shadow border" value={newShot.Region} onChange={handleInputChange} type="text" id="Region" name="Region" placeholder="Region/Farm..." /><br />
+            <label for="region">Region</label><br />
+            <input className="shadow border" value={newShot.region} onChange={handleInputChange} type="text" id="region" name="region" placeholder="Region/Farm..." /><br />
 
-            <label for="Date">Date</label><br />
-            <input className="shadow border" value={newShot.Date} onChange={handleInputChange} type="date" id="Date" name="Date" placeholder="dd/mm/yy..." /><br />
+            <label for="roastDate">Roasted</label><br />
+            <input className="shadow border p-1" value={newShot.roastDate} onChange={handleInputChange} type="date" id="roastDate" name="roastDate" placeholder="dd/mm/yy..." /><br />
+
+            <div className="container col-10 col-xl-3 mx-auto row">
+            <div className="col-6">
+            <label className="" for="roast">Roast</label>
+            <select className="shadow border" id="roast" name="roast" value={newShot.roast} onChange={handleInputChange}>
+                <option value="" selected></option>
+                <option value="Light">Light</option>
+                <option value="Medium">Medium</option>
+                <option value="Dark">Dark</option>
+            </select><br/>
+            </div>
+
+            <div className="col-6">
+            <label className="" for="process">Process</label>
+            <select className="shadow border" id="process" name="process" value={newShot.process} onChange={handleInputChange}>
+                <option value="" selected></option>
+                <option value="Washed">Washed</option>
+                <option value="Natural">Natural</option>
+                <option value="Honey">Honey</option>
+            </select><br/>
+            </div>
+        </div>
 
             <button className="btn btn-primary m-2" type="button" onClick={() => nextStep(1)}>next</button>
             {formErrors.keys() !== 0 ? formErrors.map(x => <p className="text-danger fs-6">{x}</p>): null}

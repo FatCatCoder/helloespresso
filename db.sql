@@ -102,9 +102,14 @@ CREATE TABLE recipes (
   PRIMARY KEY (id)
 );
 
+ALTER TABLE recipes
+ADD COLUMN process TEXT NOT NULL;
+
 /* 
 
-INSERT INTO recipes(user_id, bean, region, roaster, roastDate, dose, yield, time, grind, grinder, machine, tastingNotes, notes, roast) VALUES((SELECT id FROM users WHERE name='FatCat'), 'panama', 'hana', 'Bandit', '2021-06-09', '18', '38', '28.5', '4', 'smart grinder pro', 'gaggia classic', 'sour', 'a decent brew', 'medium');
+INSERT INTO recipes(user_id, bean, region, roaster, roastDate, dose, yield, time, grind, grinder, machine, tastingNotes, notes, roast, process) VALUES((SELECT id FROM users WHERE name='FatCat'), 'panama', 'hana', 'Bandit', '2021-06-09', '18', '38', '28.5', '4', 'smart grinder pro', 'gaggia classic', 'sour', 'a decent brew', 'medium', 'natural');
+
+INSERT INTO recipes(user_id, bean, region, roaster, roastDate, dose, yield, time, grind, grinder, machine, tastingNotes, notes, roast, process) VALUES((SELECT id FROM users WHERE name='FatCat'), 'ethiopia', 'Agaro', 'Buddy Brew', '2021-06-09', '18', '38', '28.5', '4', 'smart grinder pro', 'gaggia classic', 'sour', 'a decent brew', 'medium', 'natural');
 
 */
 

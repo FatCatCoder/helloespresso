@@ -14,12 +14,12 @@ app.use(express.urlencoded({extended: false}));
 app.use(cors());
 
 // simple invalid JWT handling 
-/*
+
 app.use(function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
-      res.status(401).send('invalid token...');
+      res.status(401).json({"verified": false});
     }
-  });*/
+  });
 
 
 // check production or dev env
@@ -29,6 +29,8 @@ if (process.env.NODE_ENV === "production"){
 
 // routes
 app.use("/", require("./server/routes/jwtAuth"));
+
+app.use("/recipes", require("./server/api/recipes"));
 
 /*
 app.get("*", (req, res) => {

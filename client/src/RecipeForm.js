@@ -12,44 +12,44 @@ function RecipeForm({newShot, handleInputChange, handleSubmit, handleCheckboxCha
     const [step, setStep] = useState(0);
 
     const schemaBean = yup.object().shape({
-        Bean: yup.string().required(),
-        Roaster: yup.string().required(),
-        Region: yup.string().required(),
-        Date: yup.date()
+        bean: yup.string().required(),
+        roaster: yup.string().required(),
+        region: yup.string().required(),
+        roastDate: yup.date()
     })
     const schemaBeanData = {
-        Bean: newShot.Bean,
-        Roaster: newShot.Roaster,
-        Region: newShot.Region,
-        Date: newShot.Date
+        bean: newShot.bean,
+        roaster: newShot.roaster,
+        region: newShot.region,
+        roastDate: newShot.roastDate
     }
 
     const schemaDose = yup.object().shape({
-        Dose: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Dose is not a reasonable number"),
-        Yield: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Yield is not a reasonable number"),
-        Time: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Time is not a reasonable number"),
-        Grind: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Grind is not a reasonable number"),
+        dose: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Dose is not a reasonable number"),
+        yield: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Yield is not a reasonable number"),
+        time: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Time is not a reasonable number"),
+        grind: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Grind is not a reasonable number"),
       })
 
       const schemaDoseData = {
-        Dose: newShot.Dose,
-        Yield: newShot.Yield,
-        Time: newShot.Time,
-        Grind: newShot.Grind
+        dose: newShot.dose,
+        yield: newShot.yield,
+        time: newShot.time,
+        grind: newShot.grind
     }
 
       const schemaOther = yup.object().shape({
-        Grinder: yup.string().required(),
-        Machine: yup.string().required(),
-        Notes: yup.string().required(),
-        UserNotes: yup.date()
+        grinder: yup.string().required(),
+        machine: yup.string().required(),
+        tastingNotes: yup.string().required(),
+        notes: yup.date()
     })
 
     const schemaOtherData = {
-        Grinder: newShot.Grinder,
-        Machine: newShot.Machine,
-        Notes: newShot.Notes,
-        UserNotes: newShot.UserNotes
+        grinder: newShot.grinder,
+        machine: newShot.machine,
+        tastingNotes: newShot.tastingNotes,
+        notes: newShot.notes
     }
 
     const formErrors = useShotFormStore(state => state.formError);
