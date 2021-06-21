@@ -25,14 +25,21 @@ function Journal({shotList}){
     const [currPage, setCurrPage] = useState(1);
     const [recipesPerPage, setRecipesPerPage] = useState(8);
 
-
+    const jwtDecode = () => {
+        const token = localStorage.getItem('Authorization');
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
 
     useEffect(() => {
-        const fetchJournalEntries = () => { axios.get('/journal?_sort=id&_order=desc')
-            .then(res =>{
-                const data = res.data;
-                setMyEntries(data.map(x => x))
-            })}
+        const userData = jwtDecode();
+        const fetchJournalEntries = async () => { 
+            const res = await axios.post('/journals', {user_id: userData.user.id});
+            const data = res.data;
+            console.log(data);
+            setMyEntries(data.map(x => x))
+        }
         fetchJournalEntries()
     }, [])
 
@@ -54,7 +61,7 @@ function Journal({shotList}){
                     <h1 className="display-2">Journal</h1>
                     <div className="container">
                         <div class="list-group">
-                            {currRecipes.map((x, y) => <JournalItem key={x.id} id={y+1} Bean={x.bean} Region={x.region} Roaster={x.roaster} Date={x.postDate} /> )}
+                            {currRecipes.map((x, y) => <JournalItem key={x.id} id={x.id} Bean={x.bean} Region={x.region} Roaster={x.roaster} Date={x.postDate} /> )}
                         </div>
                     </div>
                     <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={myEntries.length} paginate={paginate} />

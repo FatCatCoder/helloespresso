@@ -50,6 +50,7 @@ CREATE TABLE journals (
 INSERT INTO Journals(bean, region, roaster, user_id) VALUES('ethiopia', 'agaro', 'buddy brew', (SELECT id FROM Users WHERE name='FatCat'));
 INSERT INTO Journals(bean, region, roaster, user_id) VALUES('burundi', 'mutana', 'buddy brew', (SELECT id FROM Users WHERE name='FatCat'));
 INSERT INTO Journals(bean, region, roaster, user_id) VALUES('kenya', 'yayahayu', 'kuma', (SELECT id FROM Users WHERE name='Dood'));
+INSERT INTO Journals(bean, region, roaster, user_id) VALUES('brazil', 'yumyum', 'heart', (SELECT id FROM Users WHERE name='user'));
 */
 
 

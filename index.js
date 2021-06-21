@@ -32,6 +32,8 @@ app.use("/", require("./server/routes/jwtAuth"));
 
 app.use("/recipes", require("./server/api/recipes"));
 
+app.use("/journals", require("./server/api/journals"));
+
 /*
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "/client/build/index.html"));

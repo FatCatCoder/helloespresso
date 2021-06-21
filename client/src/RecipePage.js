@@ -34,11 +34,8 @@ function RecipePage(props){
             var recipeObj = fetchRecipe();
           }
     }
-    catch(undefined){
+    catch(error){
         console.log('yeah')
-        //var recipeObj = fetchRecipe();
-        //hydrateData();
-        //setrefetch(!refetch);
     }
     //id -= 1;
     /*
