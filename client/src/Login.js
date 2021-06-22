@@ -33,7 +33,6 @@ function Login({setAuth}) {
               localStorage.setItem('Authorization', parseRes);
               setAuth(true);
               history.push(state.location);
-              
             }
 
         } catch (error) {

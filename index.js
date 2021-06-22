@@ -34,6 +34,8 @@ app.use("/recipes", require("./server/api/recipes"));
 
 app.use("/journals", require("./server/api/journals"));
 
+app.use("/shots", require("./server/api/shots"));
+
 /*
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "/client/build/index.html"));

@@ -10,7 +10,7 @@ function About() {
 
       <br></br>
 
-      <div className="container border border-2 p-5">
+      <div className="container col-xl-10 border border-2 p-5">
         <p>
           An espresso recipe and dialing application to help make brewing a
           simplier experience for all.

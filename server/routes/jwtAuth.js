@@ -12,11 +12,6 @@ router.get('/', async(req, res) => {
     res.send('authorized homepage');
 })
 
-router.get('/testdb', async(req, res) => {
-    const testQ = await pool.query("SELECT * from recipes");
-    res.send(testQ.rows[0]);
-})
-
 router.post('/login', async(req, res) => {
     try {
         // destructor req.body 

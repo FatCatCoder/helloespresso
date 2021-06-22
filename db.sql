@@ -30,8 +30,8 @@ CREATE TABLE users (
 
 
 /*
-INSERT INTO Users(name, email, password) VALUES('FatCat', 'fatcat@gmail.com', 'badpass');
-INSERT INTO Users(name, email, password) VALUES('Dood', 'thedood@gmail.com', '1234');
+INSERT INTO users(name, email, password) VALUES('FatCat', 'fatcat@gmail.com', '1234');
+INSERT INTO users(name, email, password) VALUES('Dood', 'thedood@gmail.com', '1234');
 */
 
 CREATE TABLE journals (
@@ -39,18 +39,19 @@ CREATE TABLE journals (
   bean TEXT CONSTRAINT bean_check CHECK (char_length(bean) <= 32) NOT NULL,
   region TEXT CONSTRAINT region_check CHECK (char_length(region) <= 32) NOT NULL,
   roaster TEXT CONSTRAINT name_check CHECK (char_length(roaster) <= 32) NOT NULL,
-  logDate DATE DEFAULT CURRENT_DATE,
-  logTime TIME DEFAULT CURRENT_TIME,
+  postDate DATE DEFAULT CURRENT_DATE,
+  postTime TIME DEFAULT CURRENT_TIME,
   PRIMARY KEY (id),
   user_id uuid NOT NULL,
   CONSTRAINT user_id FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 /*
-INSERT INTO Journals(bean, region, roaster, user_id) VALUES('ethiopia', 'agaro', 'buddy brew', (SELECT id FROM Users WHERE name='FatCat'));
-INSERT INTO Journals(bean, region, roaster, user_id) VALUES('burundi', 'mutana', 'buddy brew', (SELECT id FROM Users WHERE name='FatCat'));
-INSERT INTO Journals(bean, region, roaster, user_id) VALUES('kenya', 'yayahayu', 'kuma', (SELECT id FROM Users WHERE name='Dood'));
-INSERT INTO Journals(bean, region, roaster, user_id) VALUES('brazil', 'yumyum', 'heart', (SELECT id FROM Users WHERE name='user'));
+INSERT INTO journals(bean, region, roaster, user_id) VALUES('ethiopia', 'agaro', 'buddy brew', (SELECT id FROM Users WHERE name='FatCat'));
+INSERT INTO journals(bean, region, roaster, user_id) VALUES('burundi', 'mutana', 'buddy brew', (SELECT id FROM Users WHERE name='FatCat'));
+INSERT INTO journals(bean, region, roaster, user_id) VALUES('kenya', 'yayahayu', 'kuma', (SELECT id FROM Users WHERE name='Dood'));
+INSERT INTO journals(bean, region, roaster, user_id) VALUES('brazil', 'yumyum', 'heart', (SELECT id FROM Users WHERE name='user'));
+INSERT INTO journals(bean, region, roaster, user_id) VALUES('ethiopia', 'goodvalley', 'buddy brew', (SELECT id FROM Users WHERE name='user'));
 */
 
 
@@ -69,16 +70,16 @@ CREATE TABLE shots (
 );
 
 /*
-INSERT INTO Shots(queue, journal_id, dose, yield, time, grind, notes, attribute) 
-VALUES('1', (SELECT id FROM Journals WHERE bean='ethiopia'), 18, 38, 30, 5, 'good', 'balanced');
+INSERT INTO shots(queue, journal_id, dose, yield, time, grind, notes, attribute) 
+VALUES('1', (SELECT id FROM Journals WHERE region='agaro'), 18, 38, 30, 5, 'good', 'balanced');
 
-INSERT INTO Shots(queue, journal_id, dose, yield, time, grind, notes, attribute) 
-VALUES('2', (SELECT id FROM Journals WHERE bean='ethiopia'), 20, 36, 22, 8, 'bad', 'sour');
+INSERT INTO shots(queue, journal_id, dose, yield, time, grind, notes, attribute) 
+VALUES('2', (SELECT id FROM Journals WHERE region='goodvalley'), 20, 36, 22, 8, 'bad', 'sour');
 
-INSERT INTO Shots(queue, journal_id, dose, yield, time, grind, notes, attribute) 
+INSERT INTO shots(queue, journal_id, dose, yield, time, grind, notes, attribute) 
 VALUES('1', (SELECT id FROM Journals WHERE bean='burundi'), 18, 39, 28, 4, 'good', 'balanced');
 
-INSERT INTO Shots(queue, journal_id, dose, yield, time, grind, notes, attribute) 
+INSERT INTO shots(queue, journal_id, dose, yield, time, grind, notes, attribute) 
 VALUES('1', (SELECT id FROM Journals WHERE bean='kenya'), 19, 42, 32, 10, 'good', 'bitter');
 */
 
@@ -100,17 +101,20 @@ CREATE TABLE recipes (
   tastingNotes TEXT CONSTRAINT tastingNotes_check CHECK (char_length(tastingNotes) <= 50) NOT NULL,
   notes TEXT CONSTRAINT notes_check CHECK (char_length(notes) <= 500),
   roast TEXT NOT NULL,
+  process TEXT NOT NULL,
   PRIMARY KEY (id)
 );
 
+/*
 ALTER TABLE recipes
 ADD COLUMN process TEXT NOT NULL;
+*/
 
 /* 
 
 INSERT INTO recipes(user_id, bean, region, roaster, roastDate, dose, yield, time, grind, grinder, machine, tastingNotes, notes, roast, process) VALUES((SELECT id FROM users WHERE name='FatCat'), 'panama', 'hana', 'Bandit', '2021-06-09', '18', '38', '28.5', '4', 'smart grinder pro', 'gaggia classic', 'sour', 'a decent brew', 'medium', 'natural');
 
-INSERT INTO recipes(user_id, bean, region, roaster, roastDate, dose, yield, time, grind, grinder, machine, tastingNotes, notes, roast, process) VALUES((SELECT id FROM users WHERE name='FatCat'), 'ethiopia', 'Agaro', 'Buddy Brew', '2021-06-09', '18', '38', '28.5', '4', 'smart grinder pro', 'gaggia classic', 'sour', 'a decent brew', 'medium', 'natural');
+INSERT INTO recipes(user_id, bean, region, roaster, roastDate, dose, yield, time, grind, grinder, machine, tastingNotes, notes, roast, process) VALUES((SELECT id FROM users WHERE name='user'), 'ethiopia', 'Agaro', 'Buddy Brew', '2021-06-09', '18', '38', '28.5', '4', 'smart grinder pro', 'gaggia classic', 'sour', 'a decent brew', 'medium', 'natural');
 
 */
 
@@ -124,7 +128,7 @@ CREATE TABLE likes (
 
 /*
 
-INSERT INTO likes (user_id, recipe_id) VALUES ((SELECT id FROM users WHERE name='Dood'), (SELECT id FROM recipes WHERE bean='panama'));
+INSERT INTO likes (user_id, recipe_id) VALUES ((SELECT id FROM users WHERE name='user'), (SELECT id FROM recipes WHERE bean='ethiopia'));
 
 /*
 

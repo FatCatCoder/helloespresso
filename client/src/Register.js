@@ -1,7 +1,9 @@
 import {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 function Register({setAuth}) {
+    const history = useHistory();
+    const { state } = useLocation();
 
     const [inputs, setInputs] = useState({
         email: "",
@@ -27,10 +29,13 @@ function Register({setAuth}) {
                 body: JSON.stringify(body)
             });
 
-            const parseRes = await response.json()
-            
-            localStorage.setItem("token", parseRes.token);
-            setAuth(true);
+            const parseRes = response.headers.get('Authorization');
+
+            if (parseRes !== null){
+              localStorage.setItem('Authorization', parseRes);
+              setAuth(true);
+              history.push(state.location);
+            }
 
         } catch (error) {
             console.log(error.message);

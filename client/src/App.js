@@ -25,16 +25,19 @@ function App (){
   const history = useHistory();
   const [currPage, setCurrPage] = useState({[thisPage]: true});
 
+  const [isAuth, setIsAuth] = useState(false);
+  console.log(isAuth)
+
   const isAlreadyAuth = async () => {
     try {
       
       const response = await fetch('/verify-auth', {
         method: "GET",
-        headers: {token: localStorage.token}
+        headers: {Authorization: localStorage.Authorization}
       })
 
+      console.log(response)
       const parseRes = await response.json();
-      console.log(parseRes);
       parseRes.verified === true ? setIsAuth(true): setIsAuth(false);
       console.log(isAuth)
 
@@ -47,8 +50,7 @@ function App (){
     isAlreadyAuth();
   }, [])
   
-  const [isAuth, setIsAuth] = useState(false);
-  console.log(isAuth)
+  
 
   const setAuth = (boolean) => {
     setIsAuth(boolean);
@@ -183,7 +185,7 @@ function App (){
         </Route>
 
         <Route path="/journal"
-          render={props => isAuth ? (<Journal shotList={shotList}/>) : (<Redirect to={{pathname: "/login", state: {location: "/journal"}}} />)}  
+          render={props => isAuth ? (<Journal shotList={shotList} isAuth={isAuth}/>) : (<Redirect to={{pathname: "/login", state: {location: "/journal"}}} />)}  
         />
 
         <Route path="/recipes">

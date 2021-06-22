@@ -1,6 +1,6 @@
 import JournalItemContent from './JournalItemContent.js';
 import JournalItem from './JournalItem.js';
-import {useHistory} from 'react-router-dom';
+import {useHistory, Redirect} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import RecipePagination from './RecipePagination.js';
 import axios from 'axios';
@@ -15,7 +15,7 @@ import {
   } from "react-router-dom";
 
 
-function Journal({shotList}){
+function Journal({shotList, isAuth}){
     const history = useHistory();
     let match = useRouteMatch();
 
@@ -68,7 +68,7 @@ function Journal({shotList}){
                 </Route>
 
 
-                <Route exact path={`${match.path}/:id`}>
+                <Route path={`${match.path}/:id`}>
                     <JournalItemContent myEntries={myEntries}/>
                 </Route>
             </Switch>

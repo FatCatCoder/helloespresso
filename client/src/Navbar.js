@@ -13,7 +13,7 @@ function Navbar({currPage, setCurrPage, handleNav}) {
 
 
     return(
-      <div id="navbar" className="text-center mx-auto d-flex justify-content-center border-bottom col-xl-4 col-lg-4 col-10 col-md-6 pt-2 pb-2">
+      <div id="navbar" className="text-center mx-auto d-flex justify-content-center border-bottom col-xl-3 col-lg-4 col-10 col-md-6 pt-2 pb-2">
           <ul className="nav nav-pills">
             <li className="nav-item">
               <Link className={`nav-link ${currPage['/'] === true ? 'active': ''}`} name={'/'} active={false} aria-current="page" onClick={handleNav} to={"/"}>Pull</Link>
