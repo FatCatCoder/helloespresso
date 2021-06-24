@@ -9,3 +9,9 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+input::placeholder{
+  font-size: 1 em;
+  text-align: right;
+  margin-right: .1em;
+}

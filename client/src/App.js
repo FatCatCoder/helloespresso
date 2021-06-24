@@ -24,10 +24,44 @@ function App (){
   let thisPage = window.location.pathname;
   const history = useHistory();
   const [currPage, setCurrPage] = useState({[thisPage]: true});
+  //const tokenCheck = localStorage.getItem('Authorization') ? true : false;
 
-  const [isAuth, setIsAuth] = useState(false);
+  const startAuth = async () => {
+    try {
+      const response = await fetch('/verify-auth', {
+        method: "GET",
+        headers: {Authorization: localStorage.Authorization}
+      })
+      if(response.status === 401 || response.status === 500){
+        setIsAuth(false);
+      }
+
+      console.log(response)
+      const parseRes = await response.json();
+      console.log(parseRes.verified);
+      parseRes.verified === true ? setIsAuth(true): setIsAuth(false);
+      //return parseRes.verified;
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
+ 
+
+
+  //const [isAuth, setIsAuth] = useState(tokenCheck);
+  const [isAuth, setIsAuth] = useState(null);
   console.log(isAuth)
 
+
+  useEffect(() => {
+    startAuth();
+  }, [])
+ 
+  console.log(isAuth)
+  
+
+  /*
   const isAlreadyAuth = async () => {
     try {
       
@@ -49,7 +83,7 @@ function App (){
   useEffect(() => {
     isAlreadyAuth();
   }, [])
-  
+  */
   
 
   const setAuth = (boolean) => {
@@ -172,7 +206,8 @@ function App (){
   
 
   return (
-    
+    <>
+    {isAuth !== null ?
     <Router>
       <ScrollToTop />
     <div className="App">
@@ -180,36 +215,53 @@ function App (){
 
       <Switch>
         <Route exact path="/">
-          <Body  pullValidation={pullValidation} onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} step={step} setStep={setStep} />
+          <Body pullValidation={pullValidation} onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} step={step} setStep={setStep} />
           <Footer shotList={shotList} setShotList={setShotList} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry}  />
         </Route>
 
         <Route path="/journal"
           render={props => isAuth ? (<Journal shotList={shotList} isAuth={isAuth}/>) : (<Redirect to={{pathname: "/login", state: {location: "/journal"}}} />)}  
         />
+        
+        {/*
+        <Route path="/journal">
+          <Journal shotList={shotList} isAuth={isAuth}/>
+        </Route>
+        */}
 
         <Route path="/recipes">
           <Recipes isAuth={isAuth} onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} todaysDate={todaysDate} />
         </Route>
 
         <Route path="/about">
-          <About />
+          <About setIsAuth={setIsAuth}/>
         </Route>
 
         <Route path="/login"
-          render={({location}) => isAuth ? (<Redirect to={'/'} />) : (<Login setAuth={setAuth} />)} 
+          render={({location}) => isAuth ? (<Redirect to={'/'} />) : (<Login setAuth={setAuth} setCurrPage={setCurrPage} currPage={currPage} />)} 
         />
 
         <Route path="/register"
           render={props => isAuth ? (null) : (<Register setAuth={setAuth} />)}
-          
+        />
+
+        <Route path="/loading" render={() => 
+          <div class="spinner-grow position-absolute top-50 start-50" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          } 
         />
       </Switch>
       
       
     </div>
     </Router>
-    
+    :
+    <div class="spinner-grow position-absolute top-50 start-50" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    }
+    </>
   );
 }
 

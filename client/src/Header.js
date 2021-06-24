@@ -43,7 +43,7 @@ function Header({currPage, setCurrPage}){
 
         
         <h1 className="text-center">hello coffee</h1>
-
+        
         
       </div>
 

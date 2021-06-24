@@ -1,11 +1,20 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 
-function Login({setAuth}) {
+function Login({setAuth, setCurrPage, currPage}) {
     const history = useHistory();
     const { state } = useLocation();
 
-    console.log(state.location);
+    useEffect(() => {
+        console.log(state.location);
+        setCurrPage(state.location)
+        console.log(currPage);
+    }, [state])
+    
+    
+    //console.log(state.location);
+    //console.log(currPage);
+
     const [inputs, setInputs] = useState({
         email: "",
         password: ""

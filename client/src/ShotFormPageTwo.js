@@ -1,12 +1,12 @@
 
 
-function ShotFormPageThree({newShot, handleInputChange, handleSubmit, setStep, handleCheckboxChange}){
+function ShotFormPageTwo({newShot, handleInputChange, handleSubmit, setStep, handleCheckboxChange}){
 
     return(
         <div className="container col-10 col-xl-6 mx-auto text-center d-block">
             <h3 className="text-center">Was it?</h3>
 
-            <div className="btn-group col-10 col-xl-6 text-center flex-wrap mx-auto d-flex justify-content-center" role="group" aria-label="Basic radio toggle button group">
+            <div className="btn-group col-10 col-sm-8 col-md-4 col-lg-4 col-xl-4 text-center flex-wrap mx-auto d-flex justify-content-center" role="group" aria-label="Basic radio toggle button group">
                 <input type="checkbox" value={'true'} onChange={handleCheckboxChange} className="btn-check" name="Sour" id="btnradio1" autocomplete="off" />
                 <label className="btn btn-outline-primary" for="btnradio1">Sour</label>
 
@@ -35,4 +35,4 @@ function ShotFormPageThree({newShot, handleInputChange, handleSubmit, setStep, h
     )
 }
 
-export default ShotFormPageThree;
+export default ShotFormPageTwo;

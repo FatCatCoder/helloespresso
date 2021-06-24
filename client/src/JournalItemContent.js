@@ -8,11 +8,8 @@ function JournalItemContent({myEntries}){
    
     const [shotLog, setShotLog] = useState([]); 
     const myEntry = myEntries.find(x => x.id === id);
-
-    useEffect(() => {
-        fetchShots();
-    }, [])
-
+    console.log(myEntry)
+    
     const fetchShots = async () => {
         console.log('fetchshots', id) 
         const res = await axios.post('/shots', {journal_id: id});
@@ -23,14 +20,26 @@ function JournalItemContent({myEntries}){
         setShotLog(data);
     }
 
+    console.log(shotLog, myEntry);
+
+    useEffect(() => {
+        fetchShots();
+    }, [])
+
+
     var pulls = shotLog.map((pull, index) =>
             <Shot key={index} listNum={index+1} dose={pull.dose} time={pull.time} yield={pull.yield} grind={pull.grind} roaster={pull.roaster} bean={pull.bean} notes={pull.notes} Sour={pull.Sour} Bitter={pull.Bitter} Weak={pull.Weak} Balanced={pull.Balanced} Strong={pull.Strong} /> 
         );
 
+    try{
+    var datePosted = new Date(myEntry.postdate).toLocaleDateString();
+    }
+    catch(err){}
+
     return(
         <div className="container text-center pb-5">
-            <h1 className="display-4">{myEntry.bean} ({myEntry.region}) - {myEntry.roaster}</h1>
-            <h3 className="fs-4 fw-light text-muted">logged on: {myEntry.postDate}</h3>
+            <h1 className="display-4 text-capitalize">{myEntry !== undefined ? myEntry.bean: 'bean'} ({myEntry !== undefined ? myEntry.region: 'region'}) - {myEntry !== undefined ? myEntry.roaster: 'roaster'}</h1>
+            <h3 className="fs-4 fw-light text-muted text-capitalize">logged on: {myEntry !== undefined ? datePosted: 'postdate'}</h3>
             <div className="container">
                 {pulls}
             </div>

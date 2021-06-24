@@ -3,14 +3,76 @@ const pool = require('../../db');
 const argon2 = require('argon2');
 const jwtGenerator = require('../utils/jwtGenerator');
 const jwtValidate = require('express-jwt');
+const jwt = require('jsonwebtoken');
+
+const redis = require("redis");
+const redisClient = redis.createClient();
+
 require('dotenv').config({ path: '../../.env' })
 
 
-// routes
+// --- middleware --- //
 
-router.get('/', async(req, res) => {
-    res.send('authorized homepage');
+// blacklist middleware
+function blacklistCheck(req, res, next){
+    const token = req.headers.authorization;
+    const tokenSplit = token.split(' ');
+    try{
+    const decoded = jwt.verify(tokenSplit[1], process.env.SECRET);
+    }
+    catch(err){
+        if (err.name == 'TokenExpiredError') {
+            console.log('Blacklist Jwt auth error');
+            //console.error(error.message);
+            res.status(401).json({"verified": false});
+            }
+            else{
+                res.status(500);
+            }
+    }
+    //const decoded = jwtValidate({getToken: tokenSplit[1], secret: process.env.SECRET, algorithms: ['HS256']})
+
+    redisClient.get(tokenSplit[1], (error, data) => {
+        if(error){
+            return res.status(403).send({ error });
+        }
+        else if(data){
+            console.log('you are blacklisted', data)
+            return res.status(403).send({ error });
+        }
+        else if(!data){
+            return next();
+        }
+        
+    });
+}
+
+
+// --- routes --- //
+
+// logout
+router.post('/logout', (req, res) => {
+    // get token and get user id
+    //const token = req.headers.authorization;
+    const {token} = req.body;
+    console.log(token)
+    const tokenSplit = token.split(' ');
+    const decoded = jwt.verify(tokenSplit[1], process.env.SECRET);
+    //const decoded = jwtValidate({getToken: token, secret: process.env.SECRET, algorithms: ['HS256']})
+    console.log(decoded, decoded.user)
+    const EXP = decoded.exp - Math.floor(new Date().getTime()/1000.0)
+
+    redisClient.setex(tokenSplit[1], EXP, decoded.user.id, (error, data) => {
+        if(error){
+            console.log(error, data);
+            res.send({error});
+        }
+    })
+
+    res.json({"message": "logged out"});
 })
+
+// login
 
 router.post('/login', async(req, res) => {
     try {
@@ -44,6 +106,7 @@ router.post('/login', async(req, res) => {
     }
 })
 
+// register
 router.post('/register', async(req, res) => {
     try {
         // destructor req.body
@@ -69,21 +132,42 @@ router.post('/register', async(req, res) => {
         res.status(500).send("server error");  
     }
 })
-// jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']})
-router.get("/verify-auth", jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
+
+// verify Jwt auth
+router.get("/verify-auth", blacklistCheck, jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
     try {
         console.log('verify-auth good');
         res.json({"verified": true});
     } catch (error) {
-        if (err.name === 'UnauthorizedError') {
+        if (err.name === 'UnauthorizedError'|| error.name === 'UnauthorizedError' ) {
         console.log('verify-auth error');
         //console.error(error.message);
         res.status(401).json({"verified": false});
         }
+        else if (err.name == 'TokenExpiredError'|| error.name == 'TokenExpiredError' ) {
+            console.log('verify-auth error');
+            //console.error(error.message);
+            res.status(401).json({"verified": false});
+            }
         else{
+            console.log('Verfiy Auth 500 Bad', error.message)
             res.status(500).json({"verified": false})
         }
     }
+})
+
+// get TTL on redis key
+
+router.get('/ttl', (req, res) => {
+    //const token = req.headers.authorization;
+    const {token} = req.body;
+    const tokenSplit = token.split(' ');
+    const decoded = jwt.verify(tokenSplit[1], process.env.SECRET);
+
+    redisClient.ttl(tokenSplit[1], (err, reply) =>{
+        console.log(reply);
+        res.send(reply)
+    });
 })
 
 

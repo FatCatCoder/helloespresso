@@ -5,6 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 function Navbar({currPage, setCurrPage, handleNav}) {
     const history = useHistory();
     let thisPage = window.location.pathname;
+    console.log(currPage);
     
     
 
@@ -19,7 +20,7 @@ function Navbar({currPage, setCurrPage, handleNav}) {
               <Link className={`nav-link ${currPage['/'] === true ? 'active': ''}`} name={'/'} active={false} aria-current="page" onClick={handleNav} to={"/"}>Pull</Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${/(journal)/.test(thisPage) === true  ? 'active': ''}`} name={'/journal'} active={false} onClick={handleNav} to={"/journal"}>Journal</Link>
+              <Link className={`nav-link ${/(journal)/.test(thisPage) || /(journal)/.test(currPage) === true  ? 'active': ''}`} name={'/journal'} active={false} onClick={handleNav} to={"/journal"}>Journal</Link>
             </li>
             <li className="nav-item">
               <Link className={`nav-link ${/(recipes)/.test(thisPage) === true ? 'active': ''}`} name={'/recipes'} active={false} onClick={handleNav} to={"/recipes"}>Recipes</Link>
