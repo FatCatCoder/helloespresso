@@ -21,7 +21,7 @@ import {
 
 
 
-function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot, todaysDate, isAuth}){
+function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot, isAuth}){
     const history = useHistory();
     let location = useLocation();
 
@@ -34,12 +34,12 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
         grinder: yup.string().required(),
         machine: yup.string().required(),
         tastingNotes: yup.string().required(),
-        notes: yup.date()
+        notes: yup.string()
     })
 
     const schemaData = {
         grinder: newShot.grinder,
-        Machine: newShot.machine,
+        machine: newShot.machine,
         tastingNotes: newShot.tastingNotes,
         notes: newShot.notes
     }
@@ -48,17 +48,19 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     const formErrors = useShotFormStore(state => state.formError);
     const setFormErrors = useShotFormStore(state => state.setFormError);
 
+    /*
     const setTodate = () => {
         setNewShot((prevProps) => ({...prevProps, ["postDate"]: todaysDate}))
         console.log(newShot.postDate)
     }
+    */
 
     
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         
-        await setTodate();
+        //await setTodate();
 
         schema.validate(schemaData, { abortEarly: false })
             .then(() => {
@@ -79,7 +81,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     }
     
     const addRecipe = async (recipe) => {
-        const res = await fetch('/recipes', {
+        const res = await fetch('/recipes/new', {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -136,16 +138,14 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                     <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={myRecipes.length} paginate={paginate} />
                 </Route>
 
-                <Route exact path={`${match.path}/new`} 
+                <Route exact path={`/recipes/new`} 
                     render={props => isAuth ? 
                         (
                     <form onSubmit={handleSubmit} className="mx-auto text-center">
-                        <NewRecipe setTodate={setTodate} add={addRecipe} onNewShot={onNewShot} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+                        <NewRecipe add={addRecipe} onNewShot={onNewShot} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
                     </form>
                     )
-                     : (<Redirect
-                        to="/login"
-                      />)} 
+                     : (<Redirect to={{pathname: "/login", state: {location: "/recipes", going: '/recipes/new'}}} />)} 
                 />
 
                 <Route path={`${match.path}/:id`}>

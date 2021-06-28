@@ -10,7 +10,7 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-input::placeholder{
+.placeholder-right::placeholder{
   font-size: 1 em;
   text-align: right;
   margin-right: .1em;

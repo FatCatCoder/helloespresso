@@ -1,7 +1,7 @@
 import useShotFormStore from './store.js';
 
 
-function RecipeFormPageThree({newShot, handleInputChange, handleSubmit, setStep, setTodate}){
+function RecipeFormPageThree({newShot, handleInputChange, handleSubmit, setStep}){
     const formErrors = useShotFormStore(state => state.formError);
 
     return(
@@ -26,7 +26,7 @@ function RecipeFormPageThree({newShot, handleInputChange, handleSubmit, setStep,
         
 
         <button className="btn btn-primary m-2" type="button" onClick={() => setStep(1)}>back</button>
-        <button className="btn btn-primary" type="submit" onClick={() => setTodate()}>Add Recipe!</button>
+        <button className="btn btn-primary" type="submit">Add Recipe!</button>
         {formErrors.keys() !== 0 ? formErrors.map(x => <p className="text-danger fs-6">{x}</p>): null}
                    
         </>

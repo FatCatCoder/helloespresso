@@ -17,12 +17,13 @@ function About({setIsAuth}) {
 
   return (
     <div className="container text-center">
+      {/*<h1> and <p> used to be out here */}
+
+      <div className="container col-xl-10 border border-2 pb-5">
       <h1 className="display-2">About</h1>
       <p>Here for all your espresso brewing needs.</p>
 
       <br></br>
-
-      <div className="container col-xl-10 border border-2 p-5">
         <p>
           An espresso recipe and dialing application to help make brewing a
           simpler experience for all.

@@ -7,7 +7,7 @@ function NewRecipe(props){
         <div className="container text-center">
             <h1 className="display-2">New Recipe</h1>
             <div>
-            <RecipeForm setTodate={props.setTodate} newShot={props.newShot} handleSubmit={props.handleSubmit} handleInputChange={props.handleInputChange}
+            <RecipeForm newShot={props.newShot} handleSubmit={props.handleSubmit} handleInputChange={props.handleInputChange}
             handleCheckboxChange={props.handleCheckboxChange} setStep={props.setStep} step={props.step} />
             </div>
         </div>

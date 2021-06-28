@@ -8,7 +8,7 @@ import { regex } from 'badwords-list';
 var badwords = require('badwords-list');
 
 
-function RecipeForm({newShot, handleInputChange, handleSubmit, handleCheckboxChange, setTodate}){
+function RecipeForm({newShot, handleInputChange, handleSubmit, handleCheckboxChange}){
     const [step, setStep] = useState(0);
 
     const schemaBean = yup.object().shape({
@@ -42,7 +42,7 @@ function RecipeForm({newShot, handleInputChange, handleSubmit, handleCheckboxCha
         grinder: yup.string().required(),
         machine: yup.string().required(),
         tastingNotes: yup.string().required(),
-        notes: yup.date()
+        notes: yup.string()
     })
 
     const schemaOtherData = {
@@ -99,7 +99,7 @@ function RecipeForm({newShot, handleInputChange, handleSubmit, handleCheckboxCha
             case 1:
                 return <RecipeFormPageTwo nextStep={nextStep} newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} setStep={setStep} step={step}/>;
             case 2:
-                return <RecipeFormPageThree setTodate={setTodate} newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} handleCheckboxChange={handleCheckboxChange} setStep={setStep} step={step}/>;
+                return <RecipeFormPageThree newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} handleCheckboxChange={handleCheckboxChange} setStep={setStep} step={step}/>;
             default:
                 console.log('error on loading wizrd form page, step not submitted');
     };

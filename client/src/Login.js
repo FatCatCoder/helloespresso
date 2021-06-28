@@ -3,7 +3,8 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 
 function Login({setAuth, setCurrPage, currPage}) {
     const history = useHistory();
-    const { state } = useLocation();
+    var { state } = useLocation();
+    console.log(state.location);
 
     useEffect(() => {
         console.log(state.location);
@@ -41,7 +42,7 @@ function Login({setAuth, setCurrPage, currPage}) {
             if (parseRes !== null){
               localStorage.setItem('Authorization', parseRes);
               setAuth(true);
-              history.push(state.location);
+              history.push(state.going);
             }
 
         } catch (error) {

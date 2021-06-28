@@ -238,7 +238,7 @@ function App (){
         </Route>
 
         <Route path="/login"
-          render={({location}) => isAuth ? (<Redirect to={'/'} />) : (<Login setAuth={setAuth} setCurrPage={setCurrPage} currPage={currPage} />)} 
+          render={({location}) => isAuth ? (<Redirect to={{pathname: "/", state: {location: thisPage}}} />) : (<Login setAuth={setAuth} setCurrPage={setCurrPage} currPage={currPage} />)} 
         />
 
         <Route path="/register"
