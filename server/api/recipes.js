@@ -31,9 +31,9 @@ router.post('/new', async (req,res) => {
         const recipe = req.body;
         console.log(recipe);
 
-        const addRecipe = await pool.query("INSERT INTO recipes() VALUES()", [id]);
+        const addRecipe = await pool.query("INSERT INTO recipes(user_id, bean, region, roaster, roastDate, dose, yield, time, grind, grinder, machine, tastingNotes, notes, roast, process) VALUES(recipe.userId, recipe.bean, recipe.region, recipe.roaster, recipe.roastDate, recipe.dose, recipe.yield, recipe.time, recipe.grind, recipe.grinder, recipe.machine, recipe.tastingNotes, recipe.notes, recipe.roast, recipe.process) RETURNING *", []);
 
-        res.send(recipe);
+        res.send(addRecipe);
     } catch (error) {
         console.log(error)
         res.status(500);

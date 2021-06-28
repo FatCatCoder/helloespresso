@@ -2,7 +2,7 @@ import RecipeFormPageOne from './RecipeFormPageOne.js';
 import RecipeFormPageTwo from './RecipeFormPageTwo.js';
 import RecipeFormPageThree from './RecipeFormPageThree.js';
 import React, { useState, useEffect } from 'react';
-import useShotFormStore from './store.js';
+import {useShotFormStore} from './store.js';
 import * as yup from 'yup';
 import { regex } from 'badwords-list';
 var badwords = require('badwords-list');

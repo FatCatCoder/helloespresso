@@ -1,4 +1,4 @@
-import useShotFormStore from './store.js';
+import {useShotFormStore} from './store.js';
 import './ShotFormPageOne.css';
 
 function RecipeFormPageTwo({newShot, handleInputChange, handleSubmit, setStep, nextStep}){

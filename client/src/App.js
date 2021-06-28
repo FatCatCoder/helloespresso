@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import {BrowserRouter as Router, Route, Switch, useHistory, Redirect, useLocation } from 'react-router-dom';
 import * as yup from 'yup';
-import useShotFormStore from './store.js';
+import {useShotFormStore} from './store.js';
 
 
 // components

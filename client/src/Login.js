@@ -16,6 +16,13 @@ function Login({setAuth, setCurrPage, currPage}) {
     //console.log(state.location);
     //console.log(currPage);
 
+    const jwtDecode = () => {
+        const token = localStorage.getItem('Authorization');
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64)).user.id;
+    }
+
     const [inputs, setInputs] = useState({
         email: "",
         password: ""
@@ -43,7 +50,7 @@ function Login({setAuth, setCurrPage, currPage}) {
               localStorage.setItem('Authorization', parseRes);
               setAuth(true);
               history.push(state.going);
-            }
+            } 
 
         } catch (error) {
             console.log(error.message)
@@ -56,7 +63,8 @@ function Login({setAuth, setCurrPage, currPage}) {
         <div className="container text-center">
             <h1 className="display-2">Login</h1>
             <form onSubmit={onSubmitForm} className="container mx-auto col-8 col-xl-5">
-                <input type="text" name="email" placeholder="email" value={email} onChange={e => onchange(e)} className="form-control my-3" pattern="\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b" required/>
+                <input type="text" name="email" placeholder="username or email" value={email} onChange={e => onchange(e)} className="form-control my-3" />
+                {/*pattern="\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b" required*/}
                 <input type="password" name="password" placeholder="password" value={password} onChange={e => onchange(e)} className="form-control my-3" required/>
                 <button className="btn btn-secondary" type="submit">Log In</button>
                 <Link to="/register"><button className="btn btn-secondary m-2" type="button">Register</button></Link>

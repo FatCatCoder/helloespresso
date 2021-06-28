@@ -5,7 +5,7 @@ import RecipeCard from './RecipeCard.js';
 import RecipePage from './RecipePage.js';
 import NewRecipe from './NewRecipe.js';
 import RecipePagination from './RecipePagination.js';
-import useShotFormStore from './store.js';
+import {useShotFormStore, globalStore} from './store.js';
 import * as yup from 'yup';
 
 import {
@@ -79,8 +79,19 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
             })
         
     }
+
+    const jwtDecode = () => {
+        const token = localStorage.getItem('Authorization');
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64)).user.id;
+    }
+
+    const getUserId = globalStore(state => state.getUserIdFromJWT)
     
     const addRecipe = async (recipe) => {
+        recipe["userId"] = await getUserId();
+        
         const res = await fetch('/recipes/new', {
             method: 'POST',
             mode: 'cors',
@@ -95,6 +106,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
 
         console.log(res, data);
         setMyRecipes([...myRecipes, data])
+        setNewShot({});
     }
 
     
