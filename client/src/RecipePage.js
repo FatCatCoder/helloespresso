@@ -1,23 +1,14 @@
 import { useParams } from "react-router";
 import {useEffect, useState} from 'react';
+import {globalStore} from './store';
 // .split('-').reverse().join('/')
 
 function RecipePage(props){
     var [refetch, setrefetch] = useState(false);
+    const [liked, setLiked] = useState(false);
+
     let {id} = useParams();
     console.log(id)
-/*
-    useEffect(() => {
-        hydrateData();
-    }, [refetch]);
-    */
-
-      const hydrateData = async () => {
-        var recipeObj = await fetchRecipe();
-          console.log(recipeObj);
-           
-        
-      }
       
       const fetchRecipe = async () => {
         const res = await fetch(`/recipes/${id}`)
@@ -25,6 +16,8 @@ function RecipePage(props){
         console.log('fetchRecipes data', data)
         return data
     }
+
+    
 
     
     try{
@@ -37,24 +30,53 @@ function RecipePage(props){
     catch(error){
         console.log('yeah')
     }
-    //id -= 1;
-    /*
-    try{
-        var dateRoasted = props.recipe[id].roastdate.split('-').reverse().join('-');
-        var datePosted = props.recipe[id].postdate.split('-').reverse().join('-');
-        console.log(dateRoasted, datePosted)
-    }
-    catch (error){
-        var dateRoasted = props.recipe[id].roastdate
-        var datePosted = props.recipe[id].postdate
-    }
-    */
 
+
+    const user_id = globalStore(state => state.getUserIdFromJWT);
+
+
+    // get initial isliked from server
+    const fetchLiked = async () => {
+        const res = await fetch('/recipes/liked', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"recipe_id" : recipeObj.id, "user_id": user_id() })
+        })
+        const data = await res.json()
+        console.log(data, res)
+        
+        setLiked(data.bool)
+    }
+
+    // toggle like/ unlike on server and updates with json returned bool
+    const bussinButton = async () => {
+        const res = await fetch('/recipes/like', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"recipe_id" : recipeObj.id, "user_id": user_id() })
+        })
+        const data = await res.json()
+        console.log(data, res)
+        
+        setLiked(data.bool)
+    }
+
+    
+
+    // checks if is liked
+    useEffect(() => {
+        fetchLiked();
+    });
+
+    console.log(liked);
+
+    // convert ISO date to Locale Date
     var dateRoasted = new Date(recipeObj.roastdate).toLocaleDateString();
     var datePosted = new Date(recipeObj.postdate).toLocaleDateString();
-
-
-    //console.log('prop data: ', props.recipe[id], 'name:', props.recipe[id].Bean, 'id:', props.recipe[id].id, 'typeof:', typeof(props.recipe));
     
     return(
         <div className="container text-center mb-3">
@@ -77,7 +99,7 @@ function RecipePage(props){
                 </div>
             </div>
 
-            <button type="button" class="btn btn-outline-danger" data-bs-toggle="button" aria-pressed="false">
+            <button type="button" class={`btn btn-outline-danger ${liked === true ? 'active': ''}`} onClick={() => bussinButton()} data-bs-toggle="button" aria-pressed="false">
                 <i class="bi bi-heart-fill">Bussin' Button</i>     
             </button> 
             

@@ -7,7 +7,7 @@ const generateToken = (user_id) => {
     const payload = {
         user: {id: user_id}
     }
-    return jwt.sign(payload, process.env.SECRET, {expiresIn: '3m'})
+    return jwt.sign(payload, process.env.SECRET, {expiresIn: '20m'})
 }
 
 module.exports = generateToken;

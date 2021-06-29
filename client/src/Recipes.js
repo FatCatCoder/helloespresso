@@ -102,9 +102,9 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
             body: JSON.stringify(recipe)
         })
 
-        const data = await res.json()
+        const data = await res.json();
 
-        console.log(res, data);
+        console.log(data);
         setMyRecipes([...myRecipes, data])
         setNewShot({});
     }

@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 
+
 function Login({setAuth, setCurrPage, currPage}) {
     const history = useHistory();
     var { state } = useLocation();
