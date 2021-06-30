@@ -19,6 +19,7 @@ import Recipes from './Recipes.js';
 import Login from './Login.js';
 import Register from './Register.js';
 import ScrollToTop from './ScrollToTop.js';
+import Test from './Test.js';
 
 function App (){
   let thisPage = window.location.pathname;
@@ -251,6 +252,9 @@ function App (){
           </div>
           } 
         />
+        <Route path="/test">
+          <Test />
+        </Route>
       </Switch>
       
       

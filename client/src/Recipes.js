@@ -26,9 +26,16 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     let location = useLocation();
 
     // for pagination
-    const [myRecipes, setMyRecipes] = useState([]);
+    const [myRecipes, setMyRecipes] = useState([{"page": 0, "recipes" : []}]);
     const [currPage, setCurrPage] = useState(1);
     const [recipesPerPage, setRecipesPerPage] = useState(8);
+    const [totalRecipes, setTotalRecipes] = useState(8);
+
+    const paginate = (pageNumber) => setCurrPage(pageNumber);
+
+
+    // force refresh by state change of refresh.
+    const [refresh, setRefresh] = useState(false);
 
     const schema = yup.object().shape({
         grinder: yup.string().required(),
@@ -48,26 +55,15 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     const formErrors = useShotFormStore(state => state.formError);
     const setFormErrors = useShotFormStore(state => state.setFormError);
 
-    /*
-    const setTodate = () => {
-        setNewShot((prevProps) => ({...prevProps, ["postDate"]: todaysDate}))
-        console.log(newShot.postDate)
-    }
-    */
-
     
-
+    // before submitting recipe to server, check validation on form and on return redirect back to recipes homepage
     const handleSubmit = (event) => {
         event.preventDefault();
-        
-        //await setTodate();
-
+ 
         schema.validate(schemaData, { abortEarly: false })
             .then(() => {
                 setFormErrors([]); 
-                //var TodaysDate = new Date().toISOString().split('T')[0];
-                
-                        
+                                  
             })
             .then(() => {
                 addRecipe(newShot)
@@ -80,15 +76,10 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
         
     }
 
-    const jwtDecode = () => {
-        const token = localStorage.getItem('Authorization');
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace('-', '+').replace('_', '/');
-        return JSON.parse(window.atob(base64)).user.id;
-    }
-
+    //get userId from state
     const getUserId = globalStore(state => state.getUserIdFromJWT)
-    
+
+    // Add new recipe to server and upload local state with database returned object
     const addRecipe = async (recipe) => {
         recipe["userId"] = await getUserId();
         
@@ -109,32 +100,79 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
         setNewShot({});
     }
 
+
     
-
+    // get recipes on load and refresh
     useEffect(() => {
+        
+
         const getRecipes = async () => {
-            const recipesFromServer = await fetchRecipes()
-            setMyRecipes(recipesFromServer.map(x => x))         
+
+            const recipeAmount = await fetchRecipesAmount();
+            setTotalRecipes(recipeAmount);
+
+            const recipesFromServer = await fetchRecipes();
+            //setMyRecipes(recipesFromServer.map(x => x));         
+            setMyRecipes([{"page": 1, "recipes" : recipesFromServer}]);
         }
-        getRecipes()   
-    }, [])
+        getRecipes(); 
+    }, [refresh])
 
-
-    const fetchRecipes = async () => {
+    console.log(myRecipes);  
+    // get total number of recipes
+    const fetchRecipesAmount = async () => {
         const res = await fetch('/recipes')
-        const data = await res.json()
+        
+        const data = await res.json();
+        return data;
+    }
+
+    // get all recipes from server
+    const fetchRecipes = async (thisPage = currPage, numOf = recipesPerPage) => {
+        const res = await fetch('/recipes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body: JSON.stringify({"offsetPage": thisPage, "limitAmount": numOf})
+        })
+        console.log(res);
+
+        const data = await res.json();
+        
         console.log('fetchRecipes data', data)
-        return data
+        return data;
     }
 
     let match = useRouteMatch();
 
+    console.log(myRecipes); 
+
+    // pagination
     const indexOfLastPost = currPage * recipesPerPage;
     const indexOfFirstPost = indexOfLastPost - recipesPerPage;
-    const currRecipes = myRecipes.slice(indexOfFirstPost, indexOfLastPost);
+    
+    try{
+        
+    var currRecipes = myRecipes[currPage - 1]["recipes"]
+    }
+    catch{
+        
+        var currRecipes = myRecipes[0]["recipes"];
+        //.slice(indexOfFirstPost, indexOfLastPost);
+    }
+    
+    
 
-    const paginate = (pageNumber) => setCurrPage(pageNumber);
+    const displayRecipes = () => {
+        console.log(currRecipes);
+        console.log(myRecipes);
+        return currRecipes.map((x, y) => <RecipeCard key={x.id} number={y} recipe={x}/>)
+    }
 
+    console.log(myRecipes)
+    
+    // <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={myRecipes.length} paginate={paginate} />
 
     return(
 
@@ -143,11 +181,11 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                 <Route exact path={match.path}>
                     <h1 className="display-2">Recipes</h1>
                     <p>Here for all your espresso brewing needs.</p>
-                    <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)}/>
+                    <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} />
                     <div className="container row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
-                        {currRecipes.map((x, y) => <RecipeCard key={x.id} number={y} recipe={x}/>)}
+                        {displayRecipes()}
                     </div>
-                    <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={myRecipes.length} paginate={paginate} />
+                    <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={totalRecipes} paginate={paginate} fetchRecipes={fetchRecipes} myRecipes={myRecipes} setMyRecipes={setMyRecipes} setCurrPage={setCurrPage} />
                 </Route>
 
                 <Route exact path={`/recipes/new`} 
@@ -161,7 +199,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                 />
 
                 <Route path={`${match.path}/:id`}>
-                    <RecipePage recipe={myRecipes}/>
+                    <RecipePage recipe={currRecipes}/>
                 </Route>
             </Switch>
         </div>

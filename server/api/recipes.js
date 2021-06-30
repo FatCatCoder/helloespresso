@@ -5,10 +5,32 @@ const pool = require('../../db');
 
 // -- routes -- //
 
+/*
 // get all recipes
 router.get('/', async(req, res) => {
-    const recipes = await pool.query("SELECT * FROM recipes");
+    const recipes = await pool.query("SELECT * FROM recipes ORDER BY roastdate DESC LIMIT 20");
     res.send(recipes.rows);
+})
+*/
+// give total number of recipes
+router.get('/', async(req, res) => {
+    const recipesAmount = await pool.query("SELECT COUNT(id) FROM recipes");
+    res.send(recipesAmount.rows[0]["count"]);
+})
+
+// get all recipes on a page
+router.post('/', async(req, res) => {
+    try{
+        const {offsetPage, limitAmount} = req.body;
+
+        const recipes = await pool.query("SELECT * FROM recipes LIMIT $1 OFFSET $2", [limitAmount, offsetPage * limitAmount]);
+        
+        res.send(recipes.rows);
+    }
+    catch(err){
+        console.log(err)
+        res.send(err)
+    }
 })
 
 // get single recipe based on param id
@@ -40,6 +62,15 @@ router.post('/new', async (req,res) => {
         res.status(500);
     }
 })
+
+
+
+
+
+// -- like routes -- //
+
+
+
 
 //get number of likes on a recipe
 router.post('/likes', async(req, res) => {

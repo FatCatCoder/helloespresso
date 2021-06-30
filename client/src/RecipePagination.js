@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { PaginationItem } from "reactstrap";
 
-function RecipePagination({ recipesPerPage, totalRecipes, paginate}) {
+function RecipePagination({ recipesPerPage, totalRecipes, paginate, ...other}) {
     const pageNumbers = [];
     const [currPageNum, setCurrPageNum] = useState(1);
 
@@ -11,10 +11,24 @@ function RecipePagination({ recipesPerPage, totalRecipes, paginate}) {
 
     console.log(currPageNum, pageNumbers);
 
-    const changePage = (number) => {
-        console.log(number);
-        setCurrPageNum(number);
-        paginate(number);
+    // on page change send page number to fetch recipes 
+    const changePage = async(number) => {
+        (function () {
+            console.log(number);
+            setCurrPageNum(number);
+            paginate(number);
+        } ());
+
+        /*
+        const alreadyFetched = other.myRecipes.find(x => x.page === number);
+        console.log(alreadyFetched);
+        */
+
+        const data = await other.fetchRecipes(number);
+        console.log(data)
+        
+        other.setMyRecipes([...other.myRecipes, {"page": number, "recipes" : data}]);
+        console.log(other.myRecipes)
            
     }
 

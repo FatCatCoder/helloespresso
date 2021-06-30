@@ -15,6 +15,9 @@ function RecipeBtnGrp(props){
                     <li><a className="dropdown-item" href="#">Default</a></li>
                 </ul>
                 </div>
+                <button className="btn btn-primary m-2 float-right" onClick={() => props.setRefresh(!props.refresh)} >
+                    <i class="bi bi-arrow-repeat"></i>
+                </button>
 
             </div>
     )

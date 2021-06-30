@@ -6,6 +6,7 @@ import {globalStore} from './store';
 function RecipePage(props){
     var [refetch, setrefetch] = useState(false);
     const [liked, setLiked] = useState(false);
+    const [recipe, setRecipe] = useState({});
 
     let {id} = useParams();
     console.log(id)
@@ -14,28 +15,30 @@ function RecipePage(props){
         const res = await fetch(`/recipes/${id}`)
         const data = await res.json()
         console.log('fetchRecipes data', data)
-        return data
+        return data[0];
     }
 
     
-
-    
     try{
-        var recipeObj = props.recipe.find(obj => obj.id == id);
+        //var recipeObj = props.recipe.find(obj => obj.id == id);
+        var recipeObj = props.recipe[0];
         console.log(recipeObj)
+
         if (typeof recipeObj == 'undefined') {
             var recipeObj = fetchRecipe();
           }
     }
     catch(error){
+        setRecipe(recipeObj); 
         console.log('yeah')
     }
+    console.log(recipe)
 
 
     const user_id = globalStore(state => state.getUserIdFromJWT);
 
 
-    // get initial isliked from server
+    // get initial isLiked from server
     const fetchLiked = async () => {
         const res = await fetch('/recipes/liked', {
             method: 'POST',
@@ -49,20 +52,30 @@ function RecipePage(props){
         
         setLiked(data.bool)
     }
+    // check if logged and token is valid for grabbing user id
+    const isValid = globalStore(state => state.checkValidToken);
 
     // toggle like/ unlike on server and updates with json returned bool
     const bussinButton = async () => {
-        const res = await fetch('/recipes/like', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({"recipe_id" : recipeObj.id, "user_id": user_id() })
-        })
-        const data = await res.json()
-        console.log(data, res)
-        
-        setLiked(data.bool)
+        let validity = await isValid();
+
+        if(validity){
+            const res = await fetch('/recipes/like', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"recipe_id" : recipeObj.id, "user_id": user_id() })
+            })
+
+            const data = await res.json()
+            console.log(data, res)
+            
+            setLiked(data.bool)
+        }
+        else{
+            alert('You Need To Be logged in to like!')
+        }
     }
 
     
@@ -81,7 +94,7 @@ function RecipePage(props){
     return(
         <div className="container text-center mb-3">
             <div className="my-2">
-                <h1 className="display-3 text-capitalize">{recipeObj.bean} - {recipeObj.roaster}</h1>
+                <h1 className="display-3 text-capitalize">{recipeObj == undefined ? recipeObj[0].bean: recipeObj.bean } - {recipeObj.roaster}</h1>
                 <h2 className="text-muted text-capitalize">Region: {recipeObj.region}</h2>
                 
             </div>
@@ -99,7 +112,7 @@ function RecipePage(props){
                 </div>
             </div>
 
-            <button type="button" class={`btn btn-outline-danger ${liked === true ? 'active': ''}`} onClick={() => bussinButton()} data-bs-toggle="button" aria-pressed="false">
+            <button type="button" class={`btn btn-outline-danger ${liked === true ? 'active': ''}`} onClick={() => bussinButton()} aria-pressed="false">
                 <i class="bi bi-heart-fill">Bussin' Button</i>     
             </button> 
             
