@@ -19,16 +19,21 @@ function RecipePagination({ recipesPerPage, totalRecipes, paginate, ...other}) {
             paginate(number);
         } ());
 
-        /*
-        const alreadyFetched = other.myRecipes.find(x => x.page === number);
-        console.log(alreadyFetched);
-        */
+        
+        const alreadyFetched = () => {
+            return other.myRecipes.includes(other.myRecipes.find(x => x["page"] === number))
+        };
+
+        console.log(alreadyFetched());
+        if(!alreadyFetched()){
+        
 
         const data = await other.fetchRecipes(number);
         console.log(data)
         
         other.setMyRecipes([...other.myRecipes, {"page": number, "recipes" : data}]);
         console.log(other.myRecipes)
+        }
            
     }
 

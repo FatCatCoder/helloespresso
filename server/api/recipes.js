@@ -21,10 +21,15 @@ router.get('/', async(req, res) => {
 // get all recipes on a page
 router.post('/', async(req, res) => {
     try{
-        const {offsetPage, limitAmount} = req.body;
+        const {offsetPage, limitAmount, sortBy} = req.body;
 
-        const recipes = await pool.query("SELECT * FROM recipes LIMIT $1 OFFSET $2", [limitAmount, offsetPage * limitAmount]);
-        
+        if(Object.keys(sortBy).length === 0){
+            var recipes = await pool.query("SELECT * FROM recipes LIMIT $1 OFFSET $2", [limitAmount, offsetPage * limitAmount]);
+        }
+        else{
+            console.log(sortBy.sortBy);
+            var recipes = await pool.query("SELECT * FROM recipes ORDER BY $1 LIMIT $2 OFFSET $3", [sortBy.sortBy, limitAmount, offsetPage * limitAmount]);
+        }
         res.send(recipes.rows);
     }
     catch(err){
