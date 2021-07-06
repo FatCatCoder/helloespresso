@@ -1,4 +1,6 @@
+import {useState} from 'react';
 function RecipeBtnGrp(props){
+    
     return(
         <div className="container border mx-auto mb-3">
                 <button onClick={props.goTo} className="btn btn-primary m-2">New</button>
@@ -8,8 +10,14 @@ function RecipeBtnGrp(props){
                     Sort
                 </button>
                 <ul className="dropdown-menu">
-                    <li><a className="dropdown-item" onClick={() => props.setSortFilters({"sortBy": 'postdate ASC'})}><i className="bi bi-arrow-up"></i>Oldest Recipe</a></li>
-                    <li><a className="dropdown-item" onClick={() => props.setSortFilters({"sortBy": 'postdate DESC'})}><i className="bi bi-arrow-down"></i>Newest Recipe</a></li>
+                    {props.togglePost?
+                    <li><a className="dropdown-item" onClick={() => {props.setSortFilters({"sortBy": "postdate ASC"}); props.setTogglePost(!props.togglePost);}}><i className="bi bi-arrow-up"></i>Oldest Recipe</a></li>
+                    : <li><a className="dropdown-item" onClick={() => {props.setSortFilters({"sortBy": "postdate DESC"}); props.setTogglePost(!props.togglePost);}}><i className="bi bi-arrow-down"></i>Newest Recipe</a></li>
+                    }
+                    {props.toggleRoast?
+                    <li><a className="dropdown-item" onClick={() => {props.setSortFilters({"sortBy": "roastdate ASC"}); props.setToggleRoast(!props.toggleRoast);}}><i className="bi bi-arrow-up"></i>Oldest Roast</a></li>
+                    : <li><a className="dropdown-item" onClick={() => {props.setSortFilters({"sortBy": "roastdate DESC"}); props.setToggleRoast(!props.toggleRoast);}}><i className="bi bi-arrow-down"></i>Fresh Roast</a></li>
+                    }                
                     <li><a className="dropdown-item" href="#">Origin</a></li>
                     <li><hr className="dropdown-divider" /></li>
                     <li><a className="dropdown-item" href="#">Default</a></li>

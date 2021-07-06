@@ -40,6 +40,11 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
 
     const [sortFilters, setSortFilters] = useState({});
 
+    // RecipeBtnGroup toggle states
+    const [togglePost, setTogglePost] = useState(false);
+    const [toggleRoast, setToggleRoast] = useState(false);
+
+
     const schema = yup.object().shape({
         grinder: yup.string().required(),
         machine: yup.string().required(),
@@ -138,7 +143,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
             headers: {
                 'Content-Type': 'application/json'
               },
-            body: JSON.stringify({"offsetPage": thisPage, "limitAmount": numOf, "sortBy": sortFilters})
+            body: JSON.stringify({"offsetPage": thisPage, "limitAmount": numOf, "sortFilters": sortFilters})
         })
         console.log(res);
 
@@ -194,7 +199,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                 <Route exact path={match.path}>
                     <h1 className="display-2">Recipes</h1>
                     <p>Here for all your espresso brewing needs.</p>
-                    <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} />
+                    <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} togglePost={togglePost} setTogglePost={setTogglePost} toggleRoast={toggleRoast} setToggleRoast={setToggleRoast} />
 
                     <div className="container row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
                         {currRecipes && displayRecipes()}
