@@ -11,14 +11,14 @@ function RecipeBtnGrp(props){
                 </button>
                 <ul className="dropdown-menu">
                     {props.togglePost?
-                    <li><a className="dropdown-item" onClick={() => {props.setSortFilters({"sortBy": "postdate ASC"}); props.setTogglePost(!props.togglePost);}}><i className="bi bi-arrow-up"></i>Oldest Recipe</a></li>
-                    : <li><a className="dropdown-item" onClick={() => {props.setSortFilters({"sortBy": "postdate DESC"}); props.setTogglePost(!props.togglePost);}}><i className="bi bi-arrow-down"></i>Newest Recipe</a></li>
+                    <li><a className="dropdown-item" onClick={() => {props.setSortFilters((filters) => ({...filters, "sortBy": "postdate ASC"})); props.setTogglePost(!props.togglePost);}}><i className="bi bi-arrow-up"></i> Oldest Recipe</a></li>
+                    : <li><a className="dropdown-item" onClick={() => {props.setSortFilters((filters) => ({...filters, "sortBy": "postdate DESC"})); props.setTogglePost(!props.togglePost);}}><i className="bi bi-arrow-down"></i> Newest Recipe</a></li>
                     }
                     {props.toggleRoast?
-                    <li><a className="dropdown-item" onClick={() => {props.setSortFilters({"sortBy": "roastdate ASC"}); props.setToggleRoast(!props.toggleRoast);}}><i className="bi bi-arrow-up"></i>Oldest Roast</a></li>
-                    : <li><a className="dropdown-item" onClick={() => {props.setSortFilters({"sortBy": "roastdate DESC"}); props.setToggleRoast(!props.toggleRoast);}}><i className="bi bi-arrow-down"></i>Fresh Roast</a></li>
+                    <li><a className="dropdown-item" onClick={() => {props.setSortFilters((filters) => ({...filters, "sortBy": "roastdate ASC"})); props.setToggleRoast(!props.toggleRoast);}}><i className="bi bi-arrow-up"></i> Oldest Roast</a></li>
+                    : <li><a className="dropdown-item" onClick={() => {props.setSortFilters((filters) => ({...filters, "sortBy": "roastdate DESC"})); props.setToggleRoast(!props.toggleRoast);}}><i className="bi bi-arrow-down"></i> Fresh Roast</a></li>
                     }                
-                    <li><a className="dropdown-item" href="#">Origin</a></li>
+                    <li><a className="dropdown-item" onClick={() => {props.setSortFilters((filters) => ({...filters, "sortBy": "popular DESC"})); props.setToggleRoast(!props.toggleRoast);}}><i class="bi bi-heart"></i> Popular</a></li>
                     <li><hr className="dropdown-divider" /></li>
                     <li><a className="dropdown-item" href="#">Default</a></li>
                 </ul>

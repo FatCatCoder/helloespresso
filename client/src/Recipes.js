@@ -19,6 +19,8 @@ import {
     Redirect
   } from "react-router-dom";
 
+  import LoadingSpinner from './components/LoadingSpinner.js';
+
 
 
 function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot, isAuth}){
@@ -31,6 +33,8 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     const [currPage, setCurrPage] = useState(1);
     const [recipesPerPage, setRecipesPerPage] = useState(8);
     const [totalRecipes, setTotalRecipes] = useState(8);
+
+    const [isLoading, setIsLoading] = useState(true);
 
     const paginate = (pageNumber) => setCurrPage(pageNumber);
 
@@ -123,7 +127,8 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
             //setMyRecipes(recipesFromServer.map(x => x));         
             setMyRecipes([{"page": 1, "recipes" : recipesFromServer}]);
         }
-        getRecipes(); 
+        getRecipes();
+        setIsLoading(false) 
     }, [refresh, sortFilters])
 
     console.log(myRecipes);  
@@ -143,7 +148,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
             headers: {
                 'Content-Type': 'application/json'
               },
-            body: JSON.stringify({"offsetPage": thisPage, "limitAmount": numOf, "sortFilters": sortFilters})
+            body: JSON.stringify({"offsetPage": thisPage - 1, "limitAmount": numOf, "sortFilters": sortFilters})
         })
         console.log(res);
 
@@ -191,6 +196,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     console.log(myRecipes)
     
     // <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={myRecipes.length} paginate={paginate} />
+    //   {isLoading? displayRecipes(): <LoadingSpinner />}
 
     return(
 

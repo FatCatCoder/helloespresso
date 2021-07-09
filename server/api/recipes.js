@@ -25,14 +25,36 @@ router.post('/', async(req, res) => {
 
         // if no filters, just get all posts
         if(sortFilters == undefined || Object.keys(sortFilters).length === 0){
+
             var recipes = await pool.query("SELECT * FROM recipes LIMIT $1 OFFSET $2", [limitAmount, offsetPage * limitAmount]);
         }
         // sort by post date
         else{
-            const availableSortKeys = ["postdate ASC", "postdate DESC", "roastdate ASC", "roastdate DESC"];
+
+            // whitelist sort method
+            const availableSortKeys = ["postdate ASC", "postdate DESC", "roastdate ASC", "roastdate DESC", "popular DESC"];
             const sortRequest = availableSortKeys.find(x => x == sortFilters.sortBy);
+
             console.log(sortRequest);
-            const queryStr = `SELECT * FROM recipes ORDER BY ${sortRequest} LIMIT ${limitAmount} OFFSET ${offsetPage * limitAmount}`
+
+            // insert clean sort method into query
+            if(sortRequest !== 'popular DESC' & sortRequest !== undefined){
+                var queryStr = `SELECT * FROM recipes ORDER BY ${sortRequest} LIMIT ${limitAmount} OFFSET ${offsetPage * limitAmount}`
+            }
+            else if(sortRequest === "popular DESC"){
+                var queryStr = `SELECT R.*, COUNT(L.recipe_id) AS popular
+                FROM recipes AS R
+                LEFT JOIN likes AS L
+                ON (R.id = L.recipe_id)
+                GROUP BY R.id
+                ORDER BY popular DESC
+                LIMIT ${limitAmount}
+                OFFSET ${offsetPage * limitAmount}`
+            }
+            else{
+                res.status(405)
+            }
+            
             console.log(queryStr);
             var recipes = await pool.query(queryStr);
         }
