@@ -42,6 +42,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     // force refresh by state change of refresh.
     const [refresh, setRefresh] = useState(false);
 
+    // sorting and filtering data
     const [sortFilters, setSortFilters] = useState({});
 
     // RecipeBtnGroup toggle states
@@ -129,7 +130,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
         }
         getRecipes();
         setIsLoading(false) 
-    }, [refresh, sortFilters])
+    }, [refresh])
 
     console.log(myRecipes);  
 
@@ -143,6 +144,10 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
 
     // POST get recipes from server based on page and amount
     const fetchRecipes = async (thisPage = currPage, numOf = recipesPerPage) => {
+        console.log(sortFilters?.sortBy);
+        if(sortFilters.sortBy == null){
+            setSortFilters((filters) => ({...filters, "sortBy": "postdate DESC"}))
+        }
         const res = await fetch('/recipes', {
             method: 'POST',
             headers: {
@@ -205,7 +210,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                 <Route exact path={match.path}>
                     <h1 className="display-2">Recipes</h1>
                     <p>Here for all your espresso brewing needs.</p>
-                    <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} togglePost={togglePost} setTogglePost={setTogglePost} toggleRoast={toggleRoast} setToggleRoast={setToggleRoast} />
+                    <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} togglePost={togglePost} setTogglePost={setTogglePost} toggleRoast={toggleRoast} setToggleRoast={setToggleRoast} fetchRecipes={fetchRecipes} />
 
                     <div className="container row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
                         {currRecipes && displayRecipes()}

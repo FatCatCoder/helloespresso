@@ -23,6 +23,9 @@ router.post('/', async(req, res) => {
     try{
         const {offsetPage, limitAmount, sortFilters} = req.body;
 
+        const filtersList = Object.entries(sortFilters);
+        console.log(filtersList)
+
         // if no filters, just get all posts
         if(sortFilters == undefined || Object.keys(sortFilters).length === 0){
 
@@ -30,32 +33,73 @@ router.post('/', async(req, res) => {
         }
         // sort by post date
         else{
+            /*
+            if (sortFilters.sortBy === undefined){
 
+            }
+            */
+            //if(sortFilters.sortBy === null)
             // whitelist sort method
             const availableSortKeys = ["postdate ASC", "postdate DESC", "roastdate ASC", "roastdate DESC", "popular DESC"];
+            // whitelist filters
+            const availableFilterKeys = ["bean", "roaster", "roast", "region", "grinder", "machine", "process"];
+
             const sortRequest = availableSortKeys.find(x => x == sortFilters.sortBy);
+            // beanFilter = sortFilters?.bean;
+            const allFilters = filtersList.filter(x => availableFilterKeys.includes(x[0]));
 
-            console.log(sortRequest);
+            console.log(allFilters)
 
-            // insert clean sort method into query
-            if(sortRequest !== 'popular DESC' & sortRequest !== undefined){
-                var queryStr = `SELECT * FROM recipes ORDER BY ${sortRequest} LIMIT ${limitAmount} OFFSET ${offsetPage * limitAmount}`
+            const addFilters = (WHERE_OR_HAVING) => {
+                queryStr += ` ${WHERE_OR_HAVING}`;
+
+                var filterArray = allFilters.map((currVal, index) =>
+                    ` R.${currVal[0]} = '${currVal[1]}'`).join(" AND");
+
+                console.log(filterArray)
+
+                queryStr += filterArray;
             }
+           
+
+        // insert clean sort method into query
+
+        console.log(sortRequest);
+
+            // simpler search query
+            if(sortRequest !== 'popular DESC' & sortRequest !== undefined){
+
+                // base query
+                var queryStr = `SELECT * FROM recipes AS R `
+
+                // check for filters, then add sort method
+                if((allFilters !== null || allFilters !== undefined) & allFilters.length >= 1){ addFilters('WHERE') }
+                queryStr += ` ORDER BY ${sortRequest}`;
+            }
+            // if sort by likes, use join query
             else if(sortRequest === "popular DESC"){
+
+                // base query
                 var queryStr = `SELECT R.*, COUNT(L.recipe_id) AS popular
                 FROM recipes AS R
                 LEFT JOIN likes AS L
                 ON (R.id = L.recipe_id)
-                GROUP BY R.id
-                ORDER BY popular DESC
-                LIMIT ${limitAmount}
-                OFFSET ${offsetPage * limitAmount}`
+                GROUP BY R.id`;
+
+                // check for filters, then add sort method
+                if((allFilters !== null || allFilters !== undefined) & allFilters.length >= 1){ addFilters('HAVING') }
+                queryStr += ` ORDER BY ${sortRequest}`;
             }
-            else{
+
+            else {
+                // catch error
                 res.status(405)
             }
-            
-            console.log(queryStr);
+
+            // before final query add limit and offset (for pagination)
+            queryStr += ` LIMIT ${limitAmount} OFFSET ${offsetPage * limitAmount}`
+
+            console.log(queryStr)
             var recipes = await pool.query(queryStr);
         }
         console.log(recipes.rows[0]);
@@ -123,13 +167,14 @@ router.post('/likes', async(req, res) => {
 //like a recipe
 router.post('/like', async(req, res) => {
     
+    
     try{
         const {user_id, recipe_id} = req.body;
         
         const isLiked = await pool.query("SELECT * FROM likes WHERE user_id = $1 AND recipe_id = $2", [user_id, recipe_id]);
         
         if(isLiked.rowCount === 0){
-            const like = await pool.query("INSERT INTO likes(user_id, recipe_id) VALUES($1, $2)", [user_id, recipe_id]);
+            const like = await pool.query("INSERT INTO likes(user_id, recipe_id) VALUES($1, $2) RETURNING *", [user_id, recipe_id]);
             return res.json({"bool": true});
         }
         else{

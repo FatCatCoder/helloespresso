@@ -69,9 +69,11 @@ function RecipePage(props){
 
     // toggle like/ unlike on server and updates with json returned bool
     const bussinButton = async () => {
-        let validity = await isValid();
+        const validity = await isValid();
+        
 
         if(validity){
+            
             const res = await fetch('/recipes/like', {
                 method: 'POST',
                 headers: {
