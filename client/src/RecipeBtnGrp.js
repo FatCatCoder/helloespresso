@@ -96,8 +96,8 @@ function RecipeBtnGrp(props){
                             <div className="row mt-3"><button className="btn btn-primary" type="submit">Apply</button></div>
 
                             <div className="row">
-                                <button className="btn btn-light border col-6" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample">Close</button>
-                                <button className="btn btn-light border col-6" type="button" onClick={() => {props.setSortFilters({}); resetForm();}}>Reset</button>
+                                <button className="btn btn-light-nxt border col-6" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample">Close</button>
+                                <button className="btn btn-light-nxt border col-6" type="button" onClick={() => {props.setSortFilters({}); resetForm();}}>Reset</button>
                             </div>
 
                             

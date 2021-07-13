@@ -2,6 +2,24 @@ const router = require('express').Router();
 const pool = require('../../db');
 
 
+// -- Tools -- //
+
+function isAlphaNumeric(str) {
+    var code, i, len;
+  
+    for (i = 0, len = str.length; i < len; i++) {
+      code = str.charCodeAt(i);
+      if (!(code > 47 && code < 58) && // numeric (0-9)
+          !(code > 64 && code < 91) && // upper alpha (A-Z)
+          !(code > 96 && code < 123) && // lower alpha (a-z)
+          !(code === 32)) { // space
+        return false;
+      }
+    }
+    return true;
+  };
+
+
 
 // -- routes -- //
 
@@ -26,6 +44,14 @@ router.post('/', async(req, res) => {
         const filtersList = Object.entries(sortFilters);
         console.log(filtersList)
 
+        const checkForBadChars = filtersList.every((x, y) => isAlphaNumeric(x[1]));
+        console.log(checkForBadChars)
+
+        if(!checkForBadChars){
+            console.log('bad char')
+            return res.status(405).send({"errorMsg": "Invaild Character in request"})
+        }
+
         // if no filters, just get all posts
         if(sortFilters == undefined || Object.keys(sortFilters).length === 0){
 
@@ -33,20 +59,16 @@ router.post('/', async(req, res) => {
         }
         // sort by post date
         else{
-            /*
-            if (sortFilters.sortBy === undefined){
 
-            }
-            */
-            //if(sortFilters.sortBy === null)
             // whitelist sort method
             const availableSortKeys = ["postdate ASC", "postdate DESC", "roastdate ASC", "roastdate DESC", "popular DESC"];
             // whitelist filters
             const availableFilterKeys = ["bean", "roaster", "roast", "region", "grinder", "machine", "process"];
 
+            // the sort method requested
             const sortRequest = availableSortKeys.find(x => x == sortFilters.sortBy);
-            // beanFilter = sortFilters?.bean;
-            const allFilters = filtersList.filter(x => availableFilterKeys.includes(x[0]));
+            // all the filters applied to the query
+            const allFilters = filtersList.filter(x => availableFilterKeys.includes(x[0]) && x[1] !== "");
 
             console.log(allFilters)
 
@@ -54,7 +76,8 @@ router.post('/', async(req, res) => {
                 queryStr += ` ${WHERE_OR_HAVING}`;
 
                 var filterArray = allFilters.map((currVal, index) =>
-                    ` R.${currVal[0]} = '${currVal[1]}'`).join(" AND");
+                    //` R.${currVal[0]} = '${currVal[1]}'`).join(" AND");
+                    ` SIMILARITY(R.${currVal[0]}, '${currVal[1]}') > 0.4`).join(" AND");
 
                 console.log(filterArray)
 
@@ -102,7 +125,7 @@ router.post('/', async(req, res) => {
             console.log(queryStr)
             var recipes = await pool.query(queryStr);
         }
-        console.log(recipes.rows[0]);
+        console.log('count', recipes.rowCount,'\n',recipes.rows[0]);
         res.send(recipes.rows);
     }
     catch(err){
