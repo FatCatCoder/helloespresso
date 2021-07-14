@@ -61,7 +61,7 @@ function Journal({shotList, isAuth}){
                     <h1 className="display-2">Journal</h1>
                     <div className="container">
                         <div class="list-group">
-                            {currRecipes.map((x, y) => <JournalItem key={x.id} id={x.id} Bean={x.bean} Region={x.region} Roaster={x.roaster} Date={x.postDate} /> )}
+                            {currRecipes.map((x, y) => <JournalItem key={x.id} id={x.id} Bean={x.bean} Region={x.region} Roaster={x.roaster} postDate={x.postdate} /> )}
                         </div>
                     </div>
                     <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={myEntries.length} paginate={paginate} />

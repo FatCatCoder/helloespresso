@@ -7,6 +7,8 @@ function Login({setAuth, setCurrPage, currPage}) {
     var { state } = useLocation();
     console.log(state.location);
 
+    const [errors, setErrors] = useState({"boolean": false, "message": ""});
+
     useEffect(() => {
         console.log(state.location);
         setCurrPage(state.location)
@@ -46,17 +48,24 @@ function Login({setAuth, setCurrPage, currPage}) {
             })
 
             const parseRes = response.headers.get('Authorization');
+            
 
             if (parseRes !== null){
               localStorage.setItem('Authorization', parseRes);
               setAuth(true);
               history.push(state.going);
-            } 
+            }
+            else if (response.status === 401){
+                const getErrors = async () => {
+                    let resErr = await response.json();
+                    setErrors({...resErr})
+                }
+                getErrors();   
+            }
 
         } catch (error) {
             console.log(error.message)
         }
-        
     };
 
     return(
@@ -70,6 +79,7 @@ function Login({setAuth, setCurrPage, currPage}) {
                 <button className="btn btn-secondary" type="submit">Log In</button>
                 <Link to="/register"><button className="btn btn-secondary m-2" type="button">Register</button></Link>
             </form>
+            {!errors.boolean? null: errors.message}
         </div>
         </>
     )

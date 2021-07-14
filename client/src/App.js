@@ -221,7 +221,7 @@ function App (){
         </Route>
 
         <Route path="/journal"
-          render={props => isAuth ? (<Journal shotList={shotList} isAuth={isAuth}/>) : (<Redirect to={{pathname: "/login", state: {location: "/journal"}}} />)}  
+          render={props => isAuth ? (<Journal shotList={shotList} isAuth={isAuth}/>) : (<Redirect to={{pathname: "/login", state: {location: "/journal", going: "/journal"}}} />)}  
         />
         
         {/*

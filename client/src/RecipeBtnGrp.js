@@ -63,9 +63,9 @@ function RecipeBtnGrp(props){
 
                 <div class="collapse" id="collapseExample">
                     <div class="card card-body">
-                        <form onSubmit={handleSubmit} class="mx-auto text-center" id="filterForm">
+                        <form autoComplete="off" onSubmit={handleSubmit} class="mx-auto text-center" id="filterForm">
                             
-                            <input className="shadow border-1 m-2" onChange={handleOnChange} value={props.sortFilters.bean} name="bean" type="text" placeholder="Bean/Name..."></input>
+                            <input className="shadow border-1 m-2" list="beanList" onChange={handleOnChange} value={props.sortFilters.bean} name="bean" type="text" placeholder="Bean/Name..."></input>
                             <input className="shadow border-1 m-2" onChange={handleOnChange} value={props.sortFilters.roaster} name="roaster" type="text" placeholder="Roaster..."></input>
                             <input className="shadow border-1 m-2" onChange={handleOnChange} value={props.sortFilters.region} name="region" type="text" placeholder="Region..."></input>
                             <input className="shadow border-1 m-2" onChange={handleOnChange} value={props.sortFilters.grinder} name="grinder" type="text" placeholder="Grinder..."></input> 
@@ -96,9 +96,11 @@ function RecipeBtnGrp(props){
                             <div className="row mt-3"><button className="btn btn-primary" type="submit">Apply</button></div>
 
                             <div className="row">
-                                <button className="btn btn-light-nxt border col-6" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample">Close</button>
-                                <button className="btn btn-light-nxt border col-6" type="button" onClick={() => {props.setSortFilters({}); resetForm();}}>Reset</button>
+                                <button className="btn btn-light-custom col-6" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample">Close</button>
+                                <button className="btn btn-light-custom col-6" type="button" onClick={() => {props.setSortFilters({}); resetForm();}}>Reset</button>
                             </div>
+
+                            
 
                             
                         </form>

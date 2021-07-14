@@ -1,9 +1,9 @@
 import {Link} from 'react-router-dom';
 
-function JournalItem({id, Bean, Region, Roaster, Date}){
+function JournalItem({id, Bean, Region, Roaster, postDate}){
     try{
         console.log(typeof(Date), Date)
-        var date = Date.split('-').reverse().join('/');
+        var date = (postDate.split('T')[0]) //Date.split('-').reverse().join('/');
     }
     catch(err){
         console.log(err);
