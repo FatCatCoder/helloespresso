@@ -117,30 +117,18 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     
     // get recipes on load and refresh
     useEffect(() => {
-        
-
         const getRecipes = async () => {
-
-            const recipeAmount = await fetchRecipesAmount();
-            setTotalRecipes(recipeAmount);
-
             const recipesFromServer = await fetchRecipes();
-            //setMyRecipes(recipesFromServer.map(x => x));         
+            // set Recipes array       
             setMyRecipes([{"page": 1, "recipes" : recipesFromServer}]);
+            // set total number of recipes for pagination
+            setTotalRecipes(recipesFromServer[0].count)
         }
         getRecipes();
         setIsLoading(false) 
     }, [refresh])
 
     console.log(myRecipes);  
-
-    // GET total number of recipes
-    const fetchRecipesAmount = async () => {
-        const res = await fetch('/recipes')
-        
-        const data = await res.json();
-        return data;
-    }
 
     // POST get recipes from server based on page and amount
     const fetchRecipes = async (thisPage = currPage, numOf = recipesPerPage) => {

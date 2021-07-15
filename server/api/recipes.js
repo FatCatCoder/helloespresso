@@ -4,6 +4,7 @@ const pool = require('../../db');
 
 // -- Tools -- //
 
+// check if string is alphanumeric
 function isAlphaNumeric(str) {
     var code, i, len;
   
@@ -19,17 +20,16 @@ function isAlphaNumeric(str) {
     return true;
   };
 
+// return total number recipes from query
+function totalRecipes(query){
+    const qry = 'COUNT(*) OVER() AS count';
+}
+
 
 
 // -- routes -- //
 
-/*
-// get all recipes
-router.get('/', async(req, res) => {
-    const recipes = await pool.query("SELECT * FROM recipes ORDER BY roastdate DESC LIMIT 20");
-    res.send(recipes.rows);
-})
-*/
+
 // give total number of recipes
 router.get('/', async(req, res) => {
     const recipesAmount = await pool.query("SELECT COUNT(id) FROM recipes");
@@ -54,8 +54,9 @@ router.post('/', async(req, res) => {
 
         // if no filters, just get all posts
         if(sortFilters == undefined || Object.keys(sortFilters).length === 0){
-
-            var recipes = await pool.query("SELECT * FROM recipes LIMIT $1 OFFSET $2", [limitAmount, offsetPage * limitAmount]);
+            
+            var recipes = await pool.query("SELECT *, COUNT(*) OVER() AS count FROM recipes LIMIT $1 OFFSET $2", [limitAmount, offsetPage * limitAmount]);
+            
         }
         // sort by post date
         else{
@@ -93,7 +94,7 @@ router.post('/', async(req, res) => {
             if(sortRequest !== 'popular DESC' & sortRequest !== undefined){
 
                 // base query
-                var queryStr = `SELECT * FROM recipes AS R `
+                var queryStr = `SELECT *, COUNT(*) OVER() AS count FROM recipes AS R `
 
                 // check for filters, then add sort method
                 if((allFilters !== null || allFilters !== undefined) & allFilters.length >= 1){ addFilters('WHERE') }
@@ -103,7 +104,7 @@ router.post('/', async(req, res) => {
             else if(sortRequest === "popular DESC"){
 
                 // base query
-                var queryStr = `SELECT R.*, COUNT(L.recipe_id) AS popular
+                var queryStr = `SELECT R.*, COUNT(*) OVER() AS count, COUNT(L.recipe_id) AS popular
                 FROM recipes AS R
                 LEFT JOIN likes AS L
                 ON (R.id = L.recipe_id)
