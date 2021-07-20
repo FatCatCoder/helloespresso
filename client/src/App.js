@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import {BrowserRouter as Router, Route, Switch, useHistory, Redirect, useLocation } from 'react-router-dom';
 import * as yup from 'yup';
-import {useShotFormStore} from './store.js';
+import {useShotFormStore, globalStore} from './store.js';
 
 
 // components
@@ -179,11 +179,13 @@ function App (){
     const todaysDate = new Date().toISOString().split('T')[0];
     const [journalEntry, setJournalEntry] = useState({"postDate": todaysDate});
     
+    // get user id
+    const getUserId = globalStore(state => state.getUserIdFromJWT)
 
     const handleModalSubmit = (event) => {
         event.preventDefault();
         addEntryToJournal(journalEntry);
-        setJournalEntry({"postDate": todaysDate})
+        //setJournalEntry({"postDate": todaysDate})
     }
 
     const handleModalInputChange = (e) => {
@@ -194,11 +196,12 @@ function App (){
     };
 
     // add new entry to journal
-    const addEntryToJournal = (entry) => {
+    const addEntryToJournal = async(entry) => {
+      const userId = await getUserId();
       axios({
           method: 'POST',
-          url: '/journal?_sort=id&_order=desc',
-          data: {...entry, "ShotLog": shotList}
+          url: '/journals/new',
+          data: {"journalData": entry, "ShotLog": shotList, "user_id": userId}
       })
   }
 

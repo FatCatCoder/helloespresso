@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const pool = require('../../db');
+const format = require('pg-format');
 
 
 // routes
@@ -13,6 +14,26 @@ router.post('/', async(req, res) => {
         res.send(shots.rows);
     }
     catch(error){
+        console.log(error)
+    }
+})
+
+// add new shot
+router.post('/new', async(req, res) => {
+    try {
+        const {journal_id, shotData} = req.body;
+        console.log(journal_id, shotData);
+
+        const valuesMap = shotData.map((x, y) => [y, journal_id, x.dose, x.yield, x.time, x.grind, x.notes])
+
+        const queryStr = format('INSERT INTO shots(queue, journal_id, dose, yield, time, grind, notes) VALUES %L ', valuesMap);
+
+        const newShot = await pool.query(queryStr);
+
+        console.log(newShot);
+        res.status(200).send('good shot data');
+
+    } catch (error) {
         console.log(error)
     }
 })

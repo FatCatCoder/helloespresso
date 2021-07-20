@@ -118,11 +118,13 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     // get recipes on load and refresh
     useEffect(() => {
         const getRecipes = async () => {
-            const recipesFromServer = await fetchRecipes();
+            const recipesFromServer = await fetchRecipes(1);
             // set Recipes array       
             setMyRecipes([{"page": 1, "recipes" : recipesFromServer}]);
             // set total number of recipes for pagination
             setTotalRecipes(recipesFromServer[0].count)
+            // push page state back to the first page
+            setCurrPage(1)
         }
         getRecipes();
         setIsLoading(false) 
