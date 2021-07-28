@@ -208,6 +208,7 @@ function App (){
 
   
   
+ const [currPage1, setCurrPage1] = useState(1);
 
   return (
     <>
@@ -256,7 +257,7 @@ function App (){
           } 
         />
         <Route path="/test">
-          <Test currPage={2} />
+          <Test currPage={currPage1} setCurrPage={setCurrPage1} />
         </Route>
       </Switch>
       

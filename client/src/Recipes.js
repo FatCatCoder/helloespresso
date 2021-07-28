@@ -5,6 +5,7 @@ import RecipeCard from './RecipeCard.js';
 import RecipePage from './RecipePage.js';
 import NewRecipe from './NewRecipe.js';
 import RecipePagination from './RecipePagination.js';
+import Pagination from './components/Pagination.js';
 import {useShotFormStore, globalStore} from './store.js';
 import * as yup from 'yup';
 
@@ -207,6 +208,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                     </div>
 
                     <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={totalRecipes} paginate={paginate} fetchRecipes={fetchRecipes} myRecipes={myRecipes} setMyRecipes={setMyRecipes} setCurrPage={setCurrPage} />
+                    <Pagination className={"container text-center mx-auto"} itemsPerPage={recipesPerPage} totalItems={totalRecipes} currPage={currPage} setCurrPage={setCurrPage} />
                 </Route>
 
                 <Route exact path={`/recipes/new`} 

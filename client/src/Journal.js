@@ -2,7 +2,7 @@ import JournalItemContent from './JournalItemContent.js';
 import JournalItem from './JournalItem.js';
 import {useHistory, Redirect} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import RecipePagination from './RecipePagination.js';
+import Pagination from './components/Pagination.js';
 import axios from 'axios';
 
 import {
@@ -64,7 +64,7 @@ function Journal({shotList, isAuth}){
                             {currRecipes.map((x, y) => <JournalItem key={x.id} id={x.id} Bean={x.bean} Region={x.region} Roaster={x.roaster} postDate={x.postdate} /> )}
                         </div>
                     </div>
-                    <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={myEntries.length} paginate={paginate} />
+                    <Pagination className={"container text-center mx-auto"} itemsPerPage={recipesPerPage} totalItems={myEntries.length} currPage={currPage} setCurrPage={setCurrPage} />
                 </Route>
 
 
