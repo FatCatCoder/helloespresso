@@ -256,7 +256,7 @@ function App (){
           } 
         />
         <Route path="/test">
-          <Test />
+          <Test currPage={2} />
         </Route>
       </Switch>
       
