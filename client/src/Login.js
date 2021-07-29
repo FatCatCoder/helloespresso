@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
+import {globalStore} from './store.js';
 
 
 function Login({setAuth, setCurrPage, currPage}) {
@@ -8,6 +9,7 @@ function Login({setAuth, setCurrPage, currPage}) {
     console.log(state.location);
 
     const [errors, setErrors] = useState({"boolean": false, "message": ""});
+    const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
 
     useEffect(() => {
         console.log(state.location);
@@ -53,6 +55,7 @@ function Login({setAuth, setCurrPage, currPage}) {
             if (parseRes !== null){
               localStorage.setItem('Authorization', parseRes);
               setAuth(true);
+              setIsLoggedIn(true);
               history.push(state.going);
             }
             else if (response.status === 401){

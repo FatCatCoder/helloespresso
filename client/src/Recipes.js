@@ -92,6 +92,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
 
     //get userId from state
     const getUserId = globalStore(state => state.getUserIdFromJWT)
+    const isLoggedIn = globalStore(state => state.isLoggedIn)
 
     // Add new recipe to server and upload local state with database returned object
     const addRecipe = async (recipe) => {
@@ -156,7 +157,9 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
 
     let match = useRouteMatch();
 
-    console.log(myRecipes); 
+    console.log(myRecipes);
+    
+    
 
     // pagination
     const indexOfLastPost = currPage * recipesPerPage;
@@ -190,8 +193,24 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     }
 
     console.log(myRecipes)
+
+    // On pagination setCurrPage change, checks if page exists in memory, if not then fetch it and update state.
+    const changePage = async(number) => {
+        (function () {
+            setCurrPage(number);
+        } ());
+        
+        const alreadyFetched = () => {
+            return myRecipes.includes(myRecipes.find(x => x["page"] === number))
+        };
+
+        if(!alreadyFetched()){
+            const data = await fetchRecipes(number);
+            setMyRecipes([...myRecipes, {"page": number, "recipes" : data}]);
+        }  
+    }
     
-    // <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={myRecipes.length} paginate={paginate} />
+    //<RecipePagination recipesPerPage={recipesPerPage} totalRecipes={totalRecipes} paginate={paginate} fetchRecipes={fetchRecipes} myRecipes={myRecipes} setMyRecipes={setMyRecipes} setCurrPage={setCurrPage} />
     //   {isLoading? displayRecipes(): <LoadingSpinner />}
 
     return(
@@ -201,14 +220,13 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                 <Route exact path={match.path}>
                     <h1 className="display-2">Recipes</h1>
                     <p>Here for all your espresso brewing needs.</p>
-                    <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} togglePost={togglePost} setTogglePost={setTogglePost} toggleRoast={toggleRoast} setToggleRoast={setToggleRoast} fetchRecipes={fetchRecipes} />
+                    <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} togglePost={togglePost} setTogglePost={setTogglePost} toggleRoast={toggleRoast} setToggleRoast={setToggleRoast} fetchRecipes={fetchRecipes} getUserId={getUserId} isLoggedIn={isLoggedIn} />
 
                     <div className="container row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
                         {currRecipes && displayRecipes()}
                     </div>
 
-                    <RecipePagination recipesPerPage={recipesPerPage} totalRecipes={totalRecipes} paginate={paginate} fetchRecipes={fetchRecipes} myRecipes={myRecipes} setMyRecipes={setMyRecipes} setCurrPage={setCurrPage} />
-                    <Pagination className={"container text-center mx-auto"} itemsPerPage={recipesPerPage} totalItems={totalRecipes} currPage={currPage} setCurrPage={setCurrPage} />
+                    <Pagination className={"container text-center mx-auto p-3"} itemsPerPage={recipesPerPage} totalItems={totalRecipes} currPage={currPage} setCurrPage={changePage} />
                 </Route>
 
                 <Route exact path={`/recipes/new`} 

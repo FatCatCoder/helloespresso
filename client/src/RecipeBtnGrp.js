@@ -28,6 +28,7 @@ function RecipeBtnGrp(props){
                     : <li><a className="dropdown-item" onClick={() => {props.setSortFilters((filters) => ({...filters, "sortBy": "roastdate DESC"})); props.setToggleRoast(!props.toggleRoast);}}><i className="bi bi-arrow-down"></i> Fresh Roast</a></li>
                     }
     */
+   console.log(props.getUserId(), props.isLoggedIn)
     
     return(
         <div className="container border mx-auto mb-3">
@@ -71,8 +72,8 @@ function RecipeBtnGrp(props){
                             <input className="shadow border-1 m-2" onChange={handleOnChange} value={props.sortFilters.grinder} name="grinder" type="text" placeholder="Grinder..."></input> 
                             <input className="shadow border-1 m-2" onChange={handleOnChange} value={props.sortFilters.machine} name="machine" type="text" placeholder="Machine..."></input>
                           
-                            <div className="row mx-auto text-center col-4">
-                                <div className="col-8 col-md-4 mx-auto">
+                            <div className="row mx-auto text-center col-10 col-lg-3">
+                                <div className="col-6 col-md-4 mx-auto">
                                     <label className="" for="roast">Roast: </label>
                                     <select className="shadow border" onChange={handleOnChange} value={props.sortFilters.roast} id="roast" name="roast">
                                         <option value="" selected></option>
@@ -82,7 +83,7 @@ function RecipeBtnGrp(props){
                                     </select><br/>
                                 </div>
 
-                                <div className="col-8 col-md-4 mx-auto">
+                                <div className="col-6 col-md-4 mx-auto">
                                     <label className="" for="process">Process: </label>
                                     <select className="shadow border" onChange={handleOnChange} value={props.sortFilters.process} id="process" name="process">
                                         <option value="" selected></option>
@@ -92,6 +93,13 @@ function RecipeBtnGrp(props){
                                     </select><br/>
                                 </div>
                             </div>
+
+                            
+                            <input class="form-check-input" type="checkbox" onChange={handleOnChange} value={props.getUserId().replaceAll('-', ' ')} name="user_id" id="user_id" disabled={!props.isLoggedIn} />
+                            <label class="form-check-label" for="user_id">
+                                {!props.isLoggedIn? 'Login to filter yours': 'My Recipes'}
+                            </label>
+                            
 
                             <div className="row mt-3"><button className="btn btn-primary" type="submit">Apply</button></div>
 

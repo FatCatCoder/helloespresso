@@ -25,6 +25,9 @@ const globalStore = create((set, get) => ({
     }
   },
   isLoggedIn: false,
+  setIsLoggedIn: (bool) => {
+    set(state => ({isLoggedIn: bool}))
+  },
   checkValidToken: async () => {
     const config = {
       method: 'get',

@@ -60,11 +60,13 @@ router.post('/', async(req, res) => {
         }
         // sort by post date
         else{
+            const userIdFix = filtersList.find(x => x[0] == 'user_id');
+            console.log('fix', userIdFix)
 
             // whitelist sort method
             const availableSortKeys = ["postdate ASC", "postdate DESC", "roastdate ASC", "roastdate DESC", "popular DESC"];
             // whitelist filters
-            const availableFilterKeys = ["bean", "roaster", "roast", "region", "grinder", "machine", "process"];
+            const availableFilterKeys = ["bean", "roaster", "roast", "region", "grinder", "machine", "process", "user_id"];
 
             // the sort method requested
             const sortRequest = availableSortKeys.find(x => x == sortFilters.sortBy);
@@ -78,6 +80,7 @@ router.post('/', async(req, res) => {
 
                 var filterArray = allFilters.map((currVal, index) =>
                     //` R.${currVal[0]} = '${currVal[1]}'`).join(" AND");
+                   
                     ` SIMILARITY(R.${currVal[0]}, '${currVal[1]}') > 0.4`).join(" AND");
 
                 console.log(filterArray)

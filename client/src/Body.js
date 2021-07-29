@@ -3,6 +3,7 @@ import './App.scss';
 
 
 
+
 function Body ({newShot, setNewShot, handleCheckboxChange, handleInputChange, handleSubmit, step, setStep, pullValidation}) {
 
     return (

@@ -25,6 +25,7 @@ function App (){
   let thisPage = window.location.pathname;
   const history = useHistory();
   const [currPage, setCurrPage] = useState({[thisPage]: true});
+  const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
   //const tokenCheck = localStorage.getItem('Authorization') ? true : false;
 
   const startAuth = async () => {
@@ -41,6 +42,7 @@ function App (){
       const parseRes = await response.json();
       console.log(parseRes.verified);
       parseRes.verified === true ? setIsAuth(true): setIsAuth(false);
+      parseRes.verified === true ? setIsLoggedIn(true): setIsLoggedIn(false);
       //return parseRes.verified;
     } catch (error) {
       console.log(error.message)
