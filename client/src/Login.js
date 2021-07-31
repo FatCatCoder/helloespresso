@@ -10,23 +10,13 @@ function Login({setAuth, setCurrPage, currPage}) {
 
     const [errors, setErrors] = useState({"boolean": false, "message": ""});
     const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
+    const isLoggedIn = globalStore(state => state.isLoggedIn)
 
     useEffect(() => {
         console.log(state.location);
         setCurrPage(state.location)
         console.log(currPage);
     }, [state])
-    
-    
-    //console.log(state.location);
-    //console.log(currPage);
-
-    const jwtDecode = () => {
-        const token = localStorage.getItem('Authorization');
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace('-', '+').replace('_', '/');
-        return JSON.parse(window.atob(base64)).user.id;
-    }
 
     const [inputs, setInputs] = useState({
         email: "",
@@ -65,6 +55,7 @@ function Login({setAuth, setCurrPage, currPage}) {
                 }
                 getErrors();   
             }
+            console.log(isLoggedIn)
 
         } catch (error) {
             console.log(error.message)

@@ -60,7 +60,12 @@ router.post('/', async(req, res) => {
         }
         // sort by post date
         else{
-            const userIdFix = filtersList.find(x => x[0] == 'user_id');
+            const userIdFix = filtersList.indexOf(filtersList.find(x => x[0] == 'user_id'));
+            if(userIdFix !== -1){
+                console.log(filtersList[userIdFix][1])
+                filtersList[userIdFix][1] = filtersList[userIdFix][1].replace(/\ /g, '-');
+                console.log(filtersList[userIdFix][1].replace(/\ /g, '-'))
+            }
             console.log('fix', userIdFix)
 
             // whitelist sort method
@@ -81,7 +86,7 @@ router.post('/', async(req, res) => {
                 var filterArray = allFilters.map((currVal, index) =>
                     //` R.${currVal[0]} = '${currVal[1]}'`).join(" AND");
                    
-                    ` SIMILARITY(R.${currVal[0]}, '${currVal[1]}') > 0.4`).join(" AND");
+                    ` SIMILARITY(CAST(R.${currVal[0]} AS TEXT), CAST('${currVal[1]}' AS TEXT)) > 0.4`).join(" AND");
 
                 console.log(filterArray)
 
