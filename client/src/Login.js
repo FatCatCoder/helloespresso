@@ -6,6 +6,9 @@ import {globalStore} from './store.js';
 function Login({setAuth, setCurrPage, currPage}) {
     const history = useHistory();
     var { state } = useLocation();
+    if(state === undefined){
+        var state = {location: "/login", going: "/"}
+    }
     console.log(state.location);
 
     const [errors, setErrors] = useState({"boolean": false, "message": ""});

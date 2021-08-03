@@ -1,14 +1,7 @@
 import { useState, useEffect } from 'react';
 import {useHistory} from 'react-router-dom'; 
-import RecipeBtnGrp from './RecipeBtnGrp.js';
-import RecipeCard from './RecipeCard.js';
-import RecipePage from './RecipePage.js';
-import NewRecipe from './NewRecipe.js';
-import RecipePagination from './RecipePagination.js';
-import Pagination from './components/Pagination.js';
 import {useShotFormStore, globalStore} from './store.js';
 import * as yup from 'yup';
-
 import {
     BrowserRouter as Router,
     Switch,
@@ -20,7 +13,12 @@ import {
     Redirect
   } from "react-router-dom";
 
-  import LoadingSpinner from './components/LoadingSpinner.js';
+import RecipeBtnGrp from './RecipeBtnGrp.js';
+import RecipeCard from './RecipeCard.js';
+import RecipePage from './RecipePage.js';
+import NewRecipe from './NewRecipe.js';
+import Pagination from './components/Pagination.js';
+import LoadingSpinner from './components/LoadingSpinner.js';
 
 
 
@@ -37,9 +35,6 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const paginate = (pageNumber) => setCurrPage(pageNumber);
-
-
     // force refresh by state change of refresh.
     const [refresh, setRefresh] = useState(false);
 
@@ -50,7 +45,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     const [togglePost, setTogglePost] = useState(false);
     const [toggleRoast, setToggleRoast] = useState(false);
 
-
+    // Recipe Form validation schemas
     const schema = yup.object().shape({
         grinder: yup.string().required(),
         machine: yup.string().required(),
@@ -65,7 +60,6 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
         notes: newShot.notes
     }
 
-    
     const formErrors = useShotFormStore(state => state.formError);
     const setFormErrors = useShotFormStore(state => state.setFormError);
 
@@ -76,8 +70,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
  
         schema.validate(schemaData, { abortEarly: false })
             .then(() => {
-                setFormErrors([]); 
-                                  
+                setFormErrors([]);                 
             })
             .then(() => {
                 addRecipe(newShot)
@@ -185,7 +178,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
         var currRecipes = null;
     }
     
-
+    // Recipe data mapped to cards
     const displayRecipes = () => {
         console.log(currRecipes);
         console.log(myRecipes);
@@ -212,6 +205,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     
     //<RecipePagination recipesPerPage={recipesPerPage} totalRecipes={totalRecipes} paginate={paginate} fetchRecipes={fetchRecipes} myRecipes={myRecipes} setMyRecipes={setMyRecipes} setCurrPage={setCurrPage} />
     //   {isLoading? displayRecipes(): <LoadingSpinner />}
+    //   {currRecipes && displayRecipes()}
 
     return(
 
@@ -223,7 +217,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                     <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} togglePost={togglePost} setTogglePost={setTogglePost} toggleRoast={toggleRoast} setToggleRoast={setToggleRoast} fetchRecipes={fetchRecipes} getUserId={getUserId} isLoggedIn={isLoggedIn} />
 
                     <div className="container row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
-                        {currRecipes && displayRecipes()}
+                        {myRecipes? displayRecipes() : <LoadingSpinner />}
                     </div>
 
                     <Pagination className={"container text-center mx-auto p-3"} itemsPerPage={recipesPerPage} totalItems={totalRecipes} currPage={currPage} setCurrPage={changePage} />

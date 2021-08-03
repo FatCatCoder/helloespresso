@@ -1,6 +1,7 @@
 import { useParams } from "react-router";
 import {useEffect, useState} from 'react';
 import {globalStore} from './store';
+import './RecipePage.scss';
 // .split('-').reverse().join('/')
 
 
@@ -14,6 +15,8 @@ function RecipePage(props){
     //const [recipe, setRecipe] = useState(props.recipe? props.recipe.find(obj => obj.id == id): null);
     const [recipe, setRecipe] = useState(null);
     var recipeOBJ = '';
+    var recipeUserId = recipe?.userId;
+   
  
     // const fetchRecipe = async () => {
     //     const res = await fetch(`/recipes/${id}`)
@@ -47,6 +50,7 @@ function RecipePage(props){
 
 
     const user_id = globalStore(state => state.getUserIdFromJWT);
+    
 
 
     // get initial isLiked from server
@@ -65,7 +69,8 @@ function RecipePage(props){
     }
 
     // check if logged and token is valid for grabbing user id
-    const isValid = globalStore(state => state.checkValidToken);
+    const isValid = globalStore(state => state.checkValidToken); 
+    const isLoggedIn = globalStore(state => state.isLoggedIn);
 
     // toggle like/ unlike on server and updates with json returned bool
     const bussinButton = async () => {
@@ -100,11 +105,12 @@ function RecipePage(props){
                 const res = await fetch(`/recipes/${id}`)
                 const data = await res.json()
                 console.log('fetchRecipes data', data[0])
-                await setRecipe(data[0])
+                //await setRecipe(data[0])
+                recipeUserId = data[0].userId
                 return data[0];
             }
-            //setRecipe(fetchRecipe()); 
-            var recipeOBJ = await fetchRecipe(); 
+            setRecipe(await fetchRecipe()); 
+            //var recipeOBJ = await fetchRecipe();
             console.log('NO data in state BAD')
             
         }
@@ -122,8 +128,11 @@ function RecipePage(props){
     useEffect(async() => {
         fetchLiked();
     }, []);
-
-    console.log(liked);
+    
+    
+    console.log(liked, isValid(), isLoggedIn, recipeUserId, recipeOBJ.userId);
+    console.log((recipe !== null && user_id === recipe.userId) && isLoggedIn);
+    
     //recipe !== null ? recipe.bean :recipeOBJ !== null ? recipeOBJ: ''
     
     return(
@@ -178,6 +187,12 @@ function RecipePage(props){
                 </div>
             </div>
 
+        {(recipe !== null && user_id === recipe.userId) && isLoggedIn? 
+        <button className="btn btn-danger mt-2">
+            <span class="main-text">Delete Recipe</span>
+            <span class="hover-text">Are You Sure?</span>
+            </button>
+        : null}
         </div>
     )
 }

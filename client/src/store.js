@@ -33,19 +33,22 @@ const globalStore = create((set, get) => ({
       method: 'get',
       url: '/verify-auth',
       headers: { 'Authorization': localStorage.getItem('Authorization') }
-  }
-  try {
-    const isValid = await axios(config);
-    console.log(isValid.data.verified);
-    if(isValid.data.verified){
-      set(state => ({isLoggedIn: true}))
-      return true;
     }
-    return false;
-  } catch (error) {
-    set(state => ({isLoggedIn: false}))
-    return false;
-  }
+    try {
+      const isValid = await axios(config);
+      console.log(isValid.data.verified);
+
+      if(isValid.data.verified){
+        set(state => ({isLoggedIn: true}))
+        return true;
+      }
+      set(state => ({isLoggedIn: false}))
+        return false;
+      } 
+    catch (error) {
+      set(state => ({isLoggedIn: false}))
+      return false;
+    }
   console.log(get().isLoggedIn);
   }
 }))
