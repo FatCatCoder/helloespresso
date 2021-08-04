@@ -16,97 +16,37 @@ import {
 import RecipeBtnGrp from './RecipeBtnGrp.js';
 import RecipeCard from './RecipeCard.js';
 import RecipePage from './RecipePage.js';
-import NewRecipe from './NewRecipe.js';
+import RecipeForm from './RecipeForm.js';
 import Pagination from './components/Pagination.js';
 import LoadingSpinner from './components/LoadingSpinner.js';
 
 
 
 function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot, isAuth}){
+    // nav and header
     const history = useHistory();
     let location = useLocation();
+    let match = useRouteMatch();
+
+    // all recipes data in pages, and current selection of recipes for page display
+    const [myRecipes, setMyRecipes] = useState(null);
+    const [recipeSlice, setRecipeSlice] = useState([]);
 
     // for pagination
-    //const [myRecipes, setMyRecipes] = useState([{"page": 0, "recipes" : []}]);
-    const [myRecipes, setMyRecipes] = useState(null);
     const [currPage, setCurrPage] = useState(1);
     const [recipesPerPage, setRecipesPerPage] = useState(8);
     const [totalRecipes, setTotalRecipes] = useState(8);
 
-    const [isLoading, setIsLoading] = useState(true);
-
-    // force refresh by state change of refresh.
+    // ui controllers, force refresh by state change of refresh or for async data use loading.
     const [refresh, setRefresh] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     // sorting and filtering data
     const [sortFilters, setSortFilters] = useState({});
 
-    // RecipeBtnGroup toggle states
-    const [togglePost, setTogglePost] = useState(false);
-    const [toggleRoast, setToggleRoast] = useState(false);
-
-    // Recipe Form validation schemas
-    const schema = yup.object().shape({
-        grinder: yup.string().required(),
-        machine: yup.string().required(),
-        tastingNotes: yup.string().required(),
-        notes: yup.string()
-    })
-
-    const schemaData = {
-        grinder: newShot.grinder,
-        machine: newShot.machine,
-        tastingNotes: newShot.tastingNotes,
-        notes: newShot.notes
-    }
-
-    const formErrors = useShotFormStore(state => state.formError);
-    const setFormErrors = useShotFormStore(state => state.setFormError);
-
-    
-    // before submitting recipe to server, check validation on form and on return redirect back to recipes homepage
-    const handleSubmit = (event) => {
-        event.preventDefault();
- 
-        schema.validate(schemaData, { abortEarly: false })
-            .then(() => {
-                setFormErrors([]);                 
-            })
-            .then(() => {
-                addRecipe(newShot)
-                history.push('/recipes');
-            })
-            .catch(function (err) {
-                setFormErrors(err.errors);
-                console.log(Object.keys(err), err.name, err.value, err.path, err.type, err.errors, err.inner)
-            })
-        
-    }
-
-    //get userId from state
+    //get userId and logged in status from global state store
     const getUserId = globalStore(state => state.getUserIdFromJWT)
     const isLoggedIn = globalStore(state => state.isLoggedIn)
-
-    // Add new recipe to server and upload local state with database returned object
-    const addRecipe = async (recipe) => {
-        recipe["userId"] = await getUserId();
-        
-        const res = await fetch('/recipes/new', {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(recipe)
-        })
-
-        const data = await res.json();
-
-        console.log(data);
-        setMyRecipes([...myRecipes, data])
-        setNewShot({});
-    }
 
 
     
@@ -120,15 +60,20 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
             setTotalRecipes(recipesFromServer[0].count)
             // push page state back to the first page
             setCurrPage(1)
+           // setCurrRecipes(recipesFromServer)
         }
         getRecipes();
         setIsLoading(false) 
     }, [refresh])
 
-    console.log(myRecipes);  
+    // set recipes on page
+    useEffect(() => {
+        myRecipes? setRecipeSlice(myRecipes.find(x => x["page"] === currPage)["recipes"]) : setRecipeSlice([]);
+    }, [myRecipes]) 
 
     // POST get recipes from server based on page and amount
     const fetchRecipes = async (thisPage = currPage, numOf = recipesPerPage) => {
+        setIsLoading(true);
         console.log(sortFilters?.sortBy);
         if(sortFilters.sortBy == null){
             setSortFilters((filters) => ({...filters, "sortBy": "postdate DESC"}))
@@ -148,51 +93,15 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
         return data;
     }
 
-    let match = useRouteMatch();
-
-    console.log(myRecipes);
-    
-    
-
-    // pagination
-    const indexOfLastPost = currPage * recipesPerPage;
-    const indexOfFirstPost = indexOfLastPost - recipesPerPage;
-
-    // ugly bad stupid awful code please forgive me until I refactor....
-    //
-    // checks for initial component render as null and sets state to not display
-    // waits until useEffect loads data and on second render returns currRecipes with Recipe data
-    // on page change catches null again and returns null so component does not crash on dependent state
-    // after page change updates its state and renders currRecipes returns proper slice of recipes
-    //
-    if(myRecipes){
-        try{
-        //var currRecipes = myRecipes[currPage - 1]["recipes"]
-        var currRecipes = myRecipes.find(x => x["page"] === currPage)["recipes"]
-        }
-        catch{
-            var currRecipes = null;
-        }
-    }
-    else{
-        var currRecipes = null;
-    }
-    
-    // Recipe data mapped to cards
-    const displayRecipes = () => {
-        console.log(currRecipes);
-        console.log(myRecipes);
-        return currRecipes.map((x, y) => <RecipeCard key={x.id} number={y} recipe={x}/>)
-    }
-
-    console.log(myRecipes)
 
     // On pagination setCurrPage change, checks if page exists in memory, if not then fetch it and update state.
     const changePage = async(number) => {
         (function () {
             setCurrPage(number);
+            setIsLoading(true);
         } ());
         
+        // returns bool
         const alreadyFetched = () => {
             return myRecipes.includes(myRecipes.find(x => x["page"] === number))
         };
@@ -200,12 +109,20 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
         if(!alreadyFetched()){
             const data = await fetchRecipes(number);
             setMyRecipes([...myRecipes, {"page": number, "recipes" : data}]);
-        }  
+        }
+        else{
+            setRecipeSlice(myRecipes.find(x => x["page"] === number)["recipes"])
+        }
+
+        setIsLoading(false);
     }
     
-    //<RecipePagination recipesPerPage={recipesPerPage} totalRecipes={totalRecipes} paginate={paginate} fetchRecipes={fetchRecipes} myRecipes={myRecipes} setMyRecipes={setMyRecipes} setCurrPage={setCurrPage} />
-    //   {isLoading? displayRecipes(): <LoadingSpinner />}
-    //   {currRecipes && displayRecipes()}
+     // Recipe data mapped to recipe card components
+     const displayRecipes = () => {
+        return recipeSlice.map((x, y) => <RecipeCard key={x.id} number={y} recipe={x}/>)
+    }
+
+
 
     return(
 
@@ -214,10 +131,10 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                 <Route exact path={match.path}>
                     <h1 className="display-2">Recipes</h1>
                     <p>Here for all your espresso brewing needs.</p>
-                    <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} togglePost={togglePost} setTogglePost={setTogglePost} toggleRoast={toggleRoast} setToggleRoast={setToggleRoast} fetchRecipes={fetchRecipes} getUserId={getUserId} isLoggedIn={isLoggedIn} />
+                    <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} fetchRecipes={fetchRecipes} getUserId={getUserId} isLoggedIn={isLoggedIn} />
 
                     <div className="container row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
-                        {myRecipes? displayRecipes() : <LoadingSpinner />}
+                        {!isLoading? displayRecipes() : <LoadingSpinner /> }
                     </div>
 
                     <Pagination className={"container text-center mx-auto p-3"} itemsPerPage={recipesPerPage} totalItems={totalRecipes} currPage={currPage} setCurrPage={changePage} />
@@ -226,15 +143,14 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                 <Route exact path={`/recipes/new`} 
                     render={props => isAuth ? 
                         (
-                    <form onSubmit={handleSubmit} className="mx-auto text-center">
-                        <NewRecipe add={addRecipe} onNewShot={onNewShot} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
-                    </form>
+                    
+                        <RecipeForm onNewShot={onNewShot} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} getUserId={getUserId} refresh={refresh} setRefresh={setRefresh} />
                     )
                      : (<Redirect to={{pathname: "/login", state: {location: "/recipes", going: '/recipes/new'}}} />)} 
                 />
 
                 <Route path={`${match.path}/:id`}>
-                    <RecipePage recipe={currRecipes}/>
+                    <RecipePage recipe={recipeSlice}/>
                 </Route>
             </Switch>
         </div>
