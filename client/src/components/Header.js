@@ -1,13 +1,13 @@
 import React from 'react';
-import './App.scss';
+import '../App.scss';
 import { useState } from 'react';
 import Navbar from './Navbar.js';
 import './Header.css';
 import { Link, useHistory } from 'react-router-dom';
 import Fade from 'react-reveal/Fade';
-import tamper from './img/tamper_fix.png';
-import portafilter from './img/portafilter_fix.png';
-import drip from './img/drip_fix.png';
+import tamper from '../img/tamper_fix.png';
+import portafilter from '../img/portafilter_fix.png';
+import drip from '../img/drip_fix.png';
 
 
 function Header({currPage, setCurrPage}){

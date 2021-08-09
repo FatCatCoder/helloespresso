@@ -15,3 +15,7 @@ input[type=number] {
   text-align: right;
   margin-right: .1em;
 }
+
+input.input-error{
+  border-color: #dc3545 !important;
+}

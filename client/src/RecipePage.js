@@ -7,9 +7,6 @@ import './RecipePage.scss';
 
 function RecipePage(props){
     let {id} = useParams();
-    console.log(id)
-
-    //console.log(props.recipe);
     
     const [liked, setLiked] = useState(false);
     //const [recipe, setRecipe] = useState(props.recipe? props.recipe.find(obj => obj.id == id): null);

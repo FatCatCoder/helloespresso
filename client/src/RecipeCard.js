@@ -1,26 +1,32 @@
 import {Link} from 'react-router-dom';
-import {useState } from 'react';
+import {useState, useEffect} from 'react';
 
-function RecipeCard({recipe, number}){
+function RecipeCard({recipe}){
     const myDate = new Date(recipe.roastdate).toLocaleDateString();
-    console.log(recipe.id)
     const [likes, setLikes] = useState(0);
 
-
-    const fetchLikes = async () => {
-        const res = await fetch('/recipes/likes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({"id" : recipe.id})
-        })
-        const data = await res.json()
+    useEffect(async() => {
+        const abortController = new AbortController();
+        let ignore = false;
+        const fetchLikes = async () => {
+            const res = await fetch('/recipes/likes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"id" : recipe.id})
+            })
+            const data = await res.json()
+            
+            setLikes(data)
+        }
         
-        setLikes(data)
-    }
+        if(!ignore){
+            fetchLikes();
+        }
 
-    fetchLikes();
+        return () => { ignore = true; abortController.abort(); }; 
+    }, [])
 
 
     return(
@@ -35,7 +41,7 @@ function RecipeCard({recipe, number}){
                 <div className="card-body">
                     
                     <p className="container smaller-text card-text text-capitalize">Notes: <span className="text-muted">{recipe.tastingnotes !== undefined ? recipe.tastingnotes: 'Notes'}</span></p>
-                    <p className="card-text"><small className="text-muted">Date Roasted: {myDate !== undefined ? myDate: 'Date'}</small></p>
+                    <p className="card-text"><small className="text-muted">Date Roasted: {recipe.roastdate !== undefined ? new Date(recipe.roastdate).toLocaleDateString(): 'Date'}</small></p>
                 </div>
                 <i class="bi bi-heart-fill text-danger border"> x {likes} </i>
             </div> 

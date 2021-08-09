@@ -10,7 +10,7 @@ import {useShotFormStore, globalStore} from './store.js';
 // components
 import './App.css';
 import './App.scss';
-import Header from './Header.js';
+import Header from './components/Header.js';
 import Body from './Body.js';
 import Footer from './Footer.js';
 import About from './About.js';
@@ -150,7 +150,8 @@ function App (){
       setStep(1);
     }).catch(function (err) {
       setFormErrors(err.errors);
-      console.log(Object.keys(err), err.name, err.value, err.path, err.type, err.errors, err.inner)
+      //console.log(err.inner.find((x) => {return x.path == "dose"}).type)
+      //console.log(err.inner.includes(err.inner.find((x) => {return x.path == "dose" && x.type == "required"})))
     })
   }
 

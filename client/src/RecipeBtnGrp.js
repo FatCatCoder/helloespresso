@@ -13,36 +13,28 @@ function RecipeBtnGrp(props){
     const handleSubmit = async (event) => {
         event.preventDefault();
         props.fetchRecipes();
-        //props.setRefresh(!props.refresh);
     }
 
     const resetForm = () => { 
         document.getElementById("filterForm").reset();
       }
-
-   console.log(props.getUserId(), props.isLoggedIn)
     
     return(
         <div className="container border mx-auto mb-3">
-                <button onClick={props.goTo} className="btn btn-primary m-2">New</button>
+                <button onClick={props.goTo} className="btn btn-primary">New</button>
 
-                <div className="btn-group m-2">
-                
-
-                <button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#sortCollapse" aria-expanded="false" aria-controls="sortCollapse">
+                <button className="btn btn-primary dropdown-toggle m-2" type="button" data-bs-toggle="collapse" data-bs-target="#sortCollapse" aria-expanded="false" aria-controls="sortCollapse">
                     Sort
                 </button>
 
-                
-                </div>
-
-                <button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
                     Filter <i className="bi bi-chevron-expand"></i>
                 </button>
 
                 <button className="btn btn-primary m-2 float-right" onClick={() => props.setRefresh(!props.refresh)} >
                     <i className="bi bi-arrow-repeat"></i>
                 </button>
+
 
                 <div className="collapse" id="sortCollapse">
                     <div className="card card-body border-0">
@@ -56,17 +48,17 @@ function RecipeBtnGrp(props){
                     </div>
                 </div>
 
-                <div className="collapse" id="collapseExample">
+                <div className="collapse" id="filterCollapse">
                     <div className="card card-body border-0">
                         <form autoComplete="off" onSubmit={handleSubmit} className="mx-auto text-center" id="filterForm">
-                            
                             <div className="row container-sm">
-                            <input className="shadow col-md border-1 form-control m-2" list="beanList" onChange={handleOnChange} value={props.sortFilters.bean} name="bean" type="text" placeholder="Bean/Name..."></input>
-                            <input className="shadow col-md border-1 form-control m-2" onChange={handleOnChange} value={props.sortFilters.roaster} name="roaster" type="text" placeholder="Roaster..."></input>
-                            <input className="shadow col-md border-1 form-control m-2" onChange={handleOnChange} value={props.sortFilters.region} name="region" type="text" placeholder="Region..."></input>
-                            <input className="shadow col-md border-1 form-control m-2" onChange={handleOnChange} value={props.sortFilters.grinder} name="grinder" type="text" placeholder="Grinder..."></input> 
-                            <input className="shadow col-md border-1 form-control m-2" onChange={handleOnChange} value={props.sortFilters.machine} name="machine" type="text" placeholder="Machine..."></input>
+                                <input className="shadow col-md border-1 form-control m-2" list="beanList" onChange={handleOnChange} value={props.sortFilters.bean} name="bean" type="text" placeholder="Bean/Name..."></input>
+                                <input className="shadow col-md border-1 form-control m-2" onChange={handleOnChange} value={props.sortFilters.roaster} name="roaster" type="text" placeholder="Roaster..."></input>
+                                <input className="shadow col-md border-1 form-control m-2" onChange={handleOnChange} value={props.sortFilters.region} name="region" type="text" placeholder="Region..."></input>
+                                <input className="shadow col-md border-1 form-control m-2" onChange={handleOnChange} value={props.sortFilters.grinder} name="grinder" type="text" placeholder="Grinder..."></input> 
+                                <input className="shadow col-md border-1 form-control m-2" onChange={handleOnChange} value={props.sortFilters.machine} name="machine" type="text" placeholder="Machine..."></input>
                             </div>
+
                             <div className="row mx-auto text-center col-10 col-lg-3">
                                 <div className="col-6 col-md-6 mx-auto">
                                     <label className="" for="roast">Roast: </label>
@@ -90,25 +82,21 @@ function RecipeBtnGrp(props){
                             </div>
 
                             <div className="mt-0 mx-auto">
-                            <input className="form-check-input" type="checkbox" onChange={handleOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="user_id" id="user_id" disabled={!props.isLoggedIn} />
-                            <label className="form-check-label" for="user_id">
-                                {!props.isLoggedIn? 'Login to filter yours': 'My Recipes'}
-                            </label>
+                                <input className="form-check-input" type="checkbox" onChange={handleOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="user_id" id="user_id" disabled={!props.isLoggedIn} />
+                                <label className="form-check-label" for="user_id">
+                                    {!props.isLoggedIn? 'Login to filter yours': 'My Recipes'}
+                                </label>
                             </div>
                             
-    
                             <div className="row mx-auto mt-3"><button className="btn btn-primary" type="submit">Apply</button></div>
 
                             <div className="row mx-auto">
-                                <button className="btn btn-light-custom col-6" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample">Close</button>
+                                <button className="btn btn-light-custom col-6" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse">Close</button>
                                 <button className="btn btn-light-custom col-6" type="button" onClick={() => {props.setSortFilters({}); resetForm();}}>Reset</button>
-                            </div>
-
-                            
+                            </div>    
                         </form>
                     </div>
                 </div>
-
             </div>
     )
 }

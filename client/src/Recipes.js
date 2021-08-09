@@ -1,15 +1,11 @@
 import { useState, useEffect } from 'react';
 import {useHistory} from 'react-router-dom'; 
-import {useShotFormStore, globalStore} from './store.js';
-import * as yup from 'yup';
+import {globalStore} from './store.js';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link,
     useRouteMatch,
-    useLocation,
-    useParams,
     Redirect
   } from "react-router-dom";
 
@@ -25,7 +21,6 @@ import LoadingSpinner from './components/LoadingSpinner.js';
 function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot, isAuth}){
     // nav and header
     const history = useHistory();
-    let location = useLocation();
     let match = useRouteMatch();
 
     // all recipes data in pages, and current selection of recipes for page display
@@ -52,6 +47,8 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     
     // get recipes on load and refresh
     useEffect(() => {
+        const abortController = new AbortController();
+        let ignore = false;
         const getRecipes = async () => {
             const recipesFromServer = await fetchRecipes(1);
             // set Recipes array       
@@ -62,8 +59,14 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
             setCurrPage(1)
            // setCurrRecipes(recipesFromServer)
         }
-        getRecipes();
-        setIsLoading(false) 
+        if(!ignore){
+            getRecipes();
+            setIsLoading(false)
+        }
+        return () => {
+            ignore = true;
+            abortController.abort();
+        }; 
     }, [refresh])
 
     // set recipes on page
@@ -106,6 +109,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
             return myRecipes.includes(myRecipes.find(x => x["page"] === number))
         };
 
+        // fetch new data or useState data
         if(!alreadyFetched()){
             const data = await fetchRecipes(number);
             setMyRecipes([...myRecipes, {"page": number, "recipes" : data}]);
@@ -119,7 +123,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     
      // Recipe data mapped to recipe card components
      const displayRecipes = () => {
-        return recipeSlice.map((x, y) => <RecipeCard key={x.id} number={y} recipe={x}/>)
+        return recipeSlice.map((x) => <RecipeCard key={x.id} recipe={x}/>)
     }
 
 
