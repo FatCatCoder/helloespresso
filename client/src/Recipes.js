@@ -1,3 +1,4 @@
+// modules
 import { useState, useEffect } from 'react';
 import {useHistory} from 'react-router-dom'; 
 import {globalStore} from './store.js';
@@ -9,6 +10,7 @@ import {
     Redirect
   } from "react-router-dom";
 
+// components
 import RecipeBtnGrp from './RecipeBtnGrp.js';
 import RecipeCard from './RecipeCard.js';
 import RecipePage from './RecipePage.js';
@@ -49,6 +51,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     useEffect(() => {
         const abortController = new AbortController();
         let ignore = false;
+
         const getRecipes = async () => {
             const recipesFromServer = await fetchRecipes(1);
             // set Recipes array       
@@ -71,10 +74,12 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
 
     // set recipes on page
     useEffect(() => {
-        myRecipes? setRecipeSlice(myRecipes.find(x => x["page"] === currPage)["recipes"]) : setRecipeSlice([]);
+        let ignore = false;
+        if(!ignore){ myRecipes? setRecipeSlice(myRecipes.find(x => x["page"] === currPage)["recipes"]) : setRecipeSlice([]); }
+        return () => { ignore = true; }; 
     }, [myRecipes]) 
 
-    // POST get recipes from server based on page and amount
+    // POST request to get recipes from server based on page and amount, checks for null filter requirements
     const fetchRecipes = async (thisPage = currPage, numOf = recipesPerPage) => {
         setIsLoading(true);
         console.log(sortFilters?.sortBy);
@@ -154,7 +159,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                 />
 
                 <Route path={`${match.path}/:id`}>
-                    <RecipePage recipe={recipeSlice}/>
+                    <RecipePage recipe={recipeSlice} />
                 </Route>
             </Switch>
         </div>

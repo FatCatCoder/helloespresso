@@ -2,12 +2,12 @@ import {Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
 function RecipeCard({recipe}){
-    const myDate = new Date(recipe.roastdate).toLocaleDateString();
     const [likes, setLikes] = useState(0);
 
-    useEffect(async() => {
+    useEffect(() => {
         const abortController = new AbortController();
         let ignore = false;
+
         const fetchLikes = async () => {
             const res = await fetch('/recipes/likes', {
                 method: 'POST',
@@ -17,7 +17,6 @@ function RecipeCard({recipe}){
                 body: JSON.stringify({"id" : recipe.id})
             })
             const data = await res.json()
-            
             setLikes(data)
         }
         
