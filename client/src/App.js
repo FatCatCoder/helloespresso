@@ -230,12 +230,6 @@ function App (){
         <Route path="/journal"
           render={props => isAuth ? (<Journal shotList={shotList} isAuth={isAuth}/>) : (<Redirect to={{pathname: "/login", state: {location: "/journal", going: "/journal"}}} />)}  
         />
-        
-        {/*
-        <Route path="/journal">
-          <Journal shotList={shotList} isAuth={isAuth}/>
-        </Route>
-        */}
 
         <Route path="/recipes">
           <Recipes isAuth={isAuth} onNewShot={addShotToList} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} handleSubmit={handleSubmit} todaysDate={todaysDate} />

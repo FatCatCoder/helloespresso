@@ -1,6 +1,9 @@
-import {useState} from 'react';
-function RecipeBtnGrp(props){
+import { useState } from 'react';
+import { useHistory } from "react-router";
+import { Link } from 'react-router-dom';
 
+function RecipeBtnGrp(props){
+    let history = useHistory();
     const [sortUsed, setSortUsed] = useState(null);
 
     const handleOnChange = (e) => {
@@ -10,15 +13,30 @@ function RecipeBtnGrp(props){
         }));
     }
 
+    const handleCheckboxOnChange = (e) => {
+        if(e.target.checked){
+            props.setSortFilters((prevProps) => ({
+                ...prevProps,
+                [e.target.name]: e.target.value
+            }));
+        }
+        else if(e.target.checked === false){
+            props.setSortFilters((prevProps) => (delete prevProps[e.target.name], { 
+                ...prevProps
+            }));
+        }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        props.fetchRecipes();
+        props.setRefresh(!props.refresh);
     }
 
     const resetForm = () => { 
         document.getElementById("filterForm").reset();
       }
     
+      // <button className="btn btn-light-custom" onClick={() => history.push('/login')}>Login for more filters</button>
     return(
         <div className="container border mx-auto mb-3">
                 <button onClick={props.goTo} className="btn btn-primary">New</button>
@@ -80,20 +98,30 @@ function RecipeBtnGrp(props){
                                     </select><br/>
                                 </div>
                             </div>
-
-                            <div className="mt-0 mx-auto">
-                                <input className="form-check-input" type="checkbox" onChange={handleOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="user_id" id="user_id" disabled={!props.isLoggedIn} />
-                                <label className="form-check-label" for="user_id">
-                                    {!props.isLoggedIn? 'Login to filter yours': 'My Recipes'}
-                                </label>
-                            </div>
                             
-                            <div className="row mx-auto mt-3"><button className="btn btn-primary" type="submit">Apply</button></div>
+                            <div className="mt-0 mx-auto row col-6">
+                            {!props.isLoggedIn?
+                                <Link className="btn btn-light-custom" to={{pathname: "/login", state: {location: "/recipes", going: "/recipes"}}}>Login for more filters</Link> 
+                            :
+                                <>
+                                <div className="col-6">
+                                    <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="user_id" id="user_id" disabled={!props.isLoggedIn} />
+                                    <label className="form-check-label" for="user_id">My Recipes</label>
+                                </div>
 
-                            <div className="row mx-auto">
+                                <div className="col-6">
+                                    <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="likes_user_id" id="likes_user_id" disabled={!props.isLoggedIn} />
+                                    <label className="form-check-label" for="user_id">Loved Recipes</label>
+                                </div>
+                                </>
+                            }
+                            </div>
+                            <div className="row mx-auto mt-3"><button className="btn btn-primary rounded-top rounded-0" type="submit">Apply</button></div>
+
+                            <div className="row mx-auto rounded-bottom btn-light-custom m-0 p-0">
                                 <button className="btn btn-light-custom col-6" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse">Close</button>
                                 <button className="btn btn-light-custom col-6" type="button" onClick={() => {props.setSortFilters({}); resetForm();}}>Reset</button>
-                            </div>    
+                            </div>
                         </form>
                     </div>
                 </div>

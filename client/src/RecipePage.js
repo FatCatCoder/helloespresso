@@ -4,9 +4,7 @@ import {globalStore} from './store';
 import './RecipePage.scss';
 
 function RecipePage(props){
-    console.log(" RECIPE PAGE  RENDER")
-    console.log(props.recipe)
-
+    // Routing
     let {id} = useParams();
     let history = useHistory();
 
@@ -57,10 +55,12 @@ function RecipePage(props){
                 setBussinText({"text" : "Login to Like!", "click": () => history.push('/login')})
             }
     }
+
 // like button text and onClick action as an object
 const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": bussinButton});
     
 // Effects
+
     // load from state or fetch data
     useEffect(() => {
         const abortController = new AbortController();
@@ -72,7 +72,8 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
             recipeUserId = data[0].userId
             setRecipe(data[0]);
         }
-        // no props, fetch from server
+
+        // If not in prop state then fetch from server
         if (props.recipe.length === 0) {
             fetchRecipe();
         }
@@ -142,12 +143,13 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
                 </div>
             </div>
 
-        {(recipe !== null && user_id === recipe?.userId) && isLoggedIn? 
-        <button className="btn btn-danger mt-2">
-            <span class="main-text">Delete Recipe</span>
-            <span class="hover-text">Are You Sure?</span>
-            </button>
-        : null}
+        {user_id() == recipe?.user_id && isLoggedIn? 
+            <button className="btn btn-danger mt-2">
+                <span class="main-text">Delete Recipe</span>
+                <span class="hover-text">Are You Sure?</span>
+                </button>
+            :null
+        }
         </div>
     )
 }
