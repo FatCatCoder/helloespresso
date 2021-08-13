@@ -110,8 +110,8 @@ function RecipeBtnGrp(props){
                                 </div>
 
                                 <div className="col-6">
-                                    <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="likes_user_id" id="likes_user_id" disabled={!props.isLoggedIn} />
-                                    <label className="form-check-label" for="user_id">Loved Recipes</label>
+                                    <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="liked_by_user_id" id="liked_by_user_id" disabled={!props.isLoggedIn} />
+                                    <label className="form-check-label" for="liked_by_user_id">Loved Recipes</label>
                                 </div>
                                 </>
                             }
