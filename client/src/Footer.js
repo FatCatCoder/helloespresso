@@ -1,20 +1,49 @@
 import React from 'react';
 import Shot from './Shot';
 import AddToJournalModal from './AddToJournalModal.js';
+import {globalStore} from './store.js';
+import axios from 'axios';
 
 import {useState} from 'react';
 import './App.scss';
 
-function Footer ({shotList, setShotList, handleModalSubmit, handleModalInputChange, journalEntry, setJournalEntry, todaysDate}){
+function Footer ({addShotToList, shotList, setShotList}){
+    // Auth
+    const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
+    const getUserId = globalStore(state => state.getUserIdFromJWT)
 
+     // Footer modal form shot logging to journal 
+     const todaysDate = new Date().toISOString().split('T')[0];
+     const [journalEntry, setJournalEntry] = useState({"postDate": todaysDate});
+     
 
+    const handleModalSubmit = (event) => {
+        event.preventDefault();
+        addEntryToJournal(journalEntry);
+        //setJournalEntry({"postDate": todaysDate})
+    }
+
+    const handleModalInputChange = (e) => {
+        setJournalEntry((prevProps) => ({
+            ...prevProps,
+            [e.target.name]: e.target.value
+        }));
+    };
+
+    // add new entry to journal
+    const addEntryToJournal = async(entry) => {
+    const userId = await getUserId();
+    axios({
+        method: 'POST',
+        url: '/journals/new',
+        data: {"journalData": entry, "ShotLog": shotList, "user_id": userId}
+    })
+}
 
     const pulls = shotList.map((pull, index) =>
             <Shot key={index} listNum={index+1} dose={pull.dose} time={pull.time} yield={pull.yield} grind={pull.grind} notes={pull.notes} Sour={pull.Sour} Bitter={pull.Bitter} Weak={pull.Weak} Balanced={pull.Balanced} Strong={pull.Strong} /> 
         );
 
-        
-    
 
     return(
         <div id="Footer" className="text-center mx-auto">

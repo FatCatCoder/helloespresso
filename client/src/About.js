@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import {globalStore} from './store.js'
 
 function About({setIsAuth}) {
+  const setIsLoggedIn = globalStore(state => state.setIsLoggedIn);
 
   const logout = async () => {
     // Gets token from storage
@@ -11,6 +13,7 @@ function About({setIsAuth}) {
     // Sends token to be blacklisted on the server
     const res = await axios.post('/logout', {token: token});
     // Sets "isAuth" to false
+    setIsLoggedIn(false);
     setIsAuth(false);
   }
 

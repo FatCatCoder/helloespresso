@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { useHistory } from "react-router";
 import { Link } from 'react-router-dom';
 
 function RecipeBtnGrp(props){
-    let history = useHistory();
     const [sortUsed, setSortUsed] = useState(null);
 
     const handleOnChange = (e) => {
@@ -36,7 +34,7 @@ function RecipeBtnGrp(props){
         document.getElementById("filterForm").reset();
       }
     
-      // <button className="btn btn-light-custom" onClick={() => history.push('/login')}>Login for more filters</button>
+    
     return(
         <div className="container border mx-auto mb-3">
                 <button onClick={props.goTo} className="btn btn-primary">New</button>

@@ -15,7 +15,7 @@ import {
   } from "react-router-dom";
 
 
-function Journal({shotList, isAuth}){
+function Journal({isAuth}){
     const history = useHistory();
     let match = useRouteMatch();
 

@@ -110,9 +110,9 @@ router.post('/', async(req, res) => {
             if(sortRequest !== 'popular DESC' & sortRequest !== undefined){
 
                 // base query
-                var queryStr = `SELECT *, COUNT(*) OVER() AS count FROM recipes AS R ${filtersList.find(x => x[0] == 'liked_by_user_id') !== -1?  `INNER JOIN likes AS L
-                ON (R.id = L.recipe_id AND L.user_id = '${filtersList[likedByUserIdFix][1]}')
-                `: ``}`
+                var queryStr = `SELECT *, COUNT(*) OVER() AS count FROM recipes AS R ${likedByUserIdFix !== -1?  `INNER JOIN likes AS L
+                ON (R.id = L.recipe_id AND L.user_id = '${filtersList[likedByUserIdFix][1]}')`
+                : ``}`
 
                 // check for filters, then add sort method
                 if((allFilters !== null || allFilters !== undefined) & allFilters.length >= 1){ addFilters('WHERE') }
@@ -147,8 +147,8 @@ router.post('/', async(req, res) => {
             console.log(queryStr)
             var recipes = await pool.query(queryStr);
         }
-        console.log('count', recipes.rowCount,'\n',recipes.rows[0]);
-        res.send(recipes.rows);
+        console.log('count', recipes.rowCount,'\n',recipes.rows[0], '\n', recipes, recipes.rowCount === 0? [] : recipes.rows);
+        res.send(recipes.rowCount === 0? [{"count": 0}] : recipes.rows);
     }
     catch(err){
         console.log(err)

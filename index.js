@@ -30,11 +30,15 @@ if (process.env.NODE_ENV === "production"){
 // routes
 app.use("/", require("./server/routes/jwtAuth"));
 
+app.use("/password-reset", require("./server/routes/passwordReset"));
+
 app.use("/recipes", require("./server/api/recipes"));
 
 app.use("/journals", require("./server/api/journals"));
 
 app.use("/shots", require("./server/api/shots"));
+
+
 
 /*
 app.get("*", (req, res) => {

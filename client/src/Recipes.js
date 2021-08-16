@@ -17,6 +17,7 @@ import RecipePage from './RecipePage.js';
 import RecipeForm from './RecipeForm.js';
 import Pagination from './components/Pagination.js';
 import LoadingSpinner from './components/LoadingSpinner.js';
+import ErrorScreen from './components/ErrorScreen.js';
 
 
 
@@ -128,6 +129,10 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     
      // Recipe data mapped to recipe card components
      const displayRecipes = () => {
+        if(recipeSlice[0]?.count === 0){
+            return <ErrorScreen errorMessage={'All out of coffee, try a different search?'} />
+        }
+
         return recipeSlice.map((x) => <RecipeCard key={x.id} recipe={x}/>)
     }
 
