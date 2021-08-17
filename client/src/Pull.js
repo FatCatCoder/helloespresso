@@ -8,15 +8,17 @@ import Footer from './Footer.js';
 import './App.scss';
 
 
-function Pull ({newShot, setNewShot, handleCheckboxChange, handleInputChange, step, setStep}) {
+function Pull ({newShot, setNewShot, handleCheckboxChange, handleInputChange}) {
 
-     /*set default list of pulled shots */
-     const [shotList, setShotList] = useState([{"dose":"20", "time":"30", "yield":"45", "grind": "10", "roaster": "Buddy Brew", "bean": "Ethiopia", "Bitter": true, "Strong": true, "notes": "too strong and overextracted, no tasting notes present."},
-     {"dose":"19", "time":"30", "yield":"45", "grind": "10", "roaster": "Buddy Brew", "bean": "Ethiopia", "Sour": true, "Balanced": true, "Weak": true, "notes": "tastes like sour/sweet fruit, pulled a little watery."}])
- 
-     const addShotToList = (addShot) => {
-         setShotList([...shotList, addShot]);
-     };
+    /*set default list of pulled shots */
+    const [shotList, setShotList] = useState([{"dose":"20", "time":"30", "yield":"45", "grind": "10", "roaster": "Buddy Brew", "bean": "Ethiopia", "Bitter": true, "Strong": true, "notes": "too strong and overextracted, no tasting notes present."},
+    {"dose":"19", "time":"30", "yield":"45", "grind": "10", "roaster": "Buddy Brew", "bean": "Ethiopia", "Sour": true, "Balanced": true, "Weak": true, "notes": "tastes like sour/sweet fruit, pulled a little watery."}])
+
+    const addShotToList = (addShot) => {
+        setShotList([...shotList, addShot]);
+    };
+
+    const [step, setStep] = useState(0);
 
     const schema = yup.object().shape({
         dose: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Dose is not a reasonable number"),
@@ -26,43 +28,43 @@ function Pull ({newShot, setNewShot, handleCheckboxChange, handleInputChange, st
       })
     
     
-      const formErrors = useShotFormStore(state => state.formError);
-      const setFormErrors = useShotFormStore(state => state.setFormError);
+    const formErrors = useShotFormStore(state => state.formError);
+    const setFormErrors = useShotFormStore(state => state.setFormError);
     
-      const pullValidation = () => {
+    const pullValidation = () => {
+      schema.validate({
+        dose: newShot.dose,
+        yield: newShot.yield,
+        time: newShot.time,
+        grind: newShot.grind,
+      }, { abortEarly: false }).then(function () {
+        setFormErrors([]);
+        setStep(1);
+      }).catch(function (err) {
+        setFormErrors(err.errors);
+        //console.log(err.inner.find((x) => {return x.path == "dose"}).type)
+        //console.log(err.inner.includes(err.inner.find((x) => {return x.path == "dose" && x.type == "required"})))
+      })
+    }
+  
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(newShot.dose)
         schema.validate({
           dose: newShot.dose,
           yield: newShot.yield,
           time: newShot.time,
           grind: newShot.grind,
         }, { abortEarly: false }).then(function () {
-          setFormErrors([]);
-          setStep(1);
+          console.log('Submitted!')
+          addShotToList(newShot);
+          setNewShot({});
+          setStep(2);
         }).catch(function (err) {
           setFormErrors(err.errors);
-          //console.log(err.inner.find((x) => {return x.path == "dose"}).type)
-          //console.log(err.inner.includes(err.inner.find((x) => {return x.path == "dose" && x.type == "required"})))
-        })
-      }
-    
-      const handleSubmit = (event) => {
-          event.preventDefault();
-          console.log(newShot.dose)
-          schema.validate({
-            dose: newShot.dose,
-            yield: newShot.yield,
-            time: newShot.time,
-            grind: newShot.grind,
-          }, { abortEarly: false }).then(function () {
-            console.log('Submitted!')
-            addShotToList(newShot);
-            setNewShot({});
-            setStep(2);
-          }).catch(function (err) {
-            setFormErrors(err.errors);
-            console.log(Object.keys(err), err.name, err.value, err.path, err.type, err.errors, err.inner)
-          })      
-      }
+          console.log(Object.keys(err), err.name, err.value, err.path, err.type, err.errors, err.inner)
+        })      
+    }
 
       
 

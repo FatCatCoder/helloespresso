@@ -45,11 +45,12 @@ function App (){
       parseRes.verified === true ? setIsLoggedIn(true): setIsLoggedIn(false);
       //return parseRes.verified;
     } catch (error) {
-      console.log(error.message)
+        console.log(error.message)
+        setIsAuth(false);
+        setIsLoggedIn(false);
     }
   }
 
-  //const [isAuth, setIsAuth] = useState(tokenCheck);
   const [isAuth, setIsAuth] = useState(null);
   console.log(isAuth)
 
@@ -64,6 +65,7 @@ function App (){
     setIsAuth(boolean);
   }
 
+  // global states shared by RecipeForm and (Pull - ShotForm)
 
   const [newShot, setNewShot] = useState({"dose":"", "time":"", "yield":"", "grind": "", "roaster": "", "bean": "", "notes": ""});
 
@@ -88,10 +90,7 @@ function App (){
       }));
   };
 
-
-  const [step, setStep] = useState(0);
-  const [currPage1, setCurrPage1] = useState(1);
-
+  // Main router for app, checks for auth in token before load
   return (
     <>
     {isAuth !== null ?
@@ -102,8 +101,7 @@ function App (){
 
       <Switch>
         <Route exact path="/">
-          <Pull newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} step={step} setStep={setStep} />
-          
+          <Pull newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} />
         </Route>
 
         <Route path="/journal"
@@ -119,7 +117,7 @@ function App (){
         </Route>
 
         <Route path="/login"
-          render={({location}) => isAuth ? (<Redirect to={{pathname: "/", state: {location: thisPage}}} />) : (<Login setAuth={setAuth} setCurrPage={setCurrPage} currPage={currPage} />)} 
+          render={({location}) => isAuth ? (<Redirect to={{pathname: "/", state: {location: "/"}}} />) : (<Login setAuth={setAuth} setCurrPage={setCurrPage} currPage={currPage} />)} 
         />
 
         <Route path="/register"
@@ -133,10 +131,10 @@ function App (){
           } 
         />
         <Route path="/test">
-          <Test currPage={currPage1} setCurrPage={setCurrPage1} />
+          <Test />
         </Route>
 
-        <Route render={() => <ErrorScreen errorMessage={'404 - No coffee here :('} />} />
+        <Route path="*" render={() => <ErrorScreen errorMessage={'404 - No coffee here :('} />} />
 
       </Switch>
       

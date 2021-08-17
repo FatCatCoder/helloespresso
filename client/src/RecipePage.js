@@ -1,6 +1,9 @@
 import { useParams, useHistory } from "react-router";
 import {useEffect, useState} from 'react';
 import {globalStore} from './store';
+
+// components
+import ErrorScreen from './components/ErrorScreen.js'; 
 import './RecipePage.scss';
 
 function RecipePage(props){
@@ -16,6 +19,7 @@ function RecipePage(props){
     // Data
     const [liked, setLiked] = useState(false);
     const [recipe, setRecipe] = useState(props.recipe.find(obj => obj.id == id));
+    const [isLoading, setIsLoading] = useState(true);
     var recipeUserId = recipe?.userId;
 
     
@@ -69,12 +73,13 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
         const fetchRecipe = async () => {
             const res = await fetch(`/recipes/${id}`)
             const data = await res.json()
-            recipeUserId = data[0].userId
+            recipeUserId = data[0]?.userId
             setRecipe(data[0]);
         }
 
-        // If not in prop state then fetch from server
-        if (props.recipe.length === 0) {
+        // If not in prop state then fetch from 
+        
+        if (props.recipe.length === 0 || recipe == undefined) {
             fetchRecipe();
         }
 
@@ -86,12 +91,17 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
 
 
     // checks if is liked
+
     useEffect(() => {
         fetchLiked();
     }, []);
     
-    
+    // if bad param, render 404 screen, else render data props conditionally 
+
     return(
+        <>
+        {recipe === null? <ErrorScreen errorMessage={'404 - No coffee here :('} />
+         :
         <div className="container text-center mb-3">
             <div className="my-2">
                 <h1 className="display-3 text-capitalize">{ recipe?.bean ?? 'Bean'  } - {recipe?.roaster ?? 'Roaster'}</h1>
@@ -151,6 +161,8 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
             :null
         }
         </div>
+    }
+        </>
     )
 }
 
