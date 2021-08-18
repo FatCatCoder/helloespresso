@@ -1,25 +1,18 @@
-
-
 import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
 
 function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleModalInputChange, journalEntry }){
-  
-    
-
   const [modal, setModal] = useState(false);
-
   const toggle = () => setModal(!modal);
-
 
   return (
     <>
       <Button color="primary" className="mx-auto pe-2 ps-2 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 btn" data-bs-dismiss="offcanvas" onClick={toggle}>{buttonLabel}</Button>
+
       <form onSubmit={handleModalSubmit} id="modalForm" inline>
       <Modal isOpen={modal} toggle={toggle} className={className} centered={true}>
         <ModalHeader toggle={toggle}>Add to Journal</ModalHeader>
         <ModalBody>
-            
                 <div className="mb-3">
                     <FormGroup>
                         <label for="bean" className="form-label">Bean</label>
@@ -33,8 +26,7 @@ function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleM
                         <label for="roaster" className="form-label">Roaster</label>
                         <input value={journalEntry.Roaster} onChange={handleModalInputChange} type="text" className="form-control" id="roaster" name="roaster" aria-describedby="Roaster" placeholder="Roaster..."></input>
                     </FormGroup>
-                </div> 
-          
+                </div>  
         </ModalBody>
         <ModalFooter>
           <button className="btn btn-primary"  type="submit" form="modalForm" value="Submit" onClick={toggle}>Confirm</button>{' '}

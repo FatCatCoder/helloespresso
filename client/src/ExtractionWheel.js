@@ -1,7 +1,7 @@
 /* eslint-disable */
 import './ShotFormPageFinal.scss';
 import React, { useState } from 'react';
-import { Button, Popover, PopoverHeader, PopoverBody, Tooltip, UncontrolledTooltip  } from 'reactstrap';
+import { UncontrolledTooltip  } from 'reactstrap';
 
 function ExtractionWheel(props) {
 

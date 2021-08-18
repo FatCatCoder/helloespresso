@@ -1,15 +1,16 @@
-import React from 'react';
-import Shot from './Shot';
-import AddToJournalModal from './AddToJournalModal.js';
+import {useState} from 'react';
 import {globalStore} from './store.js';
 import axios from 'axios';
 
-import {useState} from 'react';
+// components
 import './App.scss';
+import Shot from './Shot';
+import AddToJournalModal from './AddToJournalModal.js';
 
-function Footer ({addShotToList, shotList, setShotList}){
+// controls the shot logging system and contains bootstrap offcanvas component which hides the log queue and handles the new journal submit as BS modal form
+
+function Footer ({ shotList, setShotList}){
     // Auth
-    const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
     const getUserId = globalStore(state => state.getUserIdFromJWT)
 
      // Footer modal form shot logging to journal 
@@ -20,7 +21,6 @@ function Footer ({addShotToList, shotList, setShotList}){
     const handleModalSubmit = (event) => {
         event.preventDefault();
         addEntryToJournal(journalEntry);
-        //setJournalEntry({"postDate": todaysDate})
     }
 
     const handleModalInputChange = (e) => {
@@ -39,7 +39,7 @@ function Footer ({addShotToList, shotList, setShotList}){
         data: {"journalData": entry, "ShotLog": shotList, "user_id": userId}
     })
 }
-
+    // render pulls
     const pulls = shotList.map((pull, index) =>
             <Shot key={index} listNum={index+1} dose={pull.dose} time={pull.time} yield={pull.yield} grind={pull.grind} notes={pull.notes} Sour={pull.Sour} Bitter={pull.Bitter} Weak={pull.Weak} Balanced={pull.Balanced} Strong={pull.Strong} /> 
         );
@@ -60,15 +60,14 @@ function Footer ({addShotToList, shotList, setShotList}){
                     <button type="button" className="btn-close text-reset my-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
 
-            <div className="container row mx-auto col-5 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-                <div className="col-6">
-                    <AddToJournalModal buttonLabel={'Log'} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} />
-                    
+                <div className="container row mx-auto col-5 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                    <div className="col-6">
+                        <AddToJournalModal buttonLabel={'Log'} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} />  
+                    </div>
+                    <div className="col-6">
+                        <button onClick={() => setShotList([])} className="mx-auto pe-1 ps-1 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 btn btn-danger">clear</button>
+                    </div>
                 </div>
-                <div className="col-6">
-                    <button onClick={() => setShotList([])} className="mx-auto pe-1 ps-1 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 btn btn-danger">clear</button>
-                </div>
-            </div>
 
                 <div className="offcanvas-body small">
                     {pulls}
@@ -76,11 +75,6 @@ function Footer ({addShotToList, shotList, setShotList}){
                 
             </div>
         </div>
-
- 
-        
-        
-
     )
 }
 

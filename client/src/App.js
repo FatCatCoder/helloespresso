@@ -8,7 +8,6 @@ import {useShotFormStore, globalStore} from './store.js';
 
 
 // components
-import './App.css';
 import './App.scss';
 import Header from './components/Header.js';
 import Pull from './Pull.js';

@@ -54,14 +54,10 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
         let ignore = false;
 
         const getRecipes = async () => {
-            const recipesFromServer = await fetchRecipes(1);
-            // set Recipes array       
-            setMyRecipes([{"page": 1, "recipes" : recipesFromServer}]);
-            // set total number of recipes for pagination
-            setTotalRecipes(recipesFromServer[0].count)
-            // push page state back to the first page
-            setCurrPage(1)
-           // setCurrRecipes(recipesFromServer)
+            const recipesFromServer = await fetchRecipes(1); 
+            setMyRecipes([{"page": 1, "recipes" : recipesFromServer}]) // set Recipes array    
+            setTotalRecipes(recipesFromServer[0].count) // set total number of recipes for pagination, count is my defined sql count over() function on the api being returned along side the recipes data
+            setCurrPage(1) // push page state back to the first page
         }
         if(!ignore){
             getRecipes();

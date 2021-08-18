@@ -14,6 +14,9 @@ import {
     useParams
   } from "react-router-dom";
 
+// journal page, displays logged in users entries, or login screen
+// unlike recipes, journal returns all of a users entries, no server side pagination support
+// any reasonable return amount (which is expected) is negligible on bandwidth and performance
 
 function Journal({isAuth}){
     const history = useHistory();
@@ -44,14 +47,10 @@ function Journal({isAuth}){
     }, [])
 
     
-
+    // for pagination
     const indexOfLastPost = currPage * recipesPerPage;
     const indexOfFirstPost = indexOfLastPost - recipesPerPage;
     const currRecipes = myEntries.slice(indexOfFirstPost, indexOfLastPost);
-
-    const paginate = (pageNumber) => setCurrPage(pageNumber);
-
-
 
     return(
 
@@ -66,7 +65,6 @@ function Journal({isAuth}){
                     </div>
                     <Pagination className={"container text-center mx-auto"} itemsPerPage={recipesPerPage} totalItems={myEntries.length} currPage={currPage} setCurrPage={setCurrPage} />
                 </Route>
-
 
                 <Route path={`${match.path}/:id`}>
                     <JournalItemContent myEntries={myEntries}/>
