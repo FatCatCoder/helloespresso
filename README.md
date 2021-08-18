@@ -1,7 +1,7 @@
 # Espresso Extraction App
 ---
 ## What is this?
-> a tool / a place to share knowledge, develop your dial-in skills and experiance amazing espresso with people
+> a tool & place to share knowledge, develop your dial-in skills and experiance amazing espresso with people
 
 ## Features
 - ### Recipes 
