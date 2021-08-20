@@ -9,6 +9,8 @@ import './App.scss';
 
 
 function Pull ({newShot, setNewShot, handleCheckboxChange, handleInputChange}) {
+  const setCurrentPage = globalStore(state => state.setCurrentPage);
+  setCurrentPage(window.location.pathname)
 
     /*set default list of pulled shots */
     const [shotList, setShotList] = useState([{"dose":"20", "time":"30", "yield":"45", "grind": "10", "roaster": "Buddy Brew", "bean": "Ethiopia", "Bitter": true, "Strong": true, "notes": "too strong and overextracted, no tasting notes present."},

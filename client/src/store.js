@@ -49,8 +49,12 @@ const globalStore = create((set, get) => ({
       set(state => ({isLoggedIn: false}))
       return false;
     }
-  console.log(get().isLoggedIn);
-  }
+    console.log(get().isLoggedIn);
+  },
+  currentPage: '/',
+  setCurrentPage: (pageStr) => {
+    set(state => ({currentPage: pageStr}))
+  },
 }))
 
 

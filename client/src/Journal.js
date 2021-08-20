@@ -2,6 +2,7 @@ import JournalItemContent from './JournalItemContent.js';
 import JournalItem from './JournalItem.js';
 import {useHistory, Redirect} from 'react-router-dom';
 import {useEffect, useState} from 'react';
+import {globalStore} from './store.js';
 import Pagination from './components/Pagination.js';
 import axios from 'axios';
 
@@ -21,6 +22,8 @@ import {
 function Journal({isAuth}){
     const history = useHistory();
     let match = useRouteMatch();
+    const setCurrentPage = globalStore(state => state.setCurrentPage);
+    setCurrentPage(window.location.pathname)
 
     const [myEntries, setMyEntries] = useState([]);
 

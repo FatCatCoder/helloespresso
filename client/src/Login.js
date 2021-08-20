@@ -4,23 +4,15 @@ import {globalStore} from './store.js';
 
 
 function Login({setAuth, setCurrPage, currPage}) {
-    const history = useHistory();
-    var { state } = useLocation();
-    if(state === undefined){
-        var state = {location: "/login", going: "/"}
-    }
-    console.log(state.location);
-
-    const [errors, setErrors] = useState({"boolean": false, "message": ""});
     const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
     const isLoggedIn = globalStore(state => state.isLoggedIn)
 
-    useEffect(() => {
-        console.log(state.location);
-        setCurrPage(state.location)
-        console.log(currPage);
-    }, [state])
+    // routing after login
+    const history = useHistory();
+    const { state } = useLocation();
 
+    // form state & utils
+    const [errors, setErrors] = useState({"boolean": false, "message": ""});
     const [inputs, setInputs] = useState({
         email: "",
         password: ""
@@ -49,7 +41,13 @@ function Login({setAuth, setCurrPage, currPage}) {
               localStorage.setItem('Authorization', parseRes);
               setAuth(true);
               setIsLoggedIn(true);
-              history.push(state.going);
+              if(state !== undefined){
+                console.log(state)
+                history.push(state.going);
+              }
+              else{
+                history.push('/');
+              }
             }
             else if (response.status === 401){
                 const getErrors = async () => {
@@ -58,10 +56,9 @@ function Login({setAuth, setCurrPage, currPage}) {
                 }
                 getErrors();   
             }
-            console.log(isLoggedIn)
-
         } catch (error) {
             console.log(error.message)
+            setErrors({message: "500: Server Error"})
         }
     };
 
@@ -71,10 +68,9 @@ function Login({setAuth, setCurrPage, currPage}) {
             <h1 className="display-2">Login</h1>
             <form onSubmit={onSubmitForm} className="container mx-auto col-8 col-xl-5">
                 <input type="text" name="email" placeholder="username or email" value={email} onChange={e => onchange(e)} className="form-control my-3" />
-                {/*pattern="\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b" required*/}
-                <input type="password" name="password" placeholder="password" value={password} onChange={e => onchange(e)} className="form-control my-3" required/>
+                <input type="text" name="password" placeholder="password" value={password} onChange={e => onchange(e)} className="form-control my-3" required/>
                 <button className="btn btn-secondary" type="submit">Log In</button>
-                <Link to="/register"><button className="btn btn-secondary m-2" type="button">Register</button></Link>
+                <Link to={{pathname: "/register", state: {location: '/register', going: '/about'}}}><button className="btn btn-secondary m-2" type="button">Register</button></Link>
             </form>
             {!errors.boolean? null: errors.message}
         </div>

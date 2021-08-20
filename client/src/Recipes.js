@@ -25,6 +25,8 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     // nav and header
     const history = useHistory();
     let match = useRouteMatch();
+    const setCurrentPage = globalStore(state => state.setCurrentPage);
+    setCurrentPage(window.location.pathname)
 
     // all recipes data in pages, and current selection of recipes for page display
     const [myRecipes, setMyRecipes] = useState(null);

@@ -4,6 +4,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 function Register({setAuth}) {
     const history = useHistory();
     const { state } = useLocation();
+    console.log(state)
 
     const [inputs, setInputs] = useState({
         email: "",
@@ -52,7 +53,7 @@ function Register({setAuth}) {
                 <input type="password" name="password" placeholder="password" value={password} onChange={e => onchange(e)} className="form-control my-3" />
                 <button className="btn btn-secondary" type="submit">Create Account</button>
                 
-                <Link to="/login"><button className="btn btn-secondary m-2" type="button">Login</button></Link>
+                <Link to={{pathname: "/login", state: {location: '/login', going: '/about'}}}><button className="btn btn-secondary m-2" type="button">Login</button></Link>
             </form>
         </div>
         </>
