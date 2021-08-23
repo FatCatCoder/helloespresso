@@ -1,6 +1,8 @@
 import {Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
+// card display object for recipes page
+
 function RecipeCard({recipe}){
     const [likes, setLikes] = useState(0);
 
@@ -25,7 +27,7 @@ function RecipeCard({recipe}){
         }
 
         return () => { ignore = true; abortController.abort(); }; 
-    }, [])
+    }, [recipe.id])
 
 
     return(

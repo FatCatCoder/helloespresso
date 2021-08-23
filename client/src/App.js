@@ -1,106 +1,75 @@
-// import logo from './logo.svg';
 import React from 'react';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
-import {BrowserRouter as Router, Route, Switch, useHistory, Redirect, useLocation } from 'react-router-dom';
-import * as yup from 'yup';
-import {useShotFormStore, globalStore} from './store.js';
+import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { globalStore} from './store.js';
 
+// pages
+import Pull from './pages/Pull.js';
+import About from './pages/About.js';
+import Journal from './pages/Journal.js';
+import Recipes from './pages/Recipes.js';
+import Login from './pages/Login.js';
+import Register from './pages/Register.js';
 
 // components
-import './App.scss';
+import './assets/App.scss';
 import Header from './components/Header.js';
-import Pull from './Pull.js';
-import About from './About.js';
-import Journal from './Journal.js';
-import Recipes from './Recipes.js';
-import Login from './Login.js';
-import Register from './Register.js';
-import ScrollToTop from './ScrollToTop.js';
-import Test from './Test.js';
+import ScrollToTop from './components/ScrollToTop.js';
 import ErrorScreen from './components/ErrorScreen.js';
+import LoadingSpinner from './components/LoadingSpinner.js';
+import Test from './Test.js';
 
 function App (){
-  let thisPage = window.location.pathname;
-  const history = useHistory();
-  const [currPage, setCurrPage] = useState({[thisPage]: true});
   const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
-  //const tokenCheck = localStorage.getItem('Authorization') ? true : false;
-
-  const startAuth = async () => {
-    try {
-      const response = await fetch('/verify-auth', {
-        method: "GET",
-        headers: {Authorization: localStorage.Authorization}
-      })
-      if(response.status === 401 || response.status === 500){
-        setIsAuth(false);
-      }
-
-      console.log(response)
-      const parseRes = await response.json();
-      console.log(parseRes.verified);
-      parseRes.verified === true ? setIsAuth(true): setIsAuth(false);
-      parseRes.verified === true ? setIsLoggedIn(true): setIsLoggedIn(false);
-      //return parseRes.verified;
-    } catch (error) {
-        console.log(error.message)
-        setIsAuth(false);
-        setIsLoggedIn(false);
-    }
-  }
-
   const [isAuth, setIsAuth] = useState(null);
-  console.log(isAuth)
-
 
   useEffect(() => {
-    startAuth();
-  }, [])
+    const abortController = new AbortController();
+    let ignore = false;
+
+    if(!ignore){
+      const startAuth = async () => {
+        try {
+          const response = await fetch('/verify-auth', {
+            method: "GET",
+            headers: {Authorization: localStorage.Authorization}
+          })
+    
+          if(response.status === 401 || response.status === 500){
+            setIsAuth(false);
+          }
+    
+          const parseRes = await response.json();
+          parseRes.verified === true ? setIsAuth(true): setIsAuth(false);
+          parseRes.verified === true ? setIsLoggedIn(true): setIsLoggedIn(false);
+        } catch (error) {
+            console.log(error.message)
+            setIsAuth(false);
+            setIsLoggedIn(false);
+        }
+      }
+
+      startAuth();
+    }
+    
+    return () => {
+            ignore = true;
+            abortController.abort();
+        }; 
+  }, [setIsLoggedIn])
  
-  console.log(isAuth)
-  
-  const setAuth = (boolean) => {
-    setIsAuth(boolean);
-  }
-
-  // global states shared by RecipeForm and (Pull - ShotForm)
-
-  const [newShot, setNewShot] = useState({"dose":"", "time":"", "yield":"", "grind": "", "roaster": "", "bean": "", "notes": ""});
-
-  const handleCheckboxChange = (e) => {
-      if(e.target.checked){
-          setNewShot((prevProps) => ({
-              ...prevProps,
-              [e.target.name]: true
-          }));
-      }
-      if(e.target.checked === false){
-          setNewShot((prevProps) => (delete prevProps[e.target.name], { 
-              ...prevProps
-          }));
-      }
-  };
-
-  const handleInputChange = (e) => {
-      setNewShot((prevProps) => ({
-          ...prevProps,
-          [e.target.name]: e.target.value
-      }));
-  };
-
   // Main router for app, checks for auth in token before load
   return (
     <>
     {isAuth !== null ?
     <Router>
       <ScrollToTop />
-    <div className="App">
-      <Header currPage={currPage} setCurrPage={setCurrPage}/>
+      <div className="App">
+      <Header />
 
       <Switch>
         <Route exact path="/">
-          <Pull newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} />
+          <Pull />
         </Route>
 
         <Route path="/journal"
@@ -108,7 +77,7 @@ function App (){
         />
 
         <Route path="/recipes">
-          <Recipes isAuth={isAuth} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} />
+          <Recipes isAuth={isAuth} />
         </Route>
 
         <Route path="/about">
@@ -116,19 +85,13 @@ function App (){
         </Route>
 
         <Route path="/login"
-          render={({location}) => isAuth ? (<Redirect to={{pathname: "/", state: {location: "/"}}} />) : (<Login setAuth={setAuth} setCurrPage={setCurrPage} currPage={currPage} />)} 
+          render={({location}) => isAuth ? (<Redirect to={{pathname: "/", state: {location: "/"}}} />) : (<Login setIsAuth={setIsAuth} />)} 
         />
 
         <Route path="/register"
-          render={props => isAuth ? (null) : (<Register setAuth={setAuth} />)}
+          render={props => isAuth ? (null) : (<Register setIsAuth={setIsAuth} />)}
         />
 
-        <Route path="/loading" render={() => 
-          <div class="spinner-grow position-absolute top-50 start-50" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          } 
-        />
         <Route path="/test">
           <Test />
         </Route>
@@ -140,8 +103,9 @@ function App (){
     </div>
     </Router>
     :
-    <div class="spinner-grow position-absolute top-50 start-50" role="status">
-        <span class="visually-hidden">Loading...</span>
+    
+    <div className="position-absolute top-50 start-50">
+        <LoadingSpinner />
     </div>
     }
     </>

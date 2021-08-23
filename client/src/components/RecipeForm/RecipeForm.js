@@ -1,39 +1,48 @@
 import RecipeFormPageOne from './RecipeFormPageOne.js';
 import RecipeFormPageTwo from './RecipeFormPageTwo.js';
 import RecipeFormPageThree from './RecipeFormPageThree.js';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {useHistory} from 'react-router-dom'; 
-import {useShotFormStore} from './store.js';
+import {useShotFormStore} from '../../store.js';
 import * as yup from 'yup';
-import { regex } from 'badwords-list';
-var badwords = require('badwords-list');
 
 
-function RecipeForm({newShot, setNewShot, handleInputChange, handleCheckboxChange, getUserId, refresh, setRefresh}){
+function RecipeForm({getUserId, refresh, setRefresh}){
+    // form data
+    const [newShot, setNewShot] = useState({"dose":"", "time":"", "yield":"", "grind": "", "roaster": "", "bean": "", "notes": ""});
+
+    // form onChange utils
+    const handleCheckboxChange = (e) => {
+        if(e.target.checked){
+            setNewShot((prevProps) => ({
+                ...prevProps,
+                [e.target.name]: true
+            }));
+        }
+        if(e.target.checked === false){
+            // eslint-disable-next-line
+            setNewShot((prevProps) => (delete prevProps[e.target.name], { 
+                ...prevProps
+            }));
+        }
+    };
+    const handleInputChange = (e) => {
+        setNewShot((prevProps) => ({
+            ...prevProps,
+            [e.target.name]: e.target.value
+        }));
+    };
+
     // routing and wizard form step number
     const history = useHistory();
     const [step, setStep] = useState(0);
 
     // global errors datastore for local use
-    const formErrors = useShotFormStore(state => state.formError);
     const setFormErrors = useShotFormStore(state => state.setFormError);
 
-
     // Recipe Form validation schemas
-    const schema = yup.object().shape({
-        grinder: yup.string().required(),
-        machine: yup.string().required(),
-        tastingNotes: yup.string().required(),
-        notes: yup.string()
-    })
 
-    const schemaData = {
-        grinder: newShot.grinder,
-        machine: newShot.machine,
-        tastingNotes: newShot.tastingNotes,
-        notes: newShot.notes
-    }
-
+    // page one
     const schemaBean = yup.object().shape({
         bean: yup.string().required(),
         roaster: yup.string().required(),
@@ -46,28 +55,26 @@ function RecipeForm({newShot, setNewShot, handleInputChange, handleCheckboxChang
         region: newShot.region,
         roastDate: newShot.roastDate
     }
-
+    // page two
     const schemaDose = yup.object().shape({
-        dose: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Dose is not a reasonable number"),
-        yield: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Yield is not a reasonable number"),
-        time: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Time is not a reasonable number"),
-        grind: yup.string().required().matches(/^([1-9]\d*(\.|\,)\d*|0?(\.|\,)\d*[1-9]\d*|[1-9]\d*)$/, "Grind is not a reasonable number"),
+        dose: yup.string().required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Dose is not a reasonable number"),
+        yield: yup.string().required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Yield is not a reasonable number"),
+        time: yup.string().required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Time is not a reasonable number"),
+        grind: yup.string().required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Grind is not a reasonable number"),
       })
-
       const schemaDoseData = {
         dose: newShot.dose,
         yield: newShot.yield,
         time: newShot.time,
         grind: newShot.grind
     }
-
-      const schemaOther = yup.object().shape({
+    // page three
+    const schemaOther = yup.object().shape({
         grinder: yup.string().required(),
         machine: yup.string().required(),
         tastingNotes: yup.string().required(),
         notes: yup.string()
     })
-
     const schemaOtherData = {
         grinder: newShot.grinder,
         machine: newShot.machine,
@@ -79,7 +86,7 @@ function RecipeForm({newShot, setNewShot, handleInputChange, handleCheckboxChang
     const handleSubmit = (event) => {
         event.preventDefault();
  
-        schema.validate(schemaData, { abortEarly: false })
+        schemaOther.validate(schemaOtherData, { abortEarly: false })
             .then(() => {
                 setFormErrors([]);                 
             })
@@ -110,29 +117,25 @@ function RecipeForm({newShot, setNewShot, handleInputChange, handleCheckboxChang
         })
 
         const data = await res.json();
-
         console.log(data);
         setNewShot({});
     }
 
     const nextStep = (stepNum) => {
-        var schema = {};
-        var schemaData;
+        let schema = {};
+        let schemaData;
         
         if (step === 0){
             schema = schemaBean;
             schemaData = schemaBeanData;
-            console.log(schemaData)
         }
         else if (step === 1){
             schema = schemaDose;
             schemaData = schemaDoseData;
-            console.log(schemaData)
         }
         else{
             schema = schemaOther;
             schemaData = schemaOtherData;
-            console.log(schemaData)
         }
         schema.validate(schemaData, { abortEarly: false })
             .then(function () {
@@ -148,17 +151,18 @@ function RecipeForm({newShot, setNewShot, handleInputChange, handleCheckboxChang
 
       useEffect(() => {
         setFormErrors([]);
-      }, [])
+        setNewShot({});
+      }, [setFormErrors, setNewShot])
 
 
     function renderPage(){
         switch(step){
             case 0:
-                return <RecipeFormPageOne nextStep={nextStep} newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} setStep={setStep} step={step}/>;
+                return <RecipeFormPageOne nextStep={nextStep} newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} />;
             case 1:
-                return <RecipeFormPageTwo nextStep={nextStep} newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} setStep={setStep} step={step}/>;
+                return <RecipeFormPageTwo nextStep={nextStep} newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} setStep={setStep} />;
             case 2:
-                return <RecipeFormPageThree newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} handleCheckboxChange={handleCheckboxChange} setStep={setStep} step={step}/>;
+                return <RecipeFormPageThree newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} handleCheckboxChange={handleCheckboxChange} setStep={setStep} />;
             default:
                 console.log('error on loading wizard form page, step not submitted');
     };

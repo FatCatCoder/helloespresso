@@ -1,26 +1,19 @@
-import JournalItemContent from './JournalItemContent.js';
-import JournalItem from './JournalItem.js';
-import {useHistory, Redirect} from 'react-router-dom';
+import JournalItemContent from '../components/JournalItemContent.js';
+import JournalItem from '../components/JournalItem.js';
 import {useEffect, useState} from 'react';
-import {globalStore} from './store.js';
-import Pagination from './components/Pagination.js';
+import {globalStore} from '../store.js';
+import Pagination from '../components/Pagination.js';
 import axios from 'axios';
 
 import {
-    BrowserRouter as Router,
     Switch,
     Route,
-    Link,
     useRouteMatch,
-    useParams
   } from "react-router-dom";
 
 // journal page, displays logged in users entries, or login screen
-// unlike recipes, journal returns all of a users entries, no server side pagination support
-// any reasonable return amount (which is expected) is negligible on bandwidth and performance
 
 function Journal({isAuth}){
-    const history = useHistory();
     let match = useRouteMatch();
     const setCurrentPage = globalStore(state => state.setCurrentPage);
     setCurrentPage(window.location.pathname)
@@ -29,6 +22,7 @@ function Journal({isAuth}){
 
     // for pagination
     const [currPage, setCurrPage] = useState(1);
+    // eslint-disable-next-line
     const [recipesPerPage, setRecipesPerPage] = useState(8);
 
     const jwtDecode = () => {
@@ -39,14 +33,24 @@ function Journal({isAuth}){
     }
 
     useEffect(() => {
-        const userData = jwtDecode();
-        const fetchJournalEntries = async () => { 
-            const res = await axios.post('/journals', {user_id: userData.user.id});
-            const data = res.data;
-            console.log(data);
-            setMyEntries(data.map(x => x))
+        const abortController = new AbortController();
+        let ignore = false;
+
+        if(!ignore){
+            const userData = jwtDecode();
+            const fetchJournalEntries = async () => { 
+                const res = await axios.post('/journals', {user_id: userData.user.id});
+                const data = res.data;
+                console.log(data);
+                setMyEntries(data.map(x => x))
+            }
+            fetchJournalEntries()
         }
-        fetchJournalEntries()
+        
+        return () => {
+            ignore = true;
+            abortController.abort();
+        }; 
     }, [])
 
     

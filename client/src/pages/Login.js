@@ -1,11 +1,10 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import {globalStore} from './store.js';
+import {globalStore} from '../store.js';
 
 
-function Login({setAuth, setCurrPage, currPage}) {
+function Login({setIsAuth}) {
     const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
-    const isLoggedIn = globalStore(state => state.isLoggedIn)
 
     // routing after login
     const history = useHistory();
@@ -24,6 +23,7 @@ function Login({setAuth, setCurrPage, currPage}) {
         setInputs({...inputs, [e.target.name]:e.target.value})
     };
 
+    // try login, set auth, redirect
     const onSubmitForm = async(e) => {
         e.preventDefault();
         try {
@@ -39,7 +39,7 @@ function Login({setAuth, setCurrPage, currPage}) {
 
             if (parseRes !== null){
               localStorage.setItem('Authorization', parseRes);
-              setAuth(true);
+              setIsAuth(true);
               setIsLoggedIn(true);
               if(state !== undefined){
                 console.log(state)

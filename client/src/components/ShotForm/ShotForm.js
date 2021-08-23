@@ -1,16 +1,17 @@
+import { useEffect } from 'react';
+
+// components
 import ShotFormPageOne from './ShotFormPageOne.js';
 import ShotFormPageTwo from './ShotFormPageTwo.js';
 import ShotFormPageFinal from './ShotFormPageFinal.js';
-import React, { useState, useEffect } from 'react';
-import {useShotFormStore} from './store.js';
+import {useShotFormStore} from '../../store.js';
 
 function ShotForm({newShot, handleInputChange, handleSubmit, setStep, step, handleCheckboxChange, pullValidation}){
-
     const setFormErrors = useShotFormStore(state => state.setFormError);
 
     useEffect(() => {
         setFormErrors([]);
-      }, [])
+      }, [setFormErrors])
 
     function renderPage(){
         switch(step){
@@ -25,7 +26,6 @@ function ShotForm({newShot, handleInputChange, handleSubmit, setStep, step, hand
     };
 };
 
-    
     return (
         <div>
             {renderPage()}

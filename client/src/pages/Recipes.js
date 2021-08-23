@@ -1,9 +1,8 @@
 // modules
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback  } from 'react';
 import {useHistory} from 'react-router-dom'; 
-import {globalStore} from './store.js';
+import {globalStore} from '../store.js';
 import {
-    BrowserRouter as Router,
     Switch,
     Route,
     useRouteMatch,
@@ -11,17 +10,17 @@ import {
   } from "react-router-dom";
 
 // components
-import RecipeBtnGrp from './RecipeBtnGrp.js';
-import RecipeCard from './RecipeCard.js';
-import RecipePage from './RecipePage.js';
-import RecipeForm from './RecipeForm.js';
-import Pagination from './components/Pagination.js';
-import LoadingSpinner from './components/LoadingSpinner.js';
-import ErrorScreen from './components/ErrorScreen.js';
+import RecipeBtnGrp from '../components/RecipeBtnGrp.js';
+import RecipeCard from '../components/RecipeCard.js';
+import RecipePage from '../components/RecipePage.js';
+import RecipeForm from '../components/RecipeForm/RecipeForm.js';
+import Pagination from '../components/Pagination.js';
+import LoadingSpinner from '../components/LoadingSpinner.js';
+import ErrorScreen from '../components/ErrorScreen.js';
 
 
 
-function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, onNewShot, isAuth}){
+function Recipes({isAuth}){
     // nav and header
     const history = useHistory();
     let match = useRouteMatch();
@@ -34,6 +33,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
 
     // for pagination
     const [currPage, setCurrPage] = useState(1);
+    // eslint-disable-next-line
     const [recipesPerPage, setRecipesPerPage] = useState(8);
     const [totalRecipes, setTotalRecipes] = useState(8);
 
@@ -49,6 +49,30 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
     const isLoggedIn = globalStore(state => state.isLoggedIn)
 
 
+    // POST request to get recipes from server based on page and amount, checks for null filter requirements
+    const fetchRecipes = useCallback((thisPage) => {
+        const fetchRecipesInner = async (thisPage = currPage, numOf = recipesPerPage) => {
+            setIsLoading(true);
+            console.log(sortFilters?.sortBy);
+            if(sortFilters.sortBy == null){
+                setSortFilters((filters) => ({...filters, "sortBy": "postdate DESC"}))
+            }
+            const res = await fetch('/recipes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"offsetPage": thisPage - 1, "limitAmount": numOf, "sortFilters": sortFilters})
+            })
+            console.log(res);
+
+            const data = await res.json();
+            
+            console.log('fetchRecipes data', data)
+            return data;
+        }
+    return fetchRecipesInner();
+}, [currPage, recipesPerPage, sortFilters])
     
     // get recipes on load and refresh
     useEffect(() => {
@@ -69,36 +93,14 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
             ignore = true;
             abortController.abort();
         }; 
-    }, [refresh])
+    }, [refresh, fetchRecipes])
 
     // set recipes on page
     useEffect(() => {
         let ignore = false;
         if(!ignore){ myRecipes? setRecipeSlice(myRecipes.find(x => x["page"] === currPage)["recipes"]) : setRecipeSlice([]); }
         return () => { ignore = true; }; 
-    }, [myRecipes]) 
-
-    // POST request to get recipes from server based on page and amount, checks for null filter requirements
-    const fetchRecipes = async (thisPage = currPage, numOf = recipesPerPage) => {
-        setIsLoading(true);
-        console.log(sortFilters?.sortBy);
-        if(sortFilters.sortBy == null){
-            setSortFilters((filters) => ({...filters, "sortBy": "postdate DESC"}))
-        }
-        const res = await fetch('/recipes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-              },
-            body: JSON.stringify({"offsetPage": thisPage - 1, "limitAmount": numOf, "sortFilters": sortFilters})
-        })
-        console.log(res);
-
-        const data = await res.json();
-        
-        console.log('fetchRecipes data', data)
-        return data;
-    }
+    }, [myRecipes, currPage]) 
 
 
     // On pagination setCurrPage change, checks if page exists in memory, if not then fetch it and update state.
@@ -156,7 +158,7 @@ function Recipes({newShot, setNewShot, handleCheckboxChange, handleInputChange, 
                     render={props => isAuth ? 
                         (
                     
-                        <RecipeForm onNewShot={onNewShot} newShot={newShot} setNewShot={setNewShot} handleCheckboxChange={handleCheckboxChange} handleInputChange={handleInputChange} getUserId={getUserId} refresh={refresh} setRefresh={setRefresh} />
+                        <RecipeForm getUserId={getUserId} refresh={refresh} setRefresh={setRefresh} />
                     )
                      : (<Redirect to={{pathname: "/login", state: {location: "/recipes", going: '/recipes/new'}}} />)} 
                 />

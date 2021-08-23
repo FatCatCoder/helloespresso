@@ -9,7 +9,7 @@ function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleM
     <>
       <Button color="primary" className="mx-auto pe-2 ps-2 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 btn" data-bs-dismiss="offcanvas" onClick={toggle}>{buttonLabel}</Button>
 
-      <form onSubmit={handleModalSubmit} id="modalForm" inline>
+      <form onSubmit={handleModalSubmit} id="modalForm" inline="true">
       <Modal isOpen={modal} toggle={toggle} className={className} centered={true}>
         <ModalHeader toggle={toggle}>Add to Journal</ModalHeader>
         <ModalBody>

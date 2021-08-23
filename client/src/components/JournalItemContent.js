@@ -12,16 +12,15 @@ function JournalItemContent({myEntries}){
     const [shotLog, setShotLog] = useState([]); 
     const myEntry = myEntries.find(x => x.id === id);
     
-    const fetchShots = async () => {
-        const res = await axios.post('/shots', {journal_id: id});
-        const data = res.data;
-        setShotLog(data);
-    }
-
-    // fetch data on load & refresh
     useEffect(() => {
         const abortController = new AbortController();
         let ignore = false;
+
+        const fetchShots = async () => {
+            const res = await axios.post('/shots', {journal_id: id});
+            const data = res.data;
+            setShotLog(data);
+        }
 
         if(!ignore){
             fetchShots();
@@ -31,7 +30,7 @@ function JournalItemContent({myEntries}){
             ignore = true;
             abortController.abort();
         }; 
-    }, [])
+    }, [id])
 
 
     var pulls = shotLog.map((pull, index) =>

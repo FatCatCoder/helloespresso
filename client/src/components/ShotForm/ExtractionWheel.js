@@ -1,5 +1,5 @@
 /* eslint-disable */
-import './ShotFormPageFinal.scss';
+import '../../assets/ShotFormPageFinal.scss';
 import React, { useState } from 'react';
 import { UncontrolledTooltip  } from 'reactstrap';
 

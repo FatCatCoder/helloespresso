@@ -1,5 +1,4 @@
-import './ShotFormPageFinal.scss';
-import React from 'react';
+import '../../assets/ShotFormPageFinal.scss';
 import ExtractionWheel from './ExtractionWheel.js';
 
 

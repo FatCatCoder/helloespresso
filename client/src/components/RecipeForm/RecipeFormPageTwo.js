@@ -1,7 +1,7 @@
-import {useShotFormStore} from './store.js';
-import './ShotFormPageOne.css';
+import {useShotFormStore} from '../../store.js';
+import '../../assets/ShotFormPageOne.css';
 
-function RecipeFormPageTwo({newShot, handleInputChange, handleSubmit, setStep, nextStep}){
+function RecipeFormPageTwo({newShot, handleInputChange, setStep, nextStep}){
     const formErrors = useShotFormStore(state => state.formError);
 
     return(

@@ -1,23 +1,23 @@
 import {useState} from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 
-function Register({setAuth}) {
+function Register({setIsAuth}) {
     const history = useHistory();
     const { state } = useLocation();
-    console.log(state)
 
+    const [errors, setErrors] = useState({"boolean": false, "message": ""});
     const [inputs, setInputs] = useState({
-        email: "",
-        password: "",
-        name: ""
+        "email": "",
+        "password": "",
+        "name": ""
     });
-
     const {email, password, name} = inputs;
 
     const onchange = (e) => {
         setInputs({...inputs, [e.target.name]:e.target.value});
     }
 
+    // register, set auth, redirect
     const onSubmitForm = async (e) => {
         e.preventDefault();
 
@@ -34,12 +34,13 @@ function Register({setAuth}) {
 
             if (parseRes !== null){
               localStorage.setItem('Authorization', parseRes);
-              setAuth(true);
+              setIsAuth(true);
               history.push(state.location);
             }
 
         } catch (error) {
             console.log(error.message);
+            setErrors({message: "500: Server Error"})
         }
     }
 
@@ -55,6 +56,7 @@ function Register({setAuth}) {
                 
                 <Link to={{pathname: "/login", state: {location: '/login', going: '/about'}}}><button className="btn btn-secondary m-2" type="button">Login</button></Link>
             </form>
+            {!errors.boolean? null: errors.message}
         </div>
         </>
     )

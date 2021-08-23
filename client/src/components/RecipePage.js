@@ -1,10 +1,10 @@
 import { useParams, useHistory } from "react-router";
 import {useEffect, useState} from 'react';
-import {globalStore} from './store';
+import {globalStore} from '../store';
 
 // components
-import ErrorScreen from './components/ErrorScreen.js'; 
-import './RecipePage.scss';
+import ErrorScreen from './ErrorScreen.js'; 
+import '../assets/RecipePage.scss';
 
 function RecipePage(props){
     // Routing
@@ -18,26 +18,8 @@ function RecipePage(props){
 
     // Data
     const [liked, setLiked] = useState(false);
-    const [recipe, setRecipe] = useState(props.recipe.find(obj => obj.id == id));
-    const [isLoading, setIsLoading] = useState(true);
-    var recipeUserId = recipe?.userId;
+    const [recipe, setRecipe] = useState(props.recipe.find(obj => obj.id === id));
 
-    
-
-
-    // get initial isLiked from server
-    const fetchLiked = async () => {
-        const res = await fetch('/recipes/liked', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({"recipe_id" : id, "user_id": user_id() })
-        })
-        const data = await res.json()
-        
-        setLiked(data.bool)
-    }
 
     // toggle like on server and updates with json returned bool
     const bussinButton = async () => {
@@ -70,34 +52,57 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
         const abortController = new AbortController();
         let ignore = false;
 
-        const fetchRecipe = async () => {
-            const res = await fetch(`/recipes/${id}`)
-            const data = await res.json()
-            recipeUserId = data[0]?.userId
-            setRecipe(data[0]);
-        }
+        if(!ignore){
+            const fetchRecipe = async () => {
+                const res = await fetch(`/recipes/${id}`)
+                const data = await res.json()
+                //recipeUserId = data[0]?.userId
+                setRecipe(data[0]);
+            }
 
-        // If not in prop state then fetch from 
-        
-        if (props.recipe.length === 0 || recipe == undefined) {
-            fetchRecipe();
+            // If not in prop state then fetch from 
+            
+            if (props.recipe.length === 0 || recipe === undefined) {
+                fetchRecipe();
+            }
         }
 
         return () => {
             ignore = true;
             abortController.abort();
         }; 
-    }, [])
+    }, [id, props.recipe.length, recipe])
 
 
     // checks if is liked
 
     useEffect(() => {
-        fetchLiked();
-    }, []);
-    
-    // if bad param, render 404 screen, else render data props conditionally 
+        const abortController = new AbortController();
+        let ignore = false;
 
+        if(!ignore){
+            // get initial isLiked from server
+            const fetchLiked = async () => {
+                const res = await fetch('/recipes/liked', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({"recipe_id" : id, "user_id": user_id() })
+                })
+                const data = await res.json()
+                
+                setLiked(data.bool)
+            }
+            // call
+            fetchLiked();     
+        }
+        
+        return () => { ignore = true; abortController.abort(); }; 
+    }, [id, user_id]);
+    
+
+    // if bad param, render 404 screen, else render data props conditionally 
     return(
         <>
         {recipe === null? <ErrorScreen errorMessage={'404 - No coffee here :('} />
@@ -153,7 +158,7 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
                 </div>
             </div>
 
-        {user_id() == recipe?.user_id && isLoggedIn? 
+        {user_id() === recipe?.user_id && isLoggedIn? 
             <button className="btn btn-danger mt-2">
                 <span class="main-text">Delete Recipe</span>
                 <span class="hover-text">Are You Sure?</span>

@@ -6,10 +6,6 @@ const useShotFormStore = create((set, get) => ({
     setFormError: (error) => set(state => ({formError: error}))
   }))
 
-const useNewRecipeStore = create((set, get) => ({
-
-}))
-
 const globalStore = create((set, get) => ({
   userId: '',
   getUserIdFromJWT: () => {
@@ -49,7 +45,6 @@ const globalStore = create((set, get) => ({
       set(state => ({isLoggedIn: false}))
       return false;
     }
-    console.log(get().isLoggedIn);
   },
   currentPage: '/',
   setCurrentPage: (pageStr) => {

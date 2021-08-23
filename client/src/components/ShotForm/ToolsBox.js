@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 
-import Stopwatch from '../components/Stopwatch';
+import Stopwatch from './Stopwatch';
 
 function ToolsBox() {
     //const [myTool, setMyTool] = useState();
@@ -12,7 +12,7 @@ function ToolsBox() {
   
   return (
     <div className="text-center">
-        <Button className="btn bg-light btn-outline-dark" id="Popover1" type="button"><i class="bi bi-watch"></i></Button>
+        <Button className="btn bg-light btn-outline-dark" id="Popover1" type="button"><i className="bi bi-watch"></i></Button>
 
         <Popover placement="bottom" isOpen={popoverOpen1} target="Popover1" toggle={toggle1}>
             <PopoverHeader>Timer</PopoverHeader>

@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import './App.scss';
+import '../assets/App.scss';
 
 function Shot (props){
     const [isCollapsed, toggleCollapsed] = useState(false);
@@ -7,10 +7,8 @@ function Shot (props){
         toggleCollapsed(isCollapsed => !isCollapsed)
     }
     // look for ["Sour", "Bitter", "Weak", "Balanced", "Strong"] with val of true
-    const tastNotes = Object.keys(props).filter(val => props[val] === true).join(', ');
-    //const tastNotes = props.Sour;
-    //console.log(tastNotes);
-
+    const tasteNotes = Object.keys(props).filter(val => props[val] === true).join(', ');
+    
     return(
         <div className="accordion-item text-center" id="accordion-shots">
             <h2 className="accordion-header">
@@ -25,7 +23,7 @@ function Shot (props){
             <div id="collapse1" className={`accordion-collapse collapse ${isCollapsed ? 'show':'' }` }>
                 <div className="accordion-body">
                     <div className="row">
-                        <div className="card p-0 col-12"><h6 className="card-header">Notes</h6><p className="card-body"><span className="row pb-2 text-primary fw-light fs-5 justify-content-center">{tastNotes}</span>{props.notes}</p></div>
+                        <div className="card p-0 col-12"><h6 className="card-header">Notes</h6><p className="card-body"><span className="row pb-2 text-primary fw-light fs-5 justify-content-center">{tasteNotes}</span>{props.notes}</p></div>
                     </div>
                 </div>
             </div>

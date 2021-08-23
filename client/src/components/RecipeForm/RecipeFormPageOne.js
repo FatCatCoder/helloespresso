@@ -1,7 +1,7 @@
-import {useShotFormStore} from './store.js';
+import {useShotFormStore} from '../../store.js';
 
 
-function RecipeFormPageOne({newShot, handleInputChange, handleSubmit, setStep, nextStep}){
+function RecipeFormPageOne({newShot, handleInputChange, nextStep}){
     const formErrors = useShotFormStore(state => state.formError);
 
     return(

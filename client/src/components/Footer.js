@@ -1,9 +1,9 @@
 import {useState} from 'react';
-import {globalStore} from './store.js';
+import {globalStore} from '../store.js';
 import axios from 'axios';
 
 // components
-import './App.scss';
+import '../assets/App.scss';
 import Shot from './Shot';
 import AddToJournalModal from './AddToJournalModal.js';
 
@@ -53,7 +53,7 @@ function Footer ({ shotList, setShotList}){
             </div>
             
 
-            <div className="offcanvas offcanvas-bottom container" tabindex="-1" id="shotlist" data-bs-backdrop="false" data-bs-scroll="false" aria-labelledby="shotlist">
+            <div className="offcanvas offcanvas-bottom container" tabIndex="-1" id="shotlist" data-bs-backdrop="false" data-bs-scroll="false" aria-label="shotlist">
 
                 <div className="offcanvas-header pb-0">
                     <h5 className="offcanvas-title mx-auto col-12" id="shotlist">Shot List</h5>
