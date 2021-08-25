@@ -1,6 +1,6 @@
 /* eslint-disable */
 import '../../assets/ShotFormPageFinal.scss';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { UncontrolledTooltip  } from 'reactstrap';
 
 function ExtractionWheel(props) {

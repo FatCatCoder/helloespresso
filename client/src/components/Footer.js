@@ -11,11 +11,13 @@ import AddToJournalModal from './AddToJournalModal.js';
 
 function Footer ({ shotList, setShotList}){
     // Auth
-    const getUserId = globalStore(state => state.getUserIdFromJWT)
+    const getUserId = globalStore(state => state.getUserIdFromJWT) 
+    const isLoggedIn = globalStore(state => state.isLoggedIn)
 
      // Footer modal form shot logging to journal 
-     const todaysDate = new Date().toISOString().split('T')[0];
-     const [journalEntry, setJournalEntry] = useState({"postDate": todaysDate});
+     //const todaysDate = new Date().toISOString().split('T')[0];
+     //const [journalEntry, setJournalEntry] = useState({"postDate": todaysDate});
+     const [journalEntry, setJournalEntry] = useState({});
      
 
     const handleModalSubmit = (event) => {
@@ -62,7 +64,7 @@ function Footer ({ shotList, setShotList}){
 
                 <div className="container row mx-auto col-5 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                     <div className="col-6">
-                        <AddToJournalModal buttonLabel={'Log'} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} />  
+                        <AddToJournalModal buttonLabel={isLoggedIn? 'Log': 'login'} isLoggedIn={isLoggedIn} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} />  
                     </div>
                     <div className="col-6">
                         <button onClick={() => setShotList([])} className="mx-auto pe-1 ps-1 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 btn btn-danger">clear</button>

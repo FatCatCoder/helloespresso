@@ -7,19 +7,27 @@ function RecipeFormPageThree({newShot, handleInputChange, setStep}){
     return(
         <>
         
-        <label for="grinder">Grinder</label><br />
-        <input className="shadow border" value={newShot.grinder} onChange={handleInputChange} type="text" id="grinder" name="grinder" placeholder="Grinder..." /><br />
+        <div class="col-7 col-md-4 col-lg-4 col-xl-2 mx-auto">
+            <div class="row">
+                <label htmlFor="grinder">Grinder</label><br />
+                <input className={` shadow border form-control ${formErrors.includes('grinder is a required field')? 'input-error rounded': ''}`} value={newShot.grinder} onChange={handleInputChange} type="text" id="grinder" name="grinder" placeholder="Grinder..." /><br />
+            </div>
 
-        <label for="machine">Machine</label><br />
-        <input className="shadow border" value={newShot.machine} onChange={handleInputChange} type="text" id="machine" name="machine" placeholder="La Marzocco..." /><br />
+            <div class="row">
+                <label htmlFor="machine">Machine</label><br />
+                <input className={` shadow border form-control ${formErrors.includes('machine is a required field')? 'input-error rounded': ''}`} value={newShot.machine} onChange={handleInputChange} type="text" id="machine" name="machine" placeholder="La Marzocco..." /><br />
+            </div>
 
-        <label for="tastingNotes" className="form-label">Tasting Notes</label><br />
-        <input className="shadow border" value={newShot.tastingNotes} onChange={handleInputChange} type="text" id="tastingNotes" name="tastingNotes" placeholder="Tasting Notes..." /><br />
+            <div class="row">
+                <label htmlFor="tastingNotes" className="form-label">Tasting Notes</label><br />
+                <input className={` shadow border form-control ${formErrors.includes('tastingNotes is a required field')? 'input-error rounded': ''}`} value={newShot.tastingNotes} onChange={handleInputChange} type="text" id="tastingNotes" name="tastingNotes" placeholder="Tasting Notes..." /><br />
+            </div>
+        </div>
 
-        <div className="container col-8 col-sm-8 col-md-6 col-lg-4 col-xl-3 mx-auto text-center d-block">
+        <div className="container col-8 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto text-center d-block">
             <div className="row">
-                <label for="notes" className="form-label">Additional Notes</label><br />
-                <textarea className="shadow border form-control mx-auto" value={newShot.notes} onChange={handleInputChange} type="text" id="notes" name="notes" placeholder="Your Notes...was it difficult to dial? Not good with milk or lattes?" /><br />
+                <label htmlFor="notes" className="form-label">Additional Notes</label><br />
+                <textarea className="shadow border form-control mx-auto" value={newShot.notes} onChange={handleInputChange} type="text" id="notes" name="notes" placeholder="This is the freestyle section" /><br />
             </div>
         </div>
 
@@ -28,7 +36,7 @@ function RecipeFormPageThree({newShot, handleInputChange, setStep}){
         <button className="btn btn-primary m-2" type="button" onClick={() => setStep(1)}>back</button>
         <button className="btn btn-primary" type="submit">Add Recipe!</button>
         
-        {formErrors.keys() !== 0 ? formErrors.map(x => <p className="text-danger fs-6">{x}</p>): null}
+        {/* formErrors.keys() !== 0 ? formErrors.map(x => <p className="text-danger fs-6">{x}</p>): null */}
                    
         </>
         

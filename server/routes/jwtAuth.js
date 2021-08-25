@@ -91,7 +91,7 @@ router.post('/login', async(req, res) => {
         const validatePwd = await argon2.verify(user.rows[0].password, password);
 
         if (!validatePwd){
-            return res.status(401).send("Email or Password is invalid");
+            return res.status(401).json({"message":"Email or Password is invalid", "boolean": true});
         }
 
         // give jwt token

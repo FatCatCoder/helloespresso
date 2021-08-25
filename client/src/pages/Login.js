@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import {globalStore} from '../store.js';
+import '../assets/FormStyles.css'
 
 
 function Login({setIsAuth}) {
@@ -67,8 +68,8 @@ function Login({setIsAuth}) {
         <div className="container text-center">
             <h1 className="display-2">Login</h1>
             <form onSubmit={onSubmitForm} className="container mx-auto col-8 col-xl-5">
-                <input type="text" name="email" placeholder="username or email" value={email} onChange={e => onchange(e)} className="form-control my-3" />
-                <input type="text" name="password" placeholder="password" value={password} onChange={e => onchange(e)} className="form-control my-3" required/>
+                <input type="text" name="email" placeholder="username or email" value={email} onChange={e => onchange(e)} className={` form-control my-3 ${errors.message? 'input-error': ''}`} />
+                <input type="text" name="password" placeholder="password" value={password} onChange={e => onchange(e)} className={` form-control my-3 ${errors.message? 'input-error': ''}`} required/>
                 <button className="btn btn-secondary" type="submit">Log In</button>
                 <Link to={{pathname: "/register", state: {location: '/register', going: '/about'}}}><button className="btn btn-secondary m-2" type="button">Register</button></Link>
             </form>

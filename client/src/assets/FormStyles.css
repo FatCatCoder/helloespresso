@@ -16,6 +16,9 @@ input[type=number] {
   margin-right: .1em;
 }
 
-input.input-error{
+input.input-error, select.input-error{
   border-color: #dc3545 !important;
 }
+  input.input-error:hover, select.input-error:hover{
+   border-color: white !important;
+  }

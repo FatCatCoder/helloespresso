@@ -3,7 +3,7 @@ import ExtractionWheel from './ExtractionWheel.js';
 
 
 
-function ShotFormPageFinal({newShot, handleInputChange, handleSubmit, setStep}){
+function ShotFormPageFinal({setStep}){
 
     return(
         <>

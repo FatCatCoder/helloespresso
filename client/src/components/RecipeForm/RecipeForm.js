@@ -47,13 +47,17 @@ function RecipeForm({getUserId, refresh, setRefresh}){
         bean: yup.string().required(),
         roaster: yup.string().required(),
         region: yup.string().required(),
-        roastDate: yup.date()
+        roastDate: yup.date().required(),
+        roast: yup.string().required(),
+        process: yup.string().required()
     })
     const schemaBeanData = {
         bean: newShot.bean,
         roaster: newShot.roaster,
         region: newShot.region,
-        roastDate: newShot.roastDate
+        roastDate: newShot.roastDate,
+        roast: newShot.roast,
+        process: newShot.process
     }
     // page two
     const schemaDose = yup.object().shape({
@@ -171,9 +175,9 @@ function RecipeForm({getUserId, refresh, setRefresh}){
     
     return (
         <div className="container text-center">
-            <h1 className="display-2">New Recipe</h1>
+            <h1 className="display-2 mb-0">New Recipe</h1>
             <div>
-                <form onSubmit={handleSubmit} className="mx-auto text-center">
+                <form onSubmit={handleSubmit} className="mx-auto">
                     {renderPage()}
                 </form>
             </div>
