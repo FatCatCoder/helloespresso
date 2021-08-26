@@ -5,7 +5,7 @@ import {useShotFormStore, globalStore} from '../store.js';
 // components 
 import ShotForm from '../components/ShotForm/ShotForm.js';
 import Footer from '../components/Footer.js';
-import '../assets/App.scss';
+
 
 
 function Pull () {

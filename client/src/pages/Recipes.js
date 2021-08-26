@@ -1,5 +1,5 @@
 // modules
-import { useState, useEffect, useCallback  } from 'react';
+import { useState, useEffect  } from 'react';
 import {useHistory} from 'react-router-dom'; 
 import {globalStore} from '../store.js';
 import {
@@ -69,31 +69,6 @@ function Recipes({isAuth}){
         console.log('fetchRecipes data', data)
         return data;
     }
-    /*
-    const fetchRecipes = useCallback((thisPage) => {
-        const fetchRecipesInner = async (thisPage = currPage, numOf = recipesPerPage) => {
-            setIsLoading(true);
-            console.log(sortFilters?.sortBy);
-            if(sortFilters.sortBy == null){
-                setSortFilters((filters) => ({...filters, "sortBy": "postdate DESC"}))
-            }
-            const res = await fetch('/recipes', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({"offsetPage": thisPage - 1, "limitAmount": numOf, "sortFilters": sortFilters})
-            })
-            console.log(res);
-
-            const data = await res.json();
-            
-            console.log('fetchRecipes data', data)
-            return data;
-        }
-    return fetchRecipesInner();
-}, [currPage, recipesPerPage])
-*/
     
     // get recipes on load and refresh
     useEffect(() => {
@@ -113,7 +88,8 @@ function Recipes({isAuth}){
         return () => {
             ignore = true;
             abortController.abort();
-        }; 
+        };
+        // eslint-disable-next-line 
     }, [refresh])
 
     // set recipes on page
@@ -121,6 +97,7 @@ function Recipes({isAuth}){
         let ignore = false;
         if(!ignore){ myRecipes? setRecipeSlice(myRecipes.find(x => x["page"] === currPage)["recipes"]) : setRecipeSlice([]); }
         return () => { ignore = true; }; 
+        // eslint-disable-next-line
     }, [myRecipes]) 
 
 

@@ -4,7 +4,6 @@ import Fade from 'react-reveal/Fade';
 
 // components
 import Navbar from './Navbar.js';
-import '../assets/App.scss';
 import '../assets/Header.css';
 
 // imgs 

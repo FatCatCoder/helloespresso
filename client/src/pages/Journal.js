@@ -1,21 +1,27 @@
-import JournalItemContent from '../components/JournalItemContent.js';
-import JournalItem from '../components/JournalItem.js';
 import {useEffect, useState} from 'react';
 import {globalStore} from '../store.js';
-import Pagination from '../components/Pagination.js';
 import axios from 'axios';
-
 import {
+    Redirect,
     Switch,
     Route,
     useRouteMatch,
   } from "react-router-dom";
+
+// components
+import Pagination from '../components/Pagination.js';
+import JournalItemContent from '../components/JournalItemContent.js';
+import JournalItem from '../components/JournalItem.js';
+import LoadingSpinner from '../components/LoadingSpinner.js';
+import Login from './Login.js';
+
 
 // journal page, displays logged in users entries, or login screen
 
 function Journal({isAuth}){
     let match = useRouteMatch();
     const setCurrentPage = globalStore(state => state.setCurrentPage);
+    const loadingAuth = globalStore(state => state.loadingAuth);
     setCurrentPage(window.location.pathname)
 
     const [myEntries, setMyEntries] = useState([]);
@@ -36,7 +42,7 @@ function Journal({isAuth}){
         const abortController = new AbortController();
         let ignore = false;
 
-        if(!ignore){
+        if(!ignore && isAuth){
             const userData = jwtDecode();
             const fetchJournalEntries = async () => { 
                 const res = await axios.post('/journals', {user_id: userData.user.id});
@@ -51,7 +57,7 @@ function Journal({isAuth}){
             ignore = true;
             abortController.abort();
         }; 
-    }, [])
+    }, [isAuth])
 
     
     // for pagination
@@ -59,9 +65,14 @@ function Journal({isAuth}){
     const indexOfFirstPost = indexOfLastPost - recipesPerPage;
     const currRecipes = myEntries.slice(indexOfFirstPost, indexOfLastPost);
 
+    // wait for app.js to fetch auth from server
+    if(loadingAuth){
+        return <div className="text-center pb-5"><LoadingSpinner /></div>
+    }
+    // if auth give page else redirect login 
     return(
-
         <div className="text-center pb-5">
+            {isAuth?
             <Switch>
                 <Route exact path={match.path}>
                     <h1 className="display-2">Journal</h1>
@@ -70,14 +81,17 @@ function Journal({isAuth}){
                             {currRecipes.map((x, y) => <JournalItem key={x.id} id={x.id} Bean={x.bean} Region={x.region} Roaster={x.roaster} postDate={x.postdate} /> )}
                         </div>
                     </div>
-                    <Pagination className={"container text-center mx-auto"} itemsPerPage={recipesPerPage} totalItems={myEntries.length} currPage={currPage} setCurrPage={setCurrPage} />
+                    <Pagination className={"container text-center mt-3 mx-auto"} itemsPerPage={recipesPerPage} totalItems={myEntries.length} currPage={currPage} setCurrPage={setCurrPage} />
                 </Route>
 
                 <Route path={`${match.path}/:id`}>
                     <JournalItemContent myEntries={myEntries}/>
                 </Route>
             </Switch>
+            :
+            (<Redirect to={{pathname: "/login", state: {location: "/journal", going: "/journal"}}} />)}
         </div>
+        
     )
 }
 

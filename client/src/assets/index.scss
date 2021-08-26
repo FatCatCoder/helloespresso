@@ -70,3 +70,18 @@ h6.display-5{
 .btn-light-custom{
   background-color: $gray-400;
 }
+
+.rainbow-text {
+  @extend .display-1;
+  background-image: repeating-linear-gradient(45deg, violet, indigo, blue, green, yellow, orange, red, violet);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow 3s ease infinite;
+  
+}
+
+@keyframes rainbow { 
+  0%{background-position:0% 50%}
+  50%{background-position:100% 25%}
+  100%{background-position:0% 50%}
+}

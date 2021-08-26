@@ -3,7 +3,6 @@ import {globalStore} from '../store.js';
 import axios from 'axios';
 
 // components
-import '../assets/App.scss';
 import Shot from './Shot';
 import AddToJournalModal from './AddToJournalModal.js';
 

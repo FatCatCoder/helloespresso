@@ -11,7 +11,6 @@ import Login from './pages/Login.js';
 import Register from './pages/Register.js';
 
 // components
-// import './assets/App.scss';
 import Header from './components/Header.js';
 import ScrollToTop from './components/ScrollToTop.js';
 import ErrorScreen from './components/ErrorScreen.js';
@@ -20,12 +19,15 @@ import Test from './Test.js';
 
 function App (){
   const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
+  const isLoggedIn = globalStore(state => state.isLoggedIn)
+  const setLoadingAuth = globalStore(state => state.setLoadingAuth);
   const [isAuth, setIsAuth] = useState(null);
 
   useEffect(() => {
     const abortController = new AbortController();
     let ignore = false;
 
+    const timer = setTimeout(() => {
     if(!ignore){
       const startAuth = async () => {
         try {
@@ -41,26 +43,30 @@ function App (){
           const parseRes = await response.json();
           parseRes.verified === true ? setIsAuth(true): setIsAuth(false);
           parseRes.verified === true ? setIsLoggedIn(true): setIsLoggedIn(false);
+          setLoadingAuth(false);
+
         } catch (error) {
             console.log(error.message)
             setIsAuth(false);
             setIsLoggedIn(false);
+            setLoadingAuth(false);
         }
       }
-
+      // call
       startAuth();
-    }
+    }}, 5000);
     
     return () => {
             ignore = true;
             abortController.abort();
+            clearTimeout(timer);
         }; 
-  }, [setIsLoggedIn])
+  }, [setIsLoggedIn, isLoggedIn])
  
   // Main router for app, checks for auth in token before load
   return (
     <>
-    {isAuth !== null ?
+    { /* isAuth !== null ? */
     <Router>
       <ScrollToTop />
       <div className="App">
@@ -71,9 +77,15 @@ function App (){
           <Pull />
         </Route>
 
+        <Route path="/journal">
+          <Journal isAuth={isAuth} />  
+        </Route>
+
+        {/*
         <Route path="/journal"
           render={props => isAuth ? (<Journal isAuth={isAuth}/>) : (<Redirect to={{pathname: "/login", state: {location: "/journal", going: "/journal"}}} />)}  
         />
+        */}
 
         <Route path="/recipes">
           <Recipes isAuth={isAuth} />
@@ -101,12 +113,12 @@ function App (){
       
     </div>
     </Router>
-    :
+    /*:
     
     <div className="position-absolute top-50 start-50">
         <LoadingSpinner />
     </div>
-    }
+    */}
     </>
   );
 }

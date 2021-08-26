@@ -1,6 +1,6 @@
 import '@popperjs/core/dist/umd/popper.min.js';
 //import 'bootstrap/dist/css/bootstrap.min.css';
-import './assets/App.scss';
+import './assets/index.scss';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import React from 'react';

@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import '../assets/App.scss';
+
 
 function Shot (props){
     const [isCollapsed, toggleCollapsed] = useState(false);

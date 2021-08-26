@@ -50,6 +50,10 @@ const globalStore = create((set, get) => ({
   setCurrentPage: (pageStr) => {
     set(state => ({currentPage: pageStr}))
   },
+  loadingAuth: true,
+  setLoadingAuth: (bool) => {
+    set(state => ({loadingAuth: bool}))
+  }
 }))
 
 

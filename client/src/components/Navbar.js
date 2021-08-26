@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import {globalStore} from '../store.js';
 
-
-
+// className={`nav-link ${currPage['/'] === true || thisPage === '/' ? 'active': ''}`}
 
 function Navbar({currPage, handleNav}) {
     const currentPage = globalStore(state => state.currentPage);
@@ -13,7 +12,7 @@ function Navbar({currPage, handleNav}) {
       <div id="navbar" className="text-center mx-auto d-flex justify-content-center border-bottom col-xl-4 col-lg-5 col-10 col-md-6 pt-2 pb-2">
           <ul className="nav nav-pills">
             <li className="nav-item">
-              <Link className={`nav-link ${currPage['/'] === true || thisPage === '/' ? 'active': ''}`} name={'/'}  aria-current="page" onClick={handleNav} to={"/"}>Pull</Link>
+              <Link className={`nav-link ${/^\/$/.test(thisPage) || /^\/$/.test(Object.keys(currPage)[0]) === true  ? 'active': ''}`} name={'/'}  aria-current="page" onClick={handleNav} to={"/"}>Pull</Link>
             </li>
             <li className="nav-item">
               <Link className={`nav-link ${/(journal)/.test(thisPage) || /(journal)/.test(Object.keys(currPage)[0]) === true  ? 'active': ''}`} name={'/journal'} onClick={handleNav} to={"/journal"}>Journal</Link>
