@@ -50,6 +50,26 @@ function Recipes({isAuth}){
 
 
     // POST request to get recipes from server based on page and amount, checks for null filter requirements
+    const fetchRecipes = async (thisPage = currPage, numOf = recipesPerPage) => {
+        setIsLoading(true);
+        console.log(sortFilters?.sortBy);
+        if(sortFilters.sortBy == null){
+            setSortFilters((filters) => ({...filters, "sortBy": "postdate DESC"}))
+        }
+        const res = await fetch('/recipes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body: JSON.stringify({"offsetPage": thisPage - 1, "limitAmount": numOf, "sortFilters": sortFilters})
+        })
+        console.log(res);
+        const data = await res.json();
+        
+        console.log('fetchRecipes data', data)
+        return data;
+    }
+    /*
     const fetchRecipes = useCallback((thisPage) => {
         const fetchRecipesInner = async (thisPage = currPage, numOf = recipesPerPage) => {
             setIsLoading(true);
@@ -72,7 +92,8 @@ function Recipes({isAuth}){
             return data;
         }
     return fetchRecipesInner();
-}, [currPage, recipesPerPage, sortFilters])
+}, [currPage, recipesPerPage])
+*/
     
     // get recipes on load and refresh
     useEffect(() => {
@@ -93,14 +114,14 @@ function Recipes({isAuth}){
             ignore = true;
             abortController.abort();
         }; 
-    }, [refresh, fetchRecipes])
+    }, [refresh])
 
     // set recipes on page
     useEffect(() => {
         let ignore = false;
         if(!ignore){ myRecipes? setRecipeSlice(myRecipes.find(x => x["page"] === currPage)["recipes"]) : setRecipeSlice([]); }
         return () => { ignore = true; }; 
-    }, [myRecipes, currPage]) 
+    }, [myRecipes]) 
 
 
     // On pagination setCurrPage change, checks if page exists in memory, if not then fetch it and update state.

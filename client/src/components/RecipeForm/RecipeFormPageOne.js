@@ -9,22 +9,22 @@ function RecipeFormPageOne({newShot, handleInputChange, nextStep}){
     return(
         <>
             <div className="col-7 col-md-4 col-lg-4 col-xl-2 mx-auto">
-                <div className="row">
+                <div className="row col-xl-8 mx-auto">
                     <label htmlFor="bean" className="">Bean</label><br />
                     <input className={` shadow border form-control ${formErrors.includes('bean is a required field')? 'input-error rounded': ''}`} value={newShot.bean} onChange={handleInputChange} type="text" id="bean" name="bean" placeholder="Name/Origin..." /><br />
                 </div>
 
-                <div className="row">
+                <div className="row col-xl-8 mx-auto">
                     <label htmlFor="roaster" className="">Roaster</label><br />
                     <input className={` shadow border form-control ${formErrors.includes('roaster is a required field')? 'input-error rounded': ''}`} value={newShot.roaster} onChange={handleInputChange} type="text" id="roaster" name="roaster" placeholder="Roaster..." /><br />
                 </div>
 
-                <div className="row">
+                <div className="row col-xl-8 mx-auto">
                     <label htmlFor="region" className="">Region</label><br />
                     <input className={` shadow border form-control ${formErrors.includes('region is a required field')? 'input-error rounded': ''}`} value={newShot.region} onChange={handleInputChange} type="text" id="region" name="region" placeholder="Region/Farm..." /><br />
                 </div>
 
-                <div className="row">
+                <div className="row col-xl-8 mx-auto">
                     <label htmlFor="roastDate" className="">Roast date</label><br />
                     <input className={` shadow border p-1 w-100 mx-auto form-control  ${formErrors.includes('roastDate is a required field')? 'input-error rounded': ''}`} value={newShot.roastDate} onChange={handleInputChange} type="date" id="roastDate" name="roastDate" /><br />
                 </div>

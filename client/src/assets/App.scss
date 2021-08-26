@@ -1,5 +1,4 @@
 // Override default variables before the import
-// $body-bg: #000;
 
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
@@ -24,8 +23,6 @@ $utilities: map-merge(
 );
 
 $offcanvas-vertical-height: auto;
-
-
 
 
 // Import Bootstrap and its default variables

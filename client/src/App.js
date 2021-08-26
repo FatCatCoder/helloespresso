@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { globalStore} from './store.js';
 
@@ -12,7 +11,7 @@ import Login from './pages/Login.js';
 import Register from './pages/Register.js';
 
 // components
-import './assets/App.scss';
+// import './assets/App.scss';
 import Header from './components/Header.js';
 import ScrollToTop from './components/ScrollToTop.js';
 import ErrorScreen from './components/ErrorScreen.js';
