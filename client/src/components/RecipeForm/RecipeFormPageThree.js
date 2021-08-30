@@ -7,18 +7,18 @@ function RecipeFormPageThree({newShot, handleInputChange, setStep}){
     return(
         <>
         
-        <div class="col-7 col-md-4 col-lg-4 col-xl-2 mx-auto">
-            <div class="row col-xl-8 mx-auto">
+        <div className="col-7 col-md-4 col-lg-4 col-xl-2 mx-auto">
+            <div className="row col-xl-8 mx-auto">
                 <label htmlFor="grinder">Grinder</label><br />
                 <input className={` shadow border form-control ${formErrors.includes('grinder is a required field')? 'input-error rounded': ''}`} value={newShot.grinder} onChange={handleInputChange} type="text" id="grinder" name="grinder" placeholder="Grinder..." /><br />
             </div>
 
-            <div class="row col-xl-8 mx-auto">
+            <div className="row col-xl-8 mx-auto">
                 <label htmlFor="machine">Machine</label><br />
                 <input className={` shadow border form-control ${formErrors.includes('machine is a required field')? 'input-error rounded': ''}`} value={newShot.machine} onChange={handleInputChange} type="text" id="machine" name="machine" placeholder="La Marzocco..." /><br />
             </div>
 
-            <div class="row col-xl-8 mx-auto">
+            <div className="row col-xl-8 mx-auto">
                 <label htmlFor="tastingNotes" className="form-label">Tasting Notes</label><br />
                 <input className={` shadow border form-control ${formErrors.includes('tastingNotes is a required field')? 'input-error rounded': ''}`} value={newShot.tastingNotes} onChange={handleInputChange} type="text" id="tastingNotes" name="tastingNotes" placeholder="Tasting Notes..." /><br />
             </div>

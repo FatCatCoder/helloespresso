@@ -9,7 +9,7 @@ function Navbar({currPage, handleNav}) {
     console.log("currPage", Object.keys(currPage)[0], "thisPage", thisPage, "currentPage", currentPage);
 
     return(
-      <div id="navbar" className="text-center mx-auto d-flex justify-content-center border-bottom col-xl-4 col-lg-5 col-10 col-md-6 pt-2 pb-2">
+      <div id="navbar" className={`text-center mx-auto d-flex justify-content-center col-xl-4 col-lg-5 col-10 col-md-6 pt-2 pb-2 ${/(about)/.test(thisPage) || /(about)/.test(Object.keys(currPage)[0]) === true ? '': 'border-bottom'}`}>
           <ul className="nav nav-pills">
             <li className="nav-item">
               <Link className={`nav-link ${/^\/$/.test(thisPage) || /^\/$/.test(Object.keys(currPage)[0]) === true  ? 'active': ''}`} name={'/'}  aria-current="page" onClick={handleNav} to={"/"}>Pull</Link>

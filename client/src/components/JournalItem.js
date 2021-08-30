@@ -5,10 +5,10 @@ import {Link} from 'react-router-dom';
 function JournalItem({id, Bean, Region, Roaster, postDate}){
 
     return(
-        <Link to={`/journal/${id}`} class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1 text-capitalize">{Bean} ({Region}) - {Roaster}</h5>
-            <small class="text-muted"> {new Date(postDate).toLocaleDateString() }</small>
+        <Link to={`/journal/${id}`} className="list-group-item list-group-item-action">
+            <div className="d-flex w-100 justify-content-between">
+            <h5 className="mb-1 text-capitalize">{Bean} ({Region}) - {Roaster}</h5>
+            <small className="text-muted"> {new Date(postDate).toLocaleDateString() }</small>
             </div>
         </Link>
     )

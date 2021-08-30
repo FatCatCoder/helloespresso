@@ -4,7 +4,7 @@ function Test() {
   
   return (
     <div className="text-center">
-        <h1 className="rainbow-text">Rainbow Text</h1>
+        <h1 className="rainbow-text">Header</h1>
     </div>
   )
 };

@@ -37,7 +37,7 @@ function Stopwatch() {
         <p className="fs-2">
             {lapse} s
         </p>
-        <div class="btn-group" role="group" aria-label="Basic example">
+        <div className="btn-group" role="group" aria-label="Basic example">
             <button onClick={handleRunClick} className="btn btn-outline-success">
                 {running ? 'Stop' : 'Start'}
             </button>

@@ -18,9 +18,10 @@ function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleM
   return (
     <>
       <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">login to add to your journal!</Tooltip>}>
-        <span className="d-inline-block">
-          <Button color="primary" className="mx-auto pe-2 ps-2 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 btn" disabled={!isLoggedIn} data-bs-dismiss="offcanvas" onClick={isLoggedIn? toggle: () => history.push('/login')}>{buttonLabel}</Button>
-        </span>
+        
+          <Button color="primary" className="btn w-100" disabled={!isLoggedIn} data-bs-dismiss="offcanvas" onClick={isLoggedIn? toggle: () => history.push('/login')}>{buttonLabel}</Button>
+          {//<span className="d-inline-block"></span>
+          }
       </OverlayTrigger>
 
       <form onSubmit={handleModalSubmit} id="modalForm" inline="true">

@@ -22,7 +22,9 @@ function Journal({isAuth}){
     let match = useRouteMatch();
     const setCurrentPage = globalStore(state => state.setCurrentPage);
     const loadingAuth = globalStore(state => state.loadingAuth);
-    setCurrentPage(window.location.pathname)
+    useEffect(() => {
+        setCurrentPage(window.location.pathname)
+    }, [])
 
     const [myEntries, setMyEntries] = useState([]);
 

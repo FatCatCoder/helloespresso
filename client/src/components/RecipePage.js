@@ -127,8 +127,8 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
                 </div>
             </div>
 
-            <button type="button" class={`btn btn-outline-danger ${liked === true ? 'active': ''}`} onClick={() => bussinText.click()} aria-pressed="false">
-                <i class="bi bi-heart-fill">{bussinText.text}</i>     
+            <button type="button" className={`btn btn-outline-danger ${liked === true ? 'active': ''}`} onClick={() => bussinText.click()} aria-pressed="false">
+                <i className="bi bi-heart-fill">{bussinText.text}</i>     
             </button> 
             
 
@@ -160,8 +160,8 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
 
         {user_id() === recipe?.user_id && isLoggedIn? 
             <button className="btn btn-danger mt-2">
-                <span class="main-text">Delete Recipe</span>
-                <span class="hover-text">Are You Sure?</span>
+                <span className="main-text">Delete Recipe</span>
+                <span className="hover-text">Are You Sure?</span>
                 </button>
             :null
         }

@@ -29,7 +29,8 @@ function RecipeBtnGrp(props){
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        props.setRefresh(!props.refresh);
+        //props.setRefresh(!props.refresh);
+        props.setRefresh(true);
     }
 
     const resetForm = () => { 
@@ -81,9 +82,10 @@ function RecipeBtnGrp(props){
 
                             <div className="row mx-auto text-center col-10 col-lg-3">
                                 <div className="col-6 col-md-6 mx-auto">
-                                    <label className="" for="roast">Roast: </label>
-                                    <select className="shadow border form-select" onChange={handleOnChange} value={props.sortFilters.roast} id="roast" name="roast">
-                                        <option value="" selected></option>
+                                    <label className="" htmlFor="roast">Roast: </label>
+                                    <select className="shadow border form-select" onChange={handleOnChange} defaultValue={""} value={props.sortFilters.roast} id="roast" name="roast">
+                                        {//<option value="" selected></option>
+                                        }
                                         <option value="Light">Light</option>
                                         <option value="Medium">Medium</option>
                                         <option value="Dark">Dark</option>
@@ -91,9 +93,10 @@ function RecipeBtnGrp(props){
                                 </div>
 
                                 <div className="col-6 col-md-6 mx-auto">
-                                    <label className="" for="process">Process: </label>
-                                    <select className="shadow border form-select" onChange={handleOnChange} value={props.sortFilters.process} id="process" name="process">
-                                        <option value="" selected></option>
+                                    <label className="" htmlFor="process">Process: </label>
+                                    <select className="shadow border form-select" onChange={handleOnChange} defaultValue={""} value={props.sortFilters.process} id="process" name="process">
+                                        {//<option value="" selected></option>
+                                        }
                                         <option value="Washed">Washed</option>
                                         <option value="Natural">Natural</option>
                                         <option value="Honey">Honey</option>
@@ -108,12 +111,12 @@ function RecipeBtnGrp(props){
                                 <>
                                 <div className="col-6">
                                     <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="user_id" id="user_id" disabled={!props.isLoggedIn} />
-                                    <label className="form-check-label" for="user_id">My Recipes</label>
+                                    <label className="form-check-label" htmlFor="user_id">My Recipes</label>
                                 </div>
 
                                 <div className="col-6">
                                     <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="liked_by_user_id" id="liked_by_user_id" disabled={!props.isLoggedIn} />
-                                    <label className="form-check-label" for="liked_by_user_id">Loved Recipes</label>
+                                    <label className="form-check-label" htmlFor="liked_by_user_id">Loved Recipes</label>
                                 </div>
                                 </>
                             }

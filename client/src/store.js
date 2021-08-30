@@ -1,10 +1,19 @@
 import create from 'zustand';
 import axios from 'axios';
 
+// for form errors
 const useShotFormStore = create((set, get) => ({
     formError: [],
     setFormError: (error) => set(state => ({formError: error}))
   }))
+
+// eventually for recipes inMemory state persistance when navigating back and forth between pages.
+const useRecipesStore = create((set, get) => ({
+  recipes: [],
+  setRecipes: (data) => set(state => ({recipes: data})),
+  currPage: 1,
+  setCurrPage: (number) => set(state => ({currPage: number}))
+}))
 
 const globalStore = create((set, get) => ({
   userId: '',
@@ -57,4 +66,4 @@ const globalStore = create((set, get) => ({
 }))
 
 
-export {globalStore, useShotFormStore};
+export {globalStore, useShotFormStore, useRecipesStore};

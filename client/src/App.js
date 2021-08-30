@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { globalStore} from './store.js';
+import { globalStore, useRecipesStore} from './store.js';
 
 // pages
 import Pull from './pages/Pull.js';
@@ -14,7 +14,6 @@ import Register from './pages/Register.js';
 import Header from './components/Header.js';
 import ScrollToTop from './components/ScrollToTop.js';
 import ErrorScreen from './components/ErrorScreen.js';
-import LoadingSpinner from './components/LoadingSpinner.js';
 import Test from './Test.js';
 
 function App (){
@@ -62,6 +61,9 @@ function App (){
             clearTimeout(timer);
         }; 
   }, [setIsLoggedIn, isLoggedIn])
+
+  const globalRecipes = useRecipesStore(state => state.recipes);
+  console.log(globalRecipes);
  
   // Main router for app, checks for auth in token before load
   return (
@@ -80,12 +82,6 @@ function App (){
         <Route path="/journal">
           <Journal isAuth={isAuth} />  
         </Route>
-
-        {/*
-        <Route path="/journal"
-          render={props => isAuth ? (<Journal isAuth={isAuth}/>) : (<Redirect to={{pathname: "/login", state: {location: "/journal", going: "/journal"}}} />)}  
-        />
-        */}
 
         <Route path="/recipes">
           <Recipes isAuth={isAuth} />

@@ -61,12 +61,14 @@ function Footer ({ shotList, setShotList}){
                     <button type="button" className="btn-close text-reset my-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
 
-                <div className="container row mx-auto col-5 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-                    <div className="col-6">
-                        <AddToJournalModal buttonLabel={isLoggedIn? 'Log': 'login'} isLoggedIn={isLoggedIn} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} />  
-                    </div>
-                    <div className="col-6">
-                        <button onClick={() => setShotList([])} className="mx-auto pe-1 ps-1 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 btn btn-danger">clear</button>
+                <div className="container mx-auto col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                    <div class="row">
+                        <div className="col-6">
+                            <AddToJournalModal buttonLabel={isLoggedIn? 'Log': 'login'} isLoggedIn={isLoggedIn} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} />
+                        </div>
+                        <div className="col-6">
+                            <button onClick={() => setShotList([])} className="btn btn-danger w-100">clear</button>
+                        </div>
                     </div>
                 </div>
 
