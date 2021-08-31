@@ -4,14 +4,17 @@ const cors = require("cors");
 const path = require("path");
 const helmet = require('helmet');
 const PORT = process.env.PORT || 5000;
-
-
+const serverTimingMiddleware = require('server-timing-header');
 
 // middleware
+app.use(helmet.hidePoweredBy({ setTo: 'foo' })); 
+app.disable('x-powered-by')
 app.use(helmet());
+app.use(helmet.hidePoweredBy())
 app.use(express.json()) //allows access req.body
 app.use(express.urlencoded({extended: false}));
 app.use(cors());
+app.use(serverTimingMiddleware({sendHeaders: (process.env.NODE_ENV !== 'production')}));
 
 // simple invalid JWT handling 
 
@@ -21,10 +24,9 @@ app.use(function (err, req, res, next) {
     }
   });
 
-
 // check production or dev env
 if (process.env.NODE_ENV === "production"){
-    app.use(express.static(path.join(__dirname, "/client/build")))
+    app.use(express.static(path.join(__dirname, "./client/build")))
 }
 
 // routes
@@ -39,12 +41,12 @@ app.use("/journals", require("./server/api/journals"));
 app.use("/shots", require("./server/api/shots"));
 
 
+app.use(express.static(path.join(__dirname, 'build')));
 
-/*
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "/client/build/index.html"));
-})
-*/
+// Server send
+// app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "./client/build/index.html"));
+// })
 
 // listening...
 app.listen(PORT, () => {

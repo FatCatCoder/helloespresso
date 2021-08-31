@@ -62,7 +62,7 @@ function Footer ({ shotList, setShotList}){
                 </div>
 
                 <div className="container mx-auto col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-                    <div class="row">
+                    <div className="row">
                         <div className="col-6">
                             <AddToJournalModal buttonLabel={isLoggedIn? 'Log': 'login'} isLoggedIn={isLoggedIn} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} />
                         </div>

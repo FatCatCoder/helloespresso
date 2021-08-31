@@ -13,6 +13,7 @@ function RecipeCard({recipe}){
         const fetchLikes = async () => {
             const res = await fetch('/recipes/likes', {
                 method: 'POST',
+                //signal: abortController.signal,
                 headers: {
                     'Content-Type': 'application/json'
                 },

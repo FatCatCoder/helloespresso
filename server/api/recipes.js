@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const pool = require('../../db');
+const serverTimingMiddleware = require('server-timing-header');
 
 
-// -- Tools -- //
+// -- Utils -- //
 
 // check if string is alphanumeric
 function isAlphaNumeric(str) {
@@ -36,9 +37,10 @@ router.get('/', async(req, res) => {
     res.send(recipesAmount.rows[0]["count"]);
 })
 
-// get all recipes on a page
+// get recipes based on parameters, main API entry
 router.post('/', async(req, res) => {
     try{
+        req.serverTiming.from('api');
         const {offsetPage, limitAmount, sortFilters} = req.body;
 
         const filtersList = Object.entries(sortFilters);
@@ -145,8 +147,11 @@ router.post('/', async(req, res) => {
 
             console.log('')
             console.log(queryStr)
+            req.serverTiming.from('db');
             var recipes = await pool.query(queryStr);
+            req.serverTiming.to('db');
         }
+        req.serverTiming.to('api');
         console.log('count', recipes.rowCount,'\n',recipes.rows[0], '\n', recipes, recipes.rowCount === 0? [] : recipes.rows);
         res.send(recipes.rowCount === 0? [{"count": 0}] : recipes.rows);
     }
