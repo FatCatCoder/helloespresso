@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
-import Tooltip from 'react-bootstrap/Tooltip'
+import { useState } from 'react';
 import {useHistory} from 'react-router-dom';
+
+import Modal from 'react-bootstrap/Modal'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Button from 'react-bootstrap/Button'
+import Tooltip from 'react-bootstrap/Tooltip'
+import Form from 'react-bootstrap/Form'
+
 
 // if not logged in, disable button...
 // TODO persist shotlog so user can click add to log button and it redirects to to login page then back to pull page with persisted data to enter as log
@@ -14,40 +18,44 @@ function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleM
   const toggle = () => setModal(!modal);
 
   let history = useHistory();
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <>
       <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">login to add to your journal!</Tooltip>}>
-        
-          <Button color="primary" className="btn w-100" disabled={!isLoggedIn} data-bs-dismiss="offcanvas" onClick={isLoggedIn? toggle: () => history.push('/login')}>{buttonLabel}</Button>
-          {//<span className="d-inline-block"></span>
-          }
+          <Button color="primary" className="btn w-100" disabled={!isLoggedIn} data-bs-dismiss="offcanvas" onClick={isLoggedIn? handleShow : () => history.push('/login')}>{buttonLabel}</Button>
       </OverlayTrigger>
 
       <form onSubmit={handleModalSubmit} id="modalForm" inline="true">
-      <Modal isOpen={modal} toggle={toggle} className={className} centered={true}>
-        <ModalHeader toggle={toggle}>Add to Journal</ModalHeader>
-        <ModalBody>
-                <div className="mb-3">
-                    <FormGroup>
-                        <label for="bean" className="form-label">Bean</label>
-                        <input value={journalEntry.Bean} onChange={handleModalInputChange} type="text" className="form-control" id="bean" name="bean" placeholder="Bean..."></input>
-                    </FormGroup>
-                    <FormGroup>
-                        <label for="region" className="form-label">Region</label>
-                        <input value={journalEntry.Region} onChange={handleModalInputChange} type="text" className="form-control" id="region" name="region" aria-describedby="Region" placeholder="Region..."></input>
-                    </FormGroup>
-                    <FormGroup>
-                        <label for="roaster" className="form-label">Roaster</label>
-                        <input value={journalEntry.Roaster} onChange={handleModalInputChange} type="text" className="form-control" id="roaster" name="roaster" aria-describedby="Roaster" placeholder="Roaster..."></input>
-                    </FormGroup>
-                </div>  
-        </ModalBody>
-        <ModalFooter>
-          <button className="btn btn-primary"  type="submit" form="modalForm" value="Submit" onClick={toggle}>Confirm</button>{' '}
-          <Button color="secondary" onClick={toggle}>Cancel</Button>
-        </ModalFooter>
-      </Modal>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add to Journal</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="mb-3">
+              <Form.Group>
+                  <label for="bean" className="form-label">Bean</label>
+                  <input value={journalEntry.Bean} onChange={handleModalInputChange} type="text" className="form-control" id="bean" name="bean" placeholder="Bean..."></input>
+              </Form.Group>
+              <Form.Group>
+                  <label for="region" className="form-label">Region</label>
+                  <input value={journalEntry.Region} onChange={handleModalInputChange} type="text" className="form-control" id="region" name="region" aria-describedby="Region" placeholder="Region..."></input>
+              </Form.Group>
+              <Form.Group>
+                  <label for="roaster" className="form-label">Roaster</label>
+                  <input value={journalEntry.Roaster} onChange={handleModalInputChange} type="text" className="form-control" id="roaster" name="roaster" aria-describedby="Roaster" placeholder="Roaster..."></input>
+              </Form.Group>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" type="submit" form="modalForm" value="Submit" onClick={toggle}>Confirm</Button>{' '}
+            <Button variant="danger" onClick={handleClose}>Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+
       </form>
     </>
   );

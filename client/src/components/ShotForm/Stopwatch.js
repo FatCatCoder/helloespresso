@@ -4,7 +4,7 @@ function reducer(currentState, newState) {
   return {...currentState, ...newState}
 }
 
-function Stopwatch() {
+function Stopwatch({handleInputChange}) {
   const [{running, lapse}, setState] = useReducer(reducer, {
     running: false,
     lapse: 0,
@@ -17,11 +17,12 @@ function Stopwatch() {
 
   function handleRunClick() {
     if (running) {
+      handleInputChange({"target": {"name": "time", "value": lapse}})
       clearInterval(intervalRef.current)
     } else {
       const startTime = Date.now() - lapse
       intervalRef.current = setInterval(() => {
-        setState({lapse: (Date.now() - startTime) / 1000})
+        setState({lapse: Number.parseFloat((Date.now() - startTime) / 1000).toFixed(2)})
       }, 0)
     }
     setState({running: !running})

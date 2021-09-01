@@ -98,11 +98,17 @@
       }
 
       .focusTopRight{
-          transform: translate(-25px, 25px) scale(1.5) !important;
+          transform: translate(25px, -25px) scale(1.5) !important;
       }
+      .focusBottomRight{
+        transform: translate(-25px, 25px) scale(1.5) !important;
+    }
       .focusTopLeft{
           transform: translate(-25px, -25px) scale(1.5) !important;
       }
+      .focusBottomLeft{
+        transform: translate(25px, 25px) scale(1.5) !important;
+    }
       
       #middleTextInnerCirTop{ 
           position: relative;

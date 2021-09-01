@@ -2,21 +2,39 @@ import '../../assets/ShotFormPageFinal.scss';
 import ExtractionWheel from './ExtractionWheel.js';
 
 
+function ShotFormPageFinal({setStep, shotList}){
+    const attribute = shotList[(shotList.length - 1)].attribute;
+    const helpText = "Heres a little help";
 
-function ShotFormPageFinal({setStep}){
+    /*
+    var helpText;
+    var segment;
+
+    if(attribute === 'sour'){
+        helpText = 'We Suggest you grind finer to Extract more goodies';
+    }
+    else if(attribute === 'bitter'){
+        helpText = 'We Suggest you grind coarser to Extract more goodies';
+    }
+    else if(attribute === 'weak'){
+        helpText = 'We Suggest you increase dose to Extract more goodies';
+    }
+    else if(attribute === 'balanced'){
+        helpText = 'We Suggest you grind finer to Extract more goodies';
+    }
+    else if(attribute === 'missing'){
+        helpText = 'We Suggest you grind finer to Extract more goodies';
+    }
+    */
 
     return(
-        <>
-            <div className="container">
-                <p className="m-5 display-6 text-center pb-4">We Suggest you grind finer to Extract more goodies</p>
-                {/*<img className="img-fluid w-50 mx-auto d-block" src="https://i.pinimg.com/originals/be/e1/a0/bee1a0b7c2397ea6727c9f96df196dae.png" />*/}
+        <div className="container">
+            <p className="display-6 text-center pb-4">{helpText}</p>
 
-                <ExtractionWheel />
-      
-                <button className="btn btn-primary m-2" type="button" onClick={() => setStep(0)}>New Shot</button>
-            </div>
-                    
-        </>
+            <ExtractionWheel attribute={attribute} />
+    
+            <button className="btn btn-primary m-2" type="button" onClick={() => setStep(0)}>New Shot</button>
+        </div>
     )
 }
 

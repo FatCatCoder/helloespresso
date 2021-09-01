@@ -6,7 +6,7 @@ import ShotFormPageTwo from './ShotFormPageTwo.js';
 import ShotFormPageFinal from './ShotFormPageFinal.js';
 import {useShotFormStore} from '../../store.js';
 
-function ShotForm({newShot, handleInputChange, handleSubmit, setStep, step, handleCheckboxChange, pullValidation}){
+function ShotForm({newShot, handleInputChange, handleSubmit, setStep, step, handleCheckboxChange, pullValidation, shotList}){
     const setFormErrors = useShotFormStore(state => state.setFormError);
 
     useEffect(() => {
@@ -20,7 +20,7 @@ function ShotForm({newShot, handleInputChange, handleSubmit, setStep, step, hand
             case 1:
                 return <ShotFormPageTwo newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} handleCheckboxChange={handleCheckboxChange} setStep={setStep} step={step}/>;
             case 2:
-                return <ShotFormPageFinal newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} setStep={setStep} step={step}/>;
+                return <ShotFormPageFinal shotList={shotList} newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} setStep={setStep} step={step}/>;
             default:
                 console.log('error on loading wizard form page, step not submitted');
     };

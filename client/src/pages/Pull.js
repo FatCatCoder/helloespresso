@@ -31,14 +31,9 @@ function Pull () {
   const handleCheckboxChange = (e) => {
       if(e.target.checked){
           setNewShot((prevProps) => ({
-              ...prevProps,
-              [e.target.name]: true
+            ...prevProps,
+              "attribute": e.target.value
           }));
-      }
-      if(e.target.checked === false){
-          setNewShot((prevProps) => (((delete prevProps[e.target.name]), { 
-              ...prevProps
-          })));
       }
   };
   const handleInputChange = (e) => {
@@ -85,8 +80,8 @@ function Pull () {
         console.log('Submitted!')
         addShotToList(newShot);
         setNewShot({});
-        setStep(2);
-      }).catch(function (err) {
+        
+      }).then(function () {setStep(2);}).catch(function (err) {
         setFormErrors(err.errors);
         console.log(Object.keys(err), err.name, err.value, err.path, err.type, err.errors, err.inner)
       })      
@@ -97,7 +92,7 @@ function Pull () {
   return (
       <div className="mx-auto text-center">
           <form onSubmit={handleSubmit} className="mx-auto text-center">
-              <ShotForm pullValidation={pullValidation} newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} handleCheckboxChange={handleCheckboxChange} setStep={setStep} step={step}/>
+              <ShotForm pullValidation={pullValidation} shotList={shotList} newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} handleCheckboxChange={handleCheckboxChange} setStep={setStep} step={step}/>
           </form>
           
           <Footer addShotToList={addShotToList} shotList={shotList} setShotList={setShotList} />
