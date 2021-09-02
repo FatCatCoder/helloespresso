@@ -46,7 +46,7 @@ function ToolsBox({handleInputChange}) {
   return (
     <div className="text-center">
       <OverlayTrigger trigger="click" placement={'bottom'} overlay={popover}>
-        <Button className="btn bg-light btn-outline-dark" id="Popover1" type="button"><i className="bi bi-watch"></i></Button>
+        <Button className="btn bg-light btn-outline-dark" id="Popover1" type="button" aria-label="stopwatch"><i className="bi bi-watch"></i></Button>
       </OverlayTrigger>
     </div>
   )

@@ -1,7 +1,7 @@
 -- into recipes
 
 -- this user_id for home pc 692a5b3c-fdd0-4315-8426-5d150440c151
---this user_id for macbook 
+-- this user_id for macbook 
 
 insert into recipes (user_id, bean, region, roaster, roastdate, dose, yield, time, grind, grinder, machine, tastingnotes, notes, roast, process) values ('692a5b3c-fdd0-4315-8426-5d150440c151', 'Honduras', 'Buromina', 'Onxy', '2020-10-12', 19.87, 35.12, 15.8, 13, 'Baratza Encore', 'La Marzocco Linea Mini', 'Sour Fruit - Ripe Berries - Dark Chocolate', 'Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.', 'Light', 'Washed');
 insert into recipes (user_id, bean, region, roaster, roastdate, dose, yield, time, grind, grinder, machine, tastingnotes, notes, roast, process) values ('692a5b3c-fdd0-4315-8426-5d150440c151', 'Honduras', 'Amate', 'Buddy brew', '2020-07-19', 18.08, 44.86, 14.26, 6, 'Eureka Atom 75', 'La Marzocco Linea Mini', 'Sweet Orange - Red Velvet Cake - Coconut', 'Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros.', 'Medium', 'Washed');

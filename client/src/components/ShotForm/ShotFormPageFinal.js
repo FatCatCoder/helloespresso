@@ -4,7 +4,7 @@ import ExtractionWheel from './ExtractionWheel.js';
 
 function ShotFormPageFinal({setStep, shotList}){
     const attribute = shotList[(shotList.length - 1)].attribute;
-    const helpText = "Heres a little help";
+    const helpText = "Need help?";
 
     /*
     var helpText;

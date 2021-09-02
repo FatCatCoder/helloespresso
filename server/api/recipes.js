@@ -32,7 +32,7 @@ function totalRecipes(query){
 
 
 // give total number of recipes
-router.get('/', async(req, res) => {
+router.get('/total', async(req, res) => {
     const recipesAmount = await pool.query("SELECT COUNT(id) AS count FROM recipes");
     res.send(recipesAmount.rows[0]["count"]);
 })
