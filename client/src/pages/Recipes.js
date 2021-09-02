@@ -135,7 +135,7 @@ function Recipes({isAuth}){
             return <ErrorScreen errorMessage={'All out of coffee, try a different search?'} />
         }
         if(isLoading){
-            const fakeArr = [{}, {}, {}, {}, {} ,{} ,{}, {}]
+            const fakeArr = new Array(recipesPerPage).fill({});
             return fakeArr.map((x, y) => <RecipeCard key={y} recipe={x} animation={'skeleton'} />) 
         }
         return recipeSlice.map((x) => <RecipeCard key={x.id} recipe={x} animation={'fadeIn'}/>)
@@ -151,7 +151,7 @@ function Recipes({isAuth}){
                     <p>Here for all your espresso brewing needs.</p>
                     <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} fetchRecipes={fetchRecipes} getUserId={getUserId} isLoggedIn={isLoggedIn} />
 
-                    <div className="container row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
+                    <div className="container h-100 row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
                         {displayRecipes()}
                     </div>
 

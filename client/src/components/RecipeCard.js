@@ -1,6 +1,5 @@
 import {Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
-import { animation } from 'react-reveal/globals';
 
 // card display object for recipes page
 
@@ -44,7 +43,7 @@ function RecipeCard({recipe, animation}){
                 <div className="card-body">
                     
                     <p className="container smaller-text card-text text-capitalize">Notes: <span className="text-muted">{recipe.tastingnotes !== undefined ? recipe.tastingnotes: 'Good Vibes & Patience'}</span></p>
-                    <p className="card-text"><small className="text-muted">Date Roasted: {recipe.roastdate !== undefined ? new Date(recipe.roastdate).toLocaleDateString(): 'Vibes'}</small></p>
+                    <p className="card-text"><small className="text-muted">Date Roasted: {recipe.roastdate !== undefined ? new Date(recipe.roastdate).toLocaleDateString(): 'Any time now...'}</small></p>
                 </div>
                 <i className="bi bi-heart-fill text-danger border"> x {likes} </i>
             </div> 

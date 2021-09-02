@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import {globalStore} from '../store.js'
 import Toast from 'react-bootstrap/Toast'
 import ToastContainer from 'react-bootstrap/ToastContainer'
+import Fade from 'react-reveal/Fade';
 
 function About({setIsAuth}) {
   // nav
@@ -18,6 +19,7 @@ function About({setIsAuth}) {
 
   //toast
   const [show, setShow] = useState(false);
+  const [showSecret, setShowSecret] = useState(false);
 
   // Del token from storage, blacklist on server, set auth to false
   const logout = async () => {
@@ -64,7 +66,43 @@ function About({setIsAuth}) {
           </Toast.Header>
         </Toast>
       </ToastContainer>
+      </div>
 
+      <button class="bg-transparent border-0 text-muted fs-6" type="button" onClick={() => setShowSecret(!showSecret)} data-bs-target="#secret" aria-expanded="false" aria-controls="secret text">
+        pssst...
+      </button>
+
+      <div class="vh-100 position-relative" id="secret">
+      <Fade cascade when={showSecret}>
+        <div class="container col-10 col-md-8">
+          <h1 className="display-3">@About 2.0</h1>
+          <p className="lead fs-2">I Got Plans</p>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Advanced extraction algorithm</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Extraction analysis charts for journals</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Support for other brewing methods (Kalita Wave, Chemex, Kyoto, French Press... More)</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Best results setting tracking for main equipment setup</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Autocomplete on form inputs for bean, region, roaster, etc...</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> A Blog riddled with industry secrets and guru wizard advice?</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> User profiles</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Comments?</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> More!</li>
+          </ul>
+          <h1 className="display-4">Whats up?</h1>
+          <p>I want to hear from you. Send any requests for new features or bug fixes to one of my handles <strong>@helloespresso.coffee</strong></p>
+          <p className="lead fs-2">Hello Developers</p>
+          <p>looking to help out? Contact me on github and lets see what we can build together</p>
+
+            <div className="pt-5 mt-5 pb-3">
+              <h1 className="display-5">Hey...</h1>
+              <p className="lead">
+              <em>This place aint'cheap </em>
+                 I only wish I had more to spare but if you love this app and want to see it grow
+                and stay alive then a little donation goes a long way at the maintenance costs.
+              </p>
+            </div>
+        </div>
+        </Fade>
       </div>
     </div>
   )

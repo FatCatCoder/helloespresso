@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import {useState} from 'react';
 import Fade from 'react-reveal/Fade';
 
+
 // components
 import Navbar from './Navbar.js';
 import '../assets/Header.css';
@@ -37,7 +38,8 @@ function Header(){
             </Link>
           </div>
 
-          <h1 className="text-center">hello coffee</h1>
+         <h1 className="text-center">hello espresso</h1>
+          
       </div>
 
       <Navbar currPage={currPage} setCurrPage={setCurrPage} handleNav={handleNav}/>
