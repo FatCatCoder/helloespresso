@@ -15,7 +15,6 @@ import RecipeCard from '../components/RecipeCard.js';
 import RecipePage from '../components/RecipePage.js';
 import RecipeForm from '../components/RecipeForm/RecipeForm.js';
 import Pagination from '../components/Pagination.js';
-import LoadingSpinner from '../components/LoadingSpinner.js';
 import ErrorScreen from '../components/ErrorScreen.js';
 
 
@@ -56,7 +55,7 @@ function Recipes({isAuth}){
     // POST request to get recipes from server based on page and amount, checks for null filter requirements
     const fetchRecipes = async (thisPage = currPage, numOf = recipesPerPage) => {
         setIsLoading(true);
-        console.log(sortFilters?.sortBy);
+        
         if(sortFilters.sortBy == null){
             setSortFilters((filters) => ({...filters, "sortBy": "postdate DESC"}))
         }
@@ -87,7 +86,8 @@ function Recipes({isAuth}){
         }
         if(!ignore){
             getRecipes();
-            setIsLoading(false)
+            setTimeout(() => setIsLoading(false), 3000)
+            
         }
         return () => {
             ignore = true;
@@ -134,10 +134,12 @@ function Recipes({isAuth}){
         if(recipeSlice[0]?.count === 0){
             return <ErrorScreen errorMessage={'All out of coffee, try a different search?'} />
         }
-
-        return recipeSlice.map((x) => <RecipeCard key={x.id} recipe={x}/>)
+        if(isLoading){
+            const fakeArr = [{}, {}, {}, {}, {} ,{} ,{}, {}]
+            return fakeArr.map((x, y) => <RecipeCard key={y} recipe={x} animation={'skeleton'} />) 
+        }
+        return recipeSlice.map((x) => <RecipeCard key={x.id} recipe={x} animation={'fadeIn'}/>)
     }
-
 
 
     return(
@@ -150,7 +152,7 @@ function Recipes({isAuth}){
                     <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} fetchRecipes={fetchRecipes} getUserId={getUserId} isLoggedIn={isLoggedIn} />
 
                     <div className="container row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
-                        {!isLoading? displayRecipes() : <LoadingSpinner /> }
+                        {displayRecipes()}
                     </div>
 
                     <Pagination className={"container text-center mx-auto p-3"} itemsPerPage={recipesPerPage} totalItems={totalRecipes} currPage={currPage} setCurrPage={changePage} />

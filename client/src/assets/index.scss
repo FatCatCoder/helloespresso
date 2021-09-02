@@ -69,3 +69,33 @@ h6.display-5{
 .btn-light-custom{
   background-color: $gray-400;
 }
+
+
+.skeleton {
+  @extend .text-muted;
+  animation: skeleton 2s infinite alternate;	
+}
+
+@keyframes skeleton {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+      opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation: 1s ease normal forwards fadeIn;	
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+      opacity: 1;
+  }
+}
