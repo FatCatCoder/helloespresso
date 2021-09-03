@@ -19,7 +19,8 @@ function About({setIsAuth}) {
 
   //toast
   const [show, setShow] = useState(false);
-  const [showSecret, setShowSecret] = useState(false);
+  const [showSecret, setShowSecret] = useState(false); 
+  const [showSobSection, setShowSobSection] = useState(false); 
 
   // Del token from storage, blacklist on server, set auth to false
   const logout = async () => {
@@ -69,7 +70,7 @@ function About({setIsAuth}) {
       </div>
 
       <button class="bg-transparent border-0 text-muted fs-6" type="button" onClick={() => setShowSecret(!showSecret)} data-bs-target="#secret" aria-expanded="false" aria-controls="secret text">
-        pssst...
+       wizards only, fool.
       </button>
 
       <div class="vh-100 position-relative" id="secret">
@@ -93,6 +94,11 @@ function About({setIsAuth}) {
           <p className="lead fs-2">Hello Developers</p>
           <p>looking to help out? Contact me on github and lets see what we can build together</p>
 
+          <button class="bg-transparent border-0 text-muted fs-6" type="button" onClick={() => setShowSobSection(!showSobSection)} data-bs-target="#secret" aria-expanded="false" aria-controls="secret text">
+            pssst...
+          </button>
+
+          <Fade cascade when={showSobSection}>
             <div className="pt-5 mt-5 pb-3">
               <h1 className="display-5">Hey...</h1>
               <p className="lead">
@@ -100,7 +106,9 @@ function About({setIsAuth}) {
                  I only wish I had more to spare but if you love this app and want to see it grow
                 and stay alive then a little donation goes a long way at the maintenance costs.
               </p>
+              <p>@helloespresso payment vendor</p>
             </div>
+            </Fade>
         </div>
         </Fade>
       </div>
