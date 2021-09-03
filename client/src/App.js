@@ -9,6 +9,7 @@ import Journal from './pages/Journal.js';
 import Recipes from './pages/Recipes.js';
 import Login from './pages/Login.js';
 import Register from './pages/Register.js';
+import PasswordReset from './pages/PasswordReset.js';
 
 // components
 import Header from './components/Header.js';
@@ -97,6 +98,10 @@ function App (){
 
         <Route path="/register"
           render={props => isAuth ? (null) : (<Register setIsAuth={setIsAuth} />)}
+        />
+
+        <Route path="/password-reset"
+          render={({location}) => isAuth ? (<Redirect to={{pathname: "/", state: {location: "/"}}} />) : (<PasswordReset setIsAuth={setIsAuth} />)} 
         />
 
         <Route path="/test">

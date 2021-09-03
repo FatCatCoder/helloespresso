@@ -21,6 +21,11 @@ app.use(cors());
 app.use(serverTimingMiddleware({sendHeaders: (process.env.NODE_ENV !== 'production')}));
 app.use('/', expressStaticGzip('./client/build'));
 
+app.use(express.static(path.join(__dirname, './server/views/images')));
+
+app.set('views', path.join(__dirname, '/server/views'));
+app.set('view engine', 'hbs');
+
 
 // simple invalid JWT handling 
 app.use(function (err, req, res, next) {
@@ -51,6 +56,12 @@ if (process.env.NODE_ENV === "production"){
     res.sendFile(path.join(__dirname, "./client/build/index.html.gz"));
   })
 }
+
+// app.get('/pwdreset', function(req , res) {
+//   console.log('sent');
+//   var resetLink = "http://localhost:3000";
+//   res.render('email', {link: resetLink})
+// })
 
 
 // listening...
