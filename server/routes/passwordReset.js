@@ -1,7 +1,139 @@
-const sendEmail = require("../utils/sendEmail");
+
 const router = require('express').Router();
+const path = require("path");
 const pool = require('../../db');
+const nodemailer = require('nodemailer');
 const jwtGenerator = require('../utils/jwtGenerator');
+
+const sendEmail = require("../utils/sendEmail");
+const emailJS = require('../views/email')
+
+// this route sends email with dud password reset link
+/*
+router.post("/", async (req, res) => {
+    const resetLink = "https://www.google.com/";
+    
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'helloespresso.coffee@gmail.com',
+            pass: '!3QeAdZc!' // naturally, replace both with your real credentials or an application-specific password
+        }
+    });
+
+    const mailOptions = {
+        from: 'helloespresso.coffee@gmail.com',
+        to: 'christian75armand@gmail.com',
+        subject: 'Password Reset',
+        html: emailJS(resetLink),
+        attachments: [
+            {
+                filename: 'logo.png',
+                path: path.join(__dirname, "../views/images/logo.png"),
+                cid: 'logo' //same cid value as in the html img src
+            },
+            {
+                filename: 'facebook.png',
+                path: path.join(__dirname, "../views/images/facebook.png"),
+                cid: 'facebook' //same cid value as in the html img src
+            },
+            {
+                filename: 'github.png',
+                path: path.join(__dirname, "../views/images/github.png"),
+                cid: 'github' //same cid value as in the html img src
+            },
+            {
+                filename: 'twitter.png',
+                path: path.join(__dirname, "../views/images/twitter.png"),
+                cid: 'twitter' //same cid value as in the html img src
+            },
+            {
+                filename: 'instagram.png',
+                path: path.join(__dirname, "../views/images/instagram.png"),
+                cid: 'instagram' //same cid value as in the html img src
+            },
+            {
+                filename: 'linkedin.png',
+                path: path.join(__dirname, "../views/images/linkedin.png"),
+                cid: 'linkedin' //same cid value as in the html img src
+            },
+    ]
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            res.send('Whoah, bad move dude...')
+            console.log(error);
+        } else {
+            res.status(200).send('Good Mail Client.');
+            console.log('Email sent: ' + info.response);
+        }
+    });
+})
+*/
+
+function sendResetMail(toEmail, resetLink){
+    //const resetLink = "https://www.google.com/";
+    
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'helloespresso.coffee@gmail.com',
+            pass: '!3QeAdZc!' // naturally, replace both with your real credentials or an application-specific password
+        }
+    });
+
+    const mailOptions = {
+        from: 'helloespresso.coffee@gmail.com',
+        to: toEmail,
+        subject: 'Password Reset',
+        html: emailJS(resetLink),
+        attachments: [
+            {
+                filename: 'logo.png',
+                path: path.join(__dirname, "../views/images/logo.png"),
+                cid: 'logo' //same cid value as in the html img src
+            },
+            {
+                filename: 'facebook.png',
+                path: path.join(__dirname, "../views/images/facebook.png"),
+                cid: 'facebook' //same cid value as in the html img src
+            },
+            {
+                filename: 'github.png',
+                path: path.join(__dirname, "../views/images/github.png"),
+                cid: 'github' //same cid value as in the html img src
+            },
+            {
+                filename: 'twitter.png',
+                path: path.join(__dirname, "../views/images/twitter.png"),
+                cid: 'twitter' //same cid value as in the html img src
+            },
+            {
+                filename: 'instagram.png',
+                path: path.join(__dirname, "../views/images/instagram.png"),
+                cid: 'instagram' //same cid value as in the html img src
+            },
+            {
+                filename: 'linkedin.png',
+                path: path.join(__dirname, "../views/images/linkedin.png"),
+                cid: 'linkedin' //same cid value as in the html img src
+            },
+    ]
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            //res.send('Whoah, bad move dude...')
+            console.log(error);
+            return true
+        } else {
+            //res.status(200).send('Good Mail Client.');
+            console.log('Email sent: ' + info.response);
+            return false;
+        }
+    });
+}
 
 router.post("/", async (req, res) => {
     try {
@@ -17,17 +149,25 @@ router.post("/", async (req, res) => {
         //create token, send email
         const token = jwtGenerator(user.rows[0].id);
 
-        const link = `${process.env.MY_HOST}/password-reset/${token}`;
-        await sendEmail(user.rows[0].email, "Password Reset", link);
+        const link = `${process.env.URL}/password-reset/${token}`;
+        const sendingEmail = await sendResetMail(user.rows[0].email, link);
 
+        //await sendEmail(user.rows[0].email, "Password Reset", link);
+
+        if(!sendingEmail){
+            console.log('Bad sendingEmail');
+           return res.send("password reset link sent to your email account");
+        }
+        
+        console.log('Good sending email');
         res.send("password reset link sent to your email account");
+
     } catch (error) {
         res.send("An error occured");
         console.log(error);
     }
 });
 
-/*
 router.post("/:token", async (req, res) => {
     try {
         const { error } = schema.validate(req.body);
@@ -53,6 +193,5 @@ router.post("/:token", async (req, res) => {
     }
 });
 
-*/
 
 module.exports = router;
