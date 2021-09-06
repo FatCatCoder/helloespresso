@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config({ path: '../../.env' });
 
 // jwt gen
-const generateToken = (user_id, expires = '10m') => {
+const generateToken = (user_id, expires = '30m') => {
 
     const payload = {
         user: {id: user_id}

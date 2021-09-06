@@ -8,15 +8,12 @@ function PasswordResetToken() {
     const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
     const getUserIdFromJWT = globalStore(state => state.getUserIdFromJWT)
 
-    // routing after reset
-    const history = useHistory();
-    const { state } = useLocation();
-    
     const { token } = useParams();
     const idFromToken = getUserIdFromJWT(token);
 
     // form state & utils
-    const [errors, setErrors] = useState({"boolean": false, "message": ""});
+    const [errors, setErrors] = useState({"success": false, "message": ""});
+    const [success, setSuccess] = useState({"success": false, "message": ""});
     const [inputs, setInputs] = useState({
         newPassword: "",
     });
@@ -30,6 +27,7 @@ function PasswordResetToken() {
     // try login, set auth, redirect
     const onSubmitForm = async(e) => {
         e.preventDefault();
+
         try {
             const body = { newPassword, token };
             const response = await fetch(`/password-reset/${token}`, {
@@ -38,33 +36,22 @@ function PasswordResetToken() {
                 body: JSON.stringify(body)
             })
 
-            const parseRes = response.headers.get('Authorization');
+            const parseRes = response.json();
             
+            if(!parseRes.success){
+                setErrors(...parseRes)
+            }
 
-            if (parseRes !== null){
-              localStorage.setItem('Authorization', parseRes);
-              setIsLoggedIn(true);
-              if(state !== undefined){
-                console.log(state)
-                history.push(state.going);
-              }
-              else{
-                history.push('/');
-              }
-            }
-            else if (response.status === 401){
-                const getErrors = async () => {
-                    let resErr = await response.json();
-                    setErrors({...resErr})
-                }
-                getErrors();   
-            }
+            setSuccess(...parseRes);
+
         } catch (error) {
             console.log(error.message)
             setErrors({message: "500: Server Error"})
         }
     };
 
+        console.log(success);
+        
     return(
         <>
         <div className="container text-center">
@@ -74,7 +61,8 @@ function PasswordResetToken() {
                 <button className="btn btn-secondary" type="submit">Update Now</button>
                 <Link to={{pathname: `/password-reset/${token}`, state: {location: `/password-reset/${token}`, going: '/login'}}}><button className="btn btn-secondary m-2" type="button">Register</button></Link>
             </form>
-            {!errors.boolean? null: errors.message}
+            {!errors.success? null: errors.message}
+            {success.success?? success.message}
         </div>
         </>
     )

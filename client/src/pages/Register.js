@@ -6,6 +6,7 @@ function Register({setIsAuth}) {
     const { state } = useLocation();
 
     const [errors, setErrors] = useState({"boolean": false, "message": ""});
+    const [success, setSuccess] = useState({"success": false, "message": ""});
     const [inputs, setInputs] = useState({
         "email": "",
         "password": "",
@@ -35,6 +36,7 @@ function Register({setIsAuth}) {
             if (parseRes !== null){
               localStorage.setItem('Authorization', parseRes);
               setIsAuth(true);
+              setSuccess({"success": true, "message": "You are now Registered and logged in!"})
               history.push(state.location);
             }
 
@@ -57,6 +59,7 @@ function Register({setIsAuth}) {
                 <Link to={{pathname: "/login", state: {location: '/login', going: '/about'}}}><button className="btn btn-secondary m-2" type="button">Login</button></Link>
             </form>
             {!errors.boolean? null: errors.message}
+            {success.success?? success.message}
         </div>
         </>
     )

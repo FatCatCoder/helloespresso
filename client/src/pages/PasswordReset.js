@@ -1,25 +1,17 @@
 import {useState} from 'react';
-import { Link, useHistory, useLocation, Switch,
-    Route,
-    useRouteMatch,
-    Redirect
-  } from "react-router-dom";
-
+import { Link, useHistory, useLocation, Switch, Route, useRouteMatch, Redirect} from "react-router-dom";
 import {globalStore} from '../store.js';
 import '../assets/FormStyles.css'
+
+// components
 import PasswordResetToken from '../components/PasswordResetToken.js';
 
-
 function PasswordReset() {
-    const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
     let match = useRouteMatch();
 
-    // routing after reset
-    const history = useHistory();
-    const { state } = useLocation();
-
     // form state & utils
-    const [errors, setErrors] = useState({"boolean": false, "message": ""});
+    const [errors, setErrors] = useState({"success": false, "message": ""});
+    const [success, setSuccess] = useState({"success": false, "message": ""});
     const [inputs, setInputs] = useState({
         usernameOrEmail: "",
     });
@@ -30,47 +22,38 @@ function PasswordReset() {
         setInputs({...inputs, [e.target.name]:e.target.value})
     };
 
-    // try login, set auth, redirect
+    // 
     const onSubmitForm = async(e) => {
         e.preventDefault();
+
         try {
             const body = { usernameOrEmail };
-            const response = await fetch('/login', {
+
+            const response = await fetch('/password-reset', {
                 method: "POST",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify(body)
             })
 
-            const parseRes = response.headers.get('Authorization');
+            const parseRes = response.json();
             
 
-            if (parseRes !== null){
-              localStorage.setItem('Authorization', parseRes);
-              setIsLoggedIn(true);
-              if(state !== undefined){
-                console.log(state)
-                history.push(state.going);
-              }
-              else{
-                history.push('/');
-              }
+            if (!parseRes.success){
+                return setErrors(...parseRes)  
             }
-            else if (response.status === 401){
-                const getErrors = async () => {
-                    let resErr = await response.json();
-                    setErrors({...resErr})
-                }
-                getErrors();   
-            }
+            
+            setSuccess(...parseRes);
+
         } catch (error) {
             console.log(error.message)
-            setErrors({message: "500: Server Error"})
+            setErrors({"message": "500: Server Error", "success": false})
         }
     };
 
     return(
         <>
         <Switch>
+
             <Route exact path={match.path}>
             <div className="container text-center">
                 <h1 className="display-2">Password Reset</h1>
@@ -79,12 +62,15 @@ function PasswordReset() {
                     <button className="btn btn-secondary" type="submit">Reset Now</button>
                     <Link to={{pathname: "/register", state: {location: '/register', going: '/'}}}><button className="btn btn-secondary m-2" type="button">Register</button></Link>
                 </form>
-                {!errors.boolean? null: errors.message}
+                {!errors.success? null: errors.message}
+                {success.success?? success.message}
             </div>
             </Route>
+
             <Route path={`${match.path}/:id`}>
                 <PasswordResetToken />
             </Route>
+
         </Switch>
         </>
     )

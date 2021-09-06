@@ -4,10 +4,12 @@ const path = require("path");
 const pool = require('../../db');
 const nodemailer = require('nodemailer');
 const jwtGenerator = require('../utils/jwtGenerator');
+const argon2 = require('argon2');
 require('dotenv').config();
+const jwt = require("jsonwebtoken");
 
 const sendEmail = require("../utils/sendEmail");
-const emailJS = require('../views/email')
+const emailJS = require('../views/email');
 
 // this route sends email with dud password reset link
 /*
@@ -144,54 +146,58 @@ router.post("/", async (req, res) => {
          const user = await pool.query("SELECT * FROM users WHERE email = $1 OR name = $1", [usernameOrEmail.trim()]);
 
          if (user.rows.length === 0){
-             return res.status(401).json({"message":"Email invalid", "boolean": false});
+             return res.status(401).json({"message":"Email invalid", "success": false});
          }
 
-        //create token, send email
-        const token = jwtGenerator(user.rows[0].id);
+        //create token, link, then send email
+        const token = jwtGenerator(user.rows[0].id, '10m');
 
         const link = `${process.env.URL}/password-reset/${token}`;
-        //const sendingEmail = await sendResetMail(user.rows[0].email, link);
+
         const sendingEmail = await sendEmail(user.rows[0].email, "Password Reset", emailJS.passwordResetEmailTemplate(link), emailJS.passwordResetEmailAttachments);
 
-        //await sendEmail(user.rows[0].email, "Password Reset", link);
-
+        // email pass/fail check
         if(!sendingEmail.success){
             console.log('Bad sendingEmail');
-            return res.send("password reset link sent to your email account");
+            return res.send({"message" : "password reset link sent to your email account", "success": false});
         }
         
         console.log('Good sending email');
-        res.send("password reset link sent to your email account");
+        res.send({"message" : "password reset link sent to your email account", "success": true});
 
     } catch (error) {
         console.log(error);
-        res.send("An error occured");
+        res.send({"message" : "Error in email occurred ", "success": false});
     }
 });
 
 router.post("/:token", async (req, res) => {
     try {
-        const { newPassword, token } = req.body;
+        const { newPassword } = req.body;
+        const { token } = req.params;
 
-        const payload = jwt.verify(token, process.env.SECRET);
+        const payload = 
+            jwt.verify(token, process.env.SECRET, function(err, decoded) {
+                if (err) {
+                    console.log(err);
+                    return res.send({"message": err.message, "success": false})
+                }
+                else{
+                    return decoded;
+                }
+          });
 
-        const user = await User.findById(req.params.userId);
-        if (!user) return res.status(400).send("invalid link or expired");
+        // hash PWD
+        const hash = await argon2.hash(newPassword, {type: argon2.argon2id});
 
-        const token = await Token.findOne({
-            userId: user._id,
-            token: req.params.token,
-        });
-        if (!token) return res.status(400).send("Invalid link or expired");
+        // update password
+        const user = await pool.query("UPDATE users SET password = $1 WHERE id = $2", [hash, payload.user.id]);
 
-        user.password = req.body.password;
-        await user.save();
-        await token.delete();
+        console.log(user);
+        res.status(401).send({"message":"Password reset successful. You may login with your new password now if you wish.", "success": true});
 
-        res.send("password reset sucessfully.");
     } catch (error) {
-        res.send("An error occured");
+        res.status(500).send({"message":"error occurred.", "success": false});
         console.log(error);
     }
 });

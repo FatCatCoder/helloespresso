@@ -17,9 +17,11 @@ const useRecipesStore = create((set, get) => ({
 
 const globalStore = create((set, get) => ({
   userId: '',
-  getUserIdFromJWT: (token = localStorage.getItem('Authorization')) => {
+  getUserIdFromJWT: (token) => {
     try{
-    //const token = localStorage.getItem('Authorization');
+    if(!token){
+      token = localStorage.getItem('Authorization');
+    }
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace('-', '+').replace('_', '/');
     set({userId: JSON.parse(window.atob(base64)).user.id});
