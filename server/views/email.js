@@ -1,4 +1,6 @@
-function emailTemplate (link) {
+const path = require("path");
+
+function passwordResetEmailTemplate (link) {
 return `<!DOCTYPE html>
     <html
       lang="en"
@@ -732,4 +734,40 @@ return `<!DOCTYPE html>
     `
 }
 
-module.exports = emailTemplate;
+const passwordResetEmailAttachments = [
+  {
+      filename: 'logo.png',
+      path: path.join(__dirname, "../views/images/logo.png"),
+      cid: 'logo' //same cid value as in the html img src
+  },
+  {
+      filename: 'facebook.png',
+      path: path.join(__dirname, "../views/images/facebook.png"),
+      cid: 'facebook' //same cid value as in the html img src
+  },
+  {
+      filename: 'github.png',
+      path: path.join(__dirname, "../views/images/github.png"),
+      cid: 'github' //same cid value as in the html img src
+  },
+  {
+      filename: 'twitter.png',
+      path: path.join(__dirname, "../views/images/twitter.png"),
+      cid: 'twitter' //same cid value as in the html img src
+  },
+  {
+      filename: 'instagram.png',
+      path: path.join(__dirname, "../views/images/instagram.png"),
+      cid: 'instagram' //same cid value as in the html img src
+  },
+  {
+      filename: 'linkedin.png',
+      path: path.join(__dirname, "../views/images/linkedin.png"),
+      cid: 'linkedin' //same cid value as in the html img src
+  },
+]
+
+//module.exports = emailTemplate;
+
+exports.passwordResetEmailTemplate = passwordResetEmailTemplate;
+exports.passwordResetEmailAttachments = passwordResetEmailAttachments;

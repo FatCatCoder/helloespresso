@@ -101,7 +101,7 @@ function App (){
         />
 
         <Route path="/password-reset"
-          render={({location}) => isAuth ? (<Redirect to={{pathname: "/", state: {location: "/"}}} />) : (<PasswordReset setIsAuth={setIsAuth} />)} 
+          render={({location}) => isAuth ? (<Redirect to={{pathname: "/", state: {location: "/"}}} />) : (<PasswordReset />)} 
         />
 
         <Route path="/test">

@@ -1,30 +1,27 @@
 import {useState} from 'react';
-import { Link, useHistory, useLocation, Switch,
-    Route,
-    useRouteMatch,
-    Redirect
-  } from "react-router-dom";
-
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import {globalStore} from '../store.js';
 import '../assets/FormStyles.css'
-import PasswordResetToken from '../components/PasswordResetToken.js';
 
 
-function PasswordReset() {
+function PasswordResetToken() {
     const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
-    let match = useRouteMatch();
+    const getUserIdFromJWT = globalStore(state => state.getUserIdFromJWT)
 
     // routing after reset
     const history = useHistory();
     const { state } = useLocation();
+    
+    const { token } = useParams();
+    const idFromToken = getUserIdFromJWT(token);
 
     // form state & utils
     const [errors, setErrors] = useState({"boolean": false, "message": ""});
     const [inputs, setInputs] = useState({
-        usernameOrEmail: "",
+        newPassword: "",
     });
 
-    const { usernameOrEmail } = inputs;
+    const { newPassword } = inputs;
 
     const onchange = (e) => {
         setInputs({...inputs, [e.target.name]:e.target.value})
@@ -34,8 +31,8 @@ function PasswordReset() {
     const onSubmitForm = async(e) => {
         e.preventDefault();
         try {
-            const body = { usernameOrEmail };
-            const response = await fetch('/login', {
+            const body = { newPassword, token };
+            const response = await fetch(`/password-reset/${token}`, {
                 method: "POST",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify(body)
@@ -70,26 +67,19 @@ function PasswordReset() {
 
     return(
         <>
-        <Switch>
-            <Route exact path={match.path}>
-            <div className="container text-center">
-                <h1 className="display-2">Password Reset</h1>
-                <form onSubmit={onSubmitForm} className="container mx-auto col-8 col-xl-5">
-                    <input type="text" name="usernameOrEmail" placeholder="username or email" value={usernameOrEmail} onChange={e => onchange(e)} required={true} className={` form-control my-3 ${errors.message? 'input-error': ''}`} required/>
-                    <button className="btn btn-secondary" type="submit">Reset Now</button>
-                    <Link to={{pathname: "/register", state: {location: '/register', going: '/'}}}><button className="btn btn-secondary m-2" type="button">Register</button></Link>
-                </form>
-                {!errors.boolean? null: errors.message}
-            </div>
-            </Route>
-            <Route path={`${match.path}/:id`}>
-                <PasswordResetToken />
-            </Route>
-        </Switch>
+        <div className="container text-center">
+            <h1 className="display-2">New Password</h1>
+            <form onSubmit={onSubmitForm} className="container mx-auto col-8 col-xl-5">
+                <input type="text" name="newPassword" placeholder="Enter new password" value={newPassword} onChange={e => onchange(e)} required={true} className={` form-control my-3 ${errors.message? 'input-error': ''}`} required/>
+                <button className="btn btn-secondary" type="submit">Update Now</button>
+                <Link to={{pathname: `/password-reset/${token}`, state: {location: `/password-reset/${token}`, going: '/login'}}}><button className="btn btn-secondary m-2" type="button">Register</button></Link>
+            </form>
+            {!errors.boolean? null: errors.message}
+        </div>
         </>
     )
 }
 
 
 
-export default PasswordReset;
+export default PasswordResetToken;
