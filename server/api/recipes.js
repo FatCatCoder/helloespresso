@@ -144,15 +144,14 @@ router.post('/', async(req, res) => {
 
             // before final query add limit and offset (for pagination)
             queryStr += ` LIMIT ${limitAmount} OFFSET ${offsetPage * limitAmount}`
-
-            console.log('')
             console.log(queryStr)
+
             req.serverTiming.from('db');
             var recipes = await pool.query(queryStr);
             req.serverTiming.to('db');
         }
         req.serverTiming.to('api');
-        console.log('count', recipes.rowCount,'\n',recipes.rows[0], '\n', recipes, recipes.rowCount === 0? [] : recipes.rows);
+        //console.log('count', recipes.rowCount,'\n',recipes.rows[0], '\n', recipes, recipes.rowCount === 0? [] : recipes.rows);
         res.send(recipes.rowCount === 0? [{"count": 0}] : recipes.rows);
     }
     catch(err){
@@ -210,6 +209,26 @@ router.post('/likes', async(req, res) => {
     res.send(recipes.rows[0].count);
 
     }
+    catch (error) {
+        res.status(500);
+    }
+})
+
+// batch get number of likes on a recipe
+router.post('/all-likes', async(req, res) => {
+    try{
+        const ids = req.body;
+        
+        const recipes = await pool.query(
+            `SELECT L.recipe_id AS id, COUNT(L.recipe_id) AS likes
+         FROM unnest(ARRAY[${ids.map(x => `'${x}'`)}]) idFromArray
+         INNER JOIN likes AS L on CAST(L.recipe_id AS TEXT) = CAST(idFromArray AS TEXT)
+         GROUP BY L.recipe_id`);
+
+        console.log(recipes.rows);
+        res.send(recipes.rows);
+    }
+
     catch (error) {
         res.status(500);
     }

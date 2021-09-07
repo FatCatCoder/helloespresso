@@ -70,7 +70,29 @@ function Recipes({isAuth}){
         const data = await res.json();
         
         console.log('fetchRecipes data', data)
-        return data;
+        
+        const recipesWithLikes = await getAllLikes(data)
+
+        return recipesWithLikes;
+    }
+
+    const getAllLikes = async (recipes) => {
+        const ids = recipes.map(x => x.id);
+        console.log(ids);
+
+        const res = await fetch('/recipes/all-likes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body: JSON.stringify(ids)
+        })
+
+        const data = await res.json();
+        console.log('all likes returned', data);
+
+        const addLikes = recipes.map(x => Object.assign(x, data.find(y => y.id == x.id)));
+        return addLikes
     }
     
     // get recipes on load and refresh
@@ -79,15 +101,14 @@ function Recipes({isAuth}){
         let ignore = false;
 
         const getRecipes = async () => {
-            const recipesFromServer = await fetchRecipes(1); 
+            const recipesFromServer = await fetchRecipes(1);
             setMyRecipes([{"page": 1, "recipes" : recipesFromServer}]) // set Recipes array    
             setTotalRecipes(recipesFromServer[0].count) // set total number of recipes for pagination, count is my defined sql count over() function on the api being returned along side the recipes data
             setCurrPage(1) // push page state back to the first page
         }
         if(!ignore){
             getRecipes();
-            setTimeout(() => setIsLoading(false), 3000)
-            
+            setIsLoading(false)    
         }
         return () => {
             ignore = true;
@@ -99,6 +120,7 @@ function Recipes({isAuth}){
     // set recipes on page
     useEffect(() => {
         let ignore = false;
+        console.log(myRecipes);
         if(!ignore){ myRecipes? setRecipeSlice(myRecipes.find(x => x["page"] === currPage)["recipes"]) : setRecipeSlice([]); }
         return () => { ignore = true; }; 
         // eslint-disable-next-line
@@ -138,9 +160,8 @@ function Recipes({isAuth}){
             const fakeArr = new Array(recipesPerPage).fill({});
             return fakeArr.map((x, y) => <RecipeCard key={y} recipe={x} animation={'skeleton'} />) 
         }
-        return recipeSlice.map((x) => <RecipeCard key={x.id} recipe={x} animation={'fadeIn'}/>)
+        return recipeSlice.map((x) => <RecipeCard key={x.id} recipe={x} animation={'fadeIn'} />)
     }
-
 
     return(
 

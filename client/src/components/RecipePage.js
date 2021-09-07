@@ -20,6 +20,10 @@ function RecipePage(props){
     const [liked, setLiked] = useState(false);
     const [recipe, setRecipe] = useState(props.recipe.find(obj => obj.id === id));
 
+    const reportRecipe = () => {
+        console.log('reported you nerd');
+    }
+
 
     // toggle like on server and updates with json returned bool
     const bussinButton = async () => {
@@ -102,7 +106,7 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
     }, [id, user_id]);
     
 
-    // if bad param, render 404 screen, else render data props conditionally 
+    // Recipe cards or 404 screen
     return(
         <>
         {recipe === null? <ErrorScreen errorMessage={'404 - No coffee here :('} />
@@ -163,7 +167,8 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
                 <span className="main-text">Delete Recipe</span>
                 <span className="hover-text">Are You Sure?</span>
                 </button>
-            :null
+            : 
+            <button className="btn btn-danger mt-2" onClick={() => reportRecipe()}>Report</button>
         }
         </div>
     }

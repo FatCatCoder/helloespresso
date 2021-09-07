@@ -4,31 +4,31 @@ import {useState, useEffect} from 'react';
 // card display object for recipes page
 
 function RecipeCard({recipe, animation}){
-    const [likes, setLikes] = useState(0);
+    //const [likes, setLikes] = useState(defaultLikes);
 
-    useEffect(() => {
-        const abortController = new AbortController();
-        let ignore = false;
+    // useEffect(() => {
+    //     const abortController = new AbortController();
+    //     let ignore = false;
 
-        const fetchLikes = async () => {
-            const res = await fetch('/recipes/likes', {
-                method: 'POST',
-                //signal: abortController.signal,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({"id" : recipe.id})
-            })
-            const data = await res.json()
-            setLikes(data)
-        }
+    //     const fetchLikes = async () => {
+    //         const res = await fetch('/recipes/likes', {
+    //             method: 'POST',
+    //             //signal: abortController.signal,
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({"id" : recipe.id})
+    //         })
+    //         const data = await res.json()
+    //         //setLikes(data)
+    //     }
         
-        if(!ignore){
-            fetchLikes();
-        }
+    //     if(!ignore && animation !== 'skeleton'){
+    //         //fetchLikes();
+    //     }
 
-        return () => { ignore = true; abortController.abort(); }; 
-    }, [recipe.id])
+    //     return () => { ignore = true; abortController.abort(); }; 
+    // }, [recipe.id])
 
 
     return(
@@ -45,7 +45,7 @@ function RecipeCard({recipe, animation}){
                     <p className="container smaller-text card-text text-capitalize">Notes: <span className="text-muted">{recipe.tastingnotes !== undefined ? recipe.tastingnotes: 'Good Vibes & Patience'}</span></p>
                     <p className="card-text"><small className="text-muted">Date Roasted: {recipe.roastdate !== undefined ? new Date(recipe.roastdate).toLocaleDateString(): 'Any time now...'}</small></p>
                 </div>
-                <i className="bi bi-heart-fill text-danger border"> x {likes} </i>
+                <i className="bi bi-heart-fill text-danger border"> x {recipe?.likes ?? 0} </i>
             </div> 
         </div>
         </Link>
