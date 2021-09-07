@@ -36,16 +36,13 @@ function PasswordReset() {
             })
 
             const parseRes = response.json();
-            
-
             if (!parseRes.success){
-                return setErrors(...parseRes)  
+                return setErrors(parseRes)  
             }
             
-            setSuccess(...parseRes);
+            setSuccess(parseRes);
 
         } catch (error) {
-            console.log(error.message)
             setErrors({"message": "500: Server Error", "success": false})
         }
     };
@@ -63,11 +60,11 @@ function PasswordReset() {
                     <Link to={{pathname: "/register", state: {location: '/register', going: '/'}}}><button className="btn btn-secondary m-2" type="button">Register</button></Link>
                 </form>
                 {!errors.success? null: errors.message}
-                {success.success?? success.message}
+                {success.success? success.message: null}
             </div>
             </Route>
 
-            <Route path={`${match.path}/:id`}>
+            <Route path={`${match.path}/:token`}>
                 <PasswordResetToken />
             </Route>
 
