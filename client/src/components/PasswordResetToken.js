@@ -1,15 +1,11 @@
 import {useState} from 'react';
 import { Link, useParams } from 'react-router-dom';
-import {globalStore} from '../store.js';
 import '../assets/FormStyles.css'
 
 
 function PasswordResetToken() {
-    const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
-    const getUserIdFromJWT = globalStore(state => state.getUserIdFromJWT)
 
     let { token } = useParams();
-    const idFromToken = getUserIdFromJWT(token);
 
     // form state & utils
     const [errors, setErrors] = useState({"success": false, "message": ""});

@@ -1,6 +1,5 @@
 import {useState} from 'react';
-import { Link, useHistory, useLocation, Switch, Route, useRouteMatch, Redirect} from "react-router-dom";
-import {globalStore} from '../store.js';
+import { Link, Switch, Route, useRouteMatch} from "react-router-dom";
 import '../assets/FormStyles.css'
 
 // components

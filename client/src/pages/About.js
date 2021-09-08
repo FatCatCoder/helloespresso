@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import {globalStore} from '../store.js'
 import Toast from 'react-bootstrap/Toast'
@@ -27,11 +26,20 @@ function About({setIsAuth}) {
     if(isLoggedIn){
       const token = localStorage.getItem('Authorization');
       localStorage.removeItem('Authorization');
-      // eslint-disable-next-line
-      const res = await axios.post('/logout', {token: token});
-      setShow(true)
-      setIsLoggedIn(false);
-      setIsAuth(false);
+
+      const res = await fetch('/logout', {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({token: token})
+      })
+
+      const parseRes = await res.json();
+
+      if(parseRes.success){
+        setShow(true)
+        setIsLoggedIn(false);
+        setIsAuth(false);
+      }
     }
   }
 //  <em><p className="lead pb-2">Here for all your espresso brewing needs.</p></em>
@@ -79,14 +87,15 @@ function About({setIsAuth}) {
           <h1 className="display-3">@About 2.0</h1>
           <p className="lead fs-2">I Got Plans</p>
           <ul className="list-group list-group-flush">
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Advanced extraction algorithm</li>
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Extraction analysis charts for journals</li>
             <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Support for other brewing methods (Kalita Wave, Chemex, Kyoto, French Press... More)</li>
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Best results setting tracking for main equipment setup</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Extraction analysis charts for journals</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Advanced extraction algorithm</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Best results tracking for main equipment setup</li>
             <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Autocomplete on form inputs for bean, region, roaster, etc...</li>
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> A Blog riddled with industry secrets and guru wizard advice?</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> A Blog riddled with industry secrets and guru advice?</li>
             <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> User profiles</li>
             <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Comments?</li>
+            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Dark Mode</li>
             <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> More!</li>
           </ul>
           <h1 className="display-4">Whats up?</h1>
@@ -103,8 +112,8 @@ function About({setIsAuth}) {
               <h1 className="display-5">Hey...</h1>
               <p className="lead">
               <em>This place aint'cheap </em>
-                 I only wish I had more to spare but if you love this app and want to see it grow
-                and stay alive then a little donation goes a long way at the maintenance costs.
+                Sob section. if you love this app and want to see it grow, gain more performance, 
+                or stay alive then a little donation would help with maintenance costs and keeping this platform free.
               </p>
               <p>@helloespresso payment vendor</p>
             </div>

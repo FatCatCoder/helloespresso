@@ -54,22 +54,28 @@ function blacklistCheck(req, res, next){
 router.post('/logout', (req, res) => {
     // get token and get user id
     //const token = req.headers.authorization;
-    const {token} = req.body;
-    console.log(token)
-    const tokenSplit = token.split(' ');
-    const decoded = jwt.verify(tokenSplit[1], process.env.SECRET);
-    //const decoded = jwtValidate({getToken: token, secret: process.env.SECRET, algorithms: ['HS256']})
-    console.log(decoded, decoded.user)
-    const EXP = decoded.exp - Math.floor(new Date().getTime()/1000.0)
+    try{
+        const {token} = req.body;
+        console.log(token)
+        const tokenSplit = token.split(' ');
+        const decoded = jwt.verify(tokenSplit[1], process.env.SECRET);
+        //const decoded = jwtValidate({getToken: token, secret: process.env.SECRET, algorithms: ['HS256']})
+        console.log(decoded, decoded.user)
+        const EXP = decoded.exp - Math.floor(new Date().getTime()/1000.0)
 
-    redisClient.setex(tokenSplit[1], EXP, decoded.user.id, (error, data) => {
-        if(error){
-            console.log(error, data);
-            res.send({error});
-        }
-    })
+        redisClient.setex(tokenSplit[1], EXP, decoded.user.id, (error, data) => {
+            if(error){
+                console.log(error, data);
+                res.send({error});
+            }
+        })
 
-    res.json({"message": "logged out"});
+        res.send({"message": "logged out", "success": true});
+    }
+    catch(error){
+        console.log(error);
+        res.send({"message": error, "success": false});
+    }
 })
 
 // login

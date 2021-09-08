@@ -57,13 +57,6 @@ if (process.env.NODE_ENV === "production"){
   })
 }
 
-// app.get('/pwdreset', function(req , res) {
-//   console.log('sent');
-//   var resetLink = "http://localhost:3000";
-//   res.render('email', {link: resetLink})
-// })
-
-
 // listening...
 app.listen(PORT, () => {
     console.log(`server is listening on port ${PORT}....`)

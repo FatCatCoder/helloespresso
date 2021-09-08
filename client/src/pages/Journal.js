@@ -1,11 +1,11 @@
 import {useEffect, useState} from 'react';
 import {globalStore} from '../store.js';
-import axios from 'axios';
 import {
     Redirect,
     Switch,
     Route,
     useRouteMatch,
+    useHistory
   } from "react-router-dom";
 
 // components
@@ -13,13 +13,13 @@ import Pagination from '../components/Pagination.js';
 import JournalItemContent from '../components/JournalItemContent.js';
 import JournalItem from '../components/JournalItem.js';
 import LoadingSpinner from '../components/LoadingSpinner.js';
-import Login from './Login.js';
 
 
 // journal page, displays logged in users entries, or login screen
 
 function Journal({isAuth}){
     let match = useRouteMatch();
+    const history = useHistory();
     const setCurrentPage = globalStore(state => state.setCurrentPage);
     const loadingAuth = globalStore(state => state.loadingAuth);
     useEffect(() => {
@@ -47,8 +47,12 @@ function Journal({isAuth}){
         if(!ignore && isAuth){
             const userData = jwtDecode();
             const fetchJournalEntries = async () => { 
-                const res = await axios.post('/journals', {user_id: userData.user.id});
-                const data = res.data;
+                const res = await fetch('/journals', {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json", "Authorization": localStorage.getItem('Authorization')},
+                    body: JSON.stringify({user_id: userData.user.id})
+                })
+                const data = await res.json();
                 console.log(data);
                 setMyEntries(data.map(x => x))
             }
@@ -60,6 +64,26 @@ function Journal({isAuth}){
             abortController.abort();
         }; 
     }, [isAuth])
+
+    const deleteJournal = async (id) => {
+        try{
+            const res = await fetch('/journals/delete', {
+                method: "POST",
+                headers: {"Content-Type": "application/json", "Authorization": localStorage.getItem('Authorization')},
+                body: JSON.stringify({id})
+            })
+
+            const parseRes = res.json();
+
+            if(parseRes.success){
+                const deleteEntry = setMyEntries(prevEntries => prevEntries.filter(x => x.id !== id))
+                history.push('/journal');
+            }
+        }
+        catch(error){
+            console.log('Cannot Delete Journal At This Time.');
+        }     
+    }
 
     
     // for pagination
@@ -87,7 +111,7 @@ function Journal({isAuth}){
                 </Route>
 
                 <Route path={`${match.path}/:id`}>
-                    <JournalItemContent myEntries={myEntries}/>
+                    <JournalItemContent myEntries={myEntries} deleteJournal={deleteJournal} />
                 </Route>
             </Switch>
             :

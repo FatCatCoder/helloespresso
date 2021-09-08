@@ -1,12 +1,16 @@
 const router = require('express').Router();
 const pool = require('../../db');
 const format = require('pg-format');
+const jwtValidate = require('express-jwt');
 
 
-// routes
-router.post('/', async(req, res) => {
+//  -- routes -- //
+
+// get all journals
+router.post('/', jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
     try{
         const {user_id} = req.body;
+        console.log(user_id);
         const journals = await pool.query("SELECT * FROM journals WHERE user_id = $1 ORDER BY postdate DESC, posttime DESC", [user_id]);
         res.send(journals.rows);
     }
@@ -16,7 +20,7 @@ router.post('/', async(req, res) => {
 })
 
 // add to journal
-router.post('/new', async(req, res) => {
+router.post('/new', jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
     try{
         // log journal
         const {user_id, journalData, ShotLog} = req.body;
@@ -38,6 +42,22 @@ router.post('/new', async(req, res) => {
     catch(error){
         console.log(error)
         res.send(error)
+    }
+})
+
+// delete a journal
+router.post('/delete', jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
+    try{
+        const {id} = req.body;
+
+        const journalDelete = await pool.query("DELETE FROM journals WHERE id = $1", [id]);
+
+        console.log(journalDelete);
+        res.send({"message": "deleted!", "success": true});
+    }
+    catch(error){
+        console.log(error)
+        res.send({"message": error, "success": false});
     }
 })
 

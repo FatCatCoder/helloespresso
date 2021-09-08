@@ -35,7 +35,7 @@ function Footer ({ shotList, setShotList}){
 
         const res = await fetch('/journals/new', {
             method: 'POST',
-            headers: {"Content-Type": "application/json"},
+            headers: {"Content-Type": "application/json", "Authorization": localStorage.getItem('Authorization')},
             body: JSON.stringify({"journalData": entry, "ShotLog": shotList, "user_id": userId})
         })
 

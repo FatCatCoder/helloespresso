@@ -91,7 +91,7 @@ function Recipes({isAuth}){
         const data = await res.json();
         console.log('all likes returned', data);
 
-        const addLikes = recipes.map(x => Object.assign(x, data.find(y => y.id == x.id)));
+        const addLikes = recipes.map(x => Object.assign(x, data.find(y => y.id === x.id)));
         return addLikes
     }
     

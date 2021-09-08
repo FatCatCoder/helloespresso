@@ -27,7 +27,6 @@ function App (){
     const abortController = new AbortController();
     let ignore = false;
 
-    const timer = setTimeout(() => {
     if(!ignore){
       const startAuth = async () => {
         try {
@@ -54,12 +53,11 @@ function App (){
       }
       // call
       startAuth();
-    }}, 5000);
+    }
     
     return () => {
             ignore = true;
             abortController.abort();
-            clearTimeout(timer);
         }; 
   }, [setIsLoggedIn, isLoggedIn])
 
