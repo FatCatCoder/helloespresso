@@ -1,6 +1,5 @@
 import {useState} from 'react';
 
-
 function Shot (props){
     const [isCollapsed, toggleCollapsed] = useState(false);
     const toggleShow = () => {

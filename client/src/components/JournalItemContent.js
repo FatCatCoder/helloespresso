@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useParams } from "react-router";
-import axios from 'axios';
 
 // components
 import Shot from './Shot.js';
@@ -17,8 +16,13 @@ function JournalItemContent({myEntries}){
         let ignore = false;
 
         const fetchShots = async () => {
-            const res = await axios.post('/shots', {journal_id: id});
-            const data = res.data;
+            const res = await fetch('/shots', {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({journal_id: id})
+            })
+
+            const data = await res.json();
             setShotLog(data);
         }
 

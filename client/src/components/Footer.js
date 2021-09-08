@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import {globalStore} from '../store.js';
-import axios from 'axios';
 
 // components
 import Shot from './Shot';
@@ -15,6 +14,7 @@ function Footer ({ shotList, setShotList}){
 
      // Footer modal form to log shots as new journal
      const [journalEntry, setJournalEntry] = useState({});
+     const [show, setShow] = useState(false);
      
 
     const handleModalSubmit = (event) => {
@@ -31,13 +31,20 @@ function Footer ({ shotList, setShotList}){
 
     // add new entry to journal
     const addEntryToJournal = async(entry) => {
-    const userId = await getUserId();
-    axios({
-        method: 'POST',
-        url: '/journals/new',
-        data: {"journalData": entry, "ShotLog": shotList, "user_id": userId}
-    })
-}
+        const userId = await getUserId();
+
+        const res = await fetch('/journals/new', {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({"journalData": entry, "ShotLog": shotList, "user_id": userId})
+        })
+
+        const parseRes = await res.json();
+
+        if(parseRes.success){
+            setShow(false)
+        }
+    }
     // render pulls
     const pulls = shotList.map((pull, index) =>
             <Shot key={index} listNum={index+1} dose={pull.dose} time={pull.time} yield={pull.yield} grind={pull.grind} notes={pull.notes} Sour={pull.Sour} Bitter={pull.Bitter} Weak={pull.Weak} Balanced={pull.Balanced} Strong={pull.Strong} /> 
@@ -62,7 +69,7 @@ function Footer ({ shotList, setShotList}){
                 <div className="container mx-auto col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                     <div className="row">
                         <div className="col-6">
-                            <AddToJournalModal buttonLabel={isLoggedIn? 'Log': 'login'} isLoggedIn={isLoggedIn} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} />
+                            <AddToJournalModal buttonLabel={isLoggedIn? 'Log': 'login'} show={show} setShow={setShow} isLoggedIn={isLoggedIn} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} />
                         </div>
                         <div className="col-6">
                             <button onClick={() => setShotList([])} className="btn btn-danger w-100">clear</button>

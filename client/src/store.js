@@ -1,5 +1,4 @@
 import create from 'zustand';
-import axios from 'axios';
 
 // for form errors
 const useShotFormStore = create((set, get) => ({
@@ -36,13 +35,11 @@ const globalStore = create((set, get) => ({
     set(state => ({isLoggedIn: bool}))
   },
   checkValidToken: async () => {
-    const config = {
-      method: 'get',
-      url: '/verify-auth',
-      headers: { 'Authorization': localStorage.getItem('Authorization') }
-    }
     try {
-      const isValid = await axios(config);
+      const isValid = await fetch('/verify-auth', {
+        method: "GET",
+        headers: { 'Authorization': localStorage.getItem('Authorization') }
+      })
       console.log(isValid.data.verified);
 
       if(isValid.data.verified){

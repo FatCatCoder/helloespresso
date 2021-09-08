@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const pool = require('../../db');
+const format = require('pg-format');
 
 
 // routes
@@ -32,11 +33,11 @@ router.post('/new', async(req, res) => {
 
         const newShot = await pool.query(queryStr);
 
-
-        res.status(200).send(newShot.rowCount);
+        res.send({"success": true, "message": "Journal has been logged!"});
     }
     catch(error){
         console.log(error)
+        res.send(error)
     }
 })
 
