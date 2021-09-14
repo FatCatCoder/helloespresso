@@ -70,40 +70,40 @@ function About({setIsAuth}) {
       <ToastContainer position='bottom-center'>
         <Toast className="p-3 mb-2" onClose={() => setShow(false)} show={show} animation={true} delay={1750} autohide>
           <Toast.Header>
-            <i class="bi bi-hand-thumbs-up"></i>
+            <i className="bi bi-hand-thumbs-up"></i>
             <strong className="me-auto">You've been logged out!</strong>
           </Toast.Header>
         </Toast>
       </ToastContainer>
       </div>
 
-      <button class="bg-transparent border-0 text-muted fs-6" type="button" onClick={() => setShowSecret(!showSecret)} data-bs-target="#secret" aria-expanded="false" aria-controls="secret text">
-       wizards only, fool.
+      <button className="bg-transparent border-0 text-muted fs-6" type="button" onClick={() => setShowSecret(!showSecret)} data-bs-target="#secret" aria-expanded="false" aria-controls="secret text">
+       wizards only, fools.
       </button>
 
-      <div class="vh-100 position-relative" id="secret">
+      <div className="vh-100 position-relative" id="secret">
       <Fade cascade when={showSecret}>
-        <div class="container col-10 col-md-8">
+        <div className="container col-10 col-md-8">
           <h1 className="display-3">@About 2.0</h1>
           <p className="lead fs-2">I Got Plans</p>
           <ul className="list-group list-group-flush">
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Support for other brewing methods (Kalita Wave, Chemex, Kyoto, French Press... More)</li>
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Extraction analysis charts for journals</li>
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Advanced extraction algorithm</li>
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Best results tracking for main equipment setup</li>
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Autocomplete on form inputs for bean, region, roaster, etc...</li>
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> A Blog riddled with industry secrets and guru advice?</li>
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> User profiles</li>
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Comments?</li>
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> Dark Mode</li>
-            <li className="list-group-item"><i class="bi bi-emoji-sunglasses float-start"></i> More!</li>
+            <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Support for other brewing methods (Kalita Wave, Chemex, Kyoto, French Press... More)</li>
+            <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Extraction analysis charts for journals</li>
+            <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Advanced extraction algorithm</li>
+            <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Best results tracking for main equipment setup</li>
+            <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Autocomplete on form inputs for bean, region, roaster, etc...</li>
+            <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> A Blog riddled with industry secrets and guru advice?</li>
+            <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> User profiles</li>
+            <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Comments?</li>
+            <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Dark Mode</li>
+            <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> More!</li>
           </ul>
           <h1 className="display-4">Whats up?</h1>
           <p>I want to hear from you. Send any requests for new features or bug fixes to one of my handles <strong>@helloespresso.coffee</strong></p>
           <p className="lead fs-2">Hello Developers</p>
           <p>looking to help out? Contact me on github and lets see what we can build together</p>
 
-          <button class="bg-transparent border-0 text-muted fs-6" type="button" onClick={() => setShowSobSection(!showSobSection)} data-bs-target="#secret" aria-expanded="false" aria-controls="secret text">
+          <button className="bg-transparent border-0 text-muted fs-6" type="button" onClick={() => setShowSobSection(!showSobSection)} data-bs-target="#secret" aria-expanded="false" aria-controls="secret text">
             pssst...
           </button>
 

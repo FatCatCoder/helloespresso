@@ -42,6 +42,7 @@ router.post('/', async(req, res) => {
     try{
         req.serverTiming.from('api');
         const {offsetPage, limitAmount, sortFilters} = req.body;
+        console.log(sortFilters);
 
         const filtersList = Object.entries(sortFilters);
         console.log(filtersList)
@@ -55,7 +56,7 @@ router.post('/', async(req, res) => {
         }
 
         // if no filters, just get all posts
-        if(sortFilters == undefined || Object.keys(sortFilters).length === 0){
+        if(sortFilters === undefined || Object.keys(sortFilters).length === 0){
             
             var recipes = await pool.query("SELECT *, COUNT(*) OVER() AS count FROM recipes LIMIT $1 OFFSET $2", [limitAmount, offsetPage * limitAmount]);
             
@@ -151,7 +152,7 @@ router.post('/', async(req, res) => {
             req.serverTiming.to('db');
         }
         req.serverTiming.to('api');
-        //console.log('count', recipes.rowCount,'\n',recipes.rows[0], '\n', recipes, recipes.rowCount === 0? [] : recipes.rows);
+        console.log('count', recipes.rowCount,'\n',recipes.rows[0], '\n');
         res.send(recipes.rowCount === 0? [{"count": 0}] : recipes.rows);
     }
     catch(err){
@@ -235,6 +236,7 @@ router.post('/all-likes', async(req, res) => {
 })
 
 //like a recipe
+// add auth
 router.post('/like', async(req, res) => {
     
     

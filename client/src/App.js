@@ -61,8 +61,10 @@ function App (){
         }; 
   }, [setIsLoggedIn, isLoggedIn])
 
-  const globalRecipes = useRecipesStore(state => state.recipes);
-  console.log(globalRecipes);
+  const globalRecipes = useRecipesStore(state => state.myRecipes);
+  const recipenumber = useRecipesStore(state => state.currPage);
+  const recipeslice = useRecipesStore(state => state.recipeSlice);
+  console.log('recipes store check',globalRecipes, recipenumber, recipeslice);
  
   // Main router for app, checks for auth in token before load
   return (

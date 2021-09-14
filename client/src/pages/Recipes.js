@@ -1,7 +1,7 @@
 // modules
 import { useState, useEffect  } from 'react';
 import {useHistory} from 'react-router-dom'; 
-import {globalStore} from '../store.js';
+import {globalStore, useRecipesStore} from '../store.js';
 import {
     Switch,
     Route,
@@ -28,39 +28,37 @@ function Recipes({isAuth}){
     useEffect(() => {
         setCurrentPage(window.location.pathname)
     }, [])
-    
 
-    // all recipes data in pages, and current selection of recipes for page display
-    const [myRecipes, setMyRecipes] = useState(null);
-    const [recipeSlice, setRecipeSlice] = useState([]);
+    // global state for recipes data
+    const { 
+        myRecipes, setMyRecipes, 
+        recipeSlice, setRecipeSlice,
+        currPage, setCurrPage, 
+        recipesPerPage, setRecipesPerPage,
+        totalRecipes, setTotalRecipes,
+        refresh, setRefresh,
+        isLoading, setIsLoading,
+        sortFilters, setSortFilters,
+        } = useRecipesStore();
 
-    // for pagination
-    const [currPage, setCurrPage] = useState(1);
-    // eslint-disable-next-line
-    const [recipesPerPage, setRecipesPerPage] = useState(8);
-    const [totalRecipes, setTotalRecipes] = useState(8);
-
-    // ui controllers, force refresh by state change of refresh or for async data use loading.
-    const [refresh, setRefresh] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-
-    // sorting and filtering data
-    const [sortFilters, setSortFilters] = useState({});
-
-    //get userId and logged in status from global state store
     const getUserId = globalStore(state => state.getUserIdFromJWT)
     const isLoggedIn = globalStore(state => state.isLoggedIn)
 
-
     // POST request to get recipes from server based on page and amount, checks for null filter requirements
-    const fetchRecipes = async (thisPage = currPage, numOf = recipesPerPage) => {
+    const fetchRecipes = async (thisPage = currPage, numOf = recipesPerPage, controller) => {
+        try{
         setIsLoading(true);
+        console.log(sortFilters);
+        console.log(thisPage, currPage);
         
-        if(sortFilters.sortBy == null){
-            setSortFilters((filters) => ({...filters, "sortBy": "postdate DESC"}))
+        if(Object.keys(sortFilters) !== 0 && (sortFilters?.sortBy === null || sortFilters?.sortBy == undefined)){
+            setSortFilters({...sortFilters, "sortBy": "postdate DESC"})
         }
+
+        console.log(sortFilters);
         const res = await fetch('/recipes', {
             method: 'POST',
+            signal: controller.signal,
             headers: {
                 'Content-Type': 'application/json'
               },
@@ -71,17 +69,24 @@ function Recipes({isAuth}){
         
         console.log('fetchRecipes data', data)
         
-        const recipesWithLikes = await getAllLikes(data)
+        const recipesWithLikes = await getAllLikes(data, controller)
 
-        return recipesWithLikes;
+        return await recipesWithLikes;
+    }
+    catch(err){
+        console.log(err);
+    }
     }
 
-    const getAllLikes = async (recipes) => {
+    const getAllLikes = async (recipes, controller) => {
+        try{
+        console.log('all likes recipes', recipes);
         const ids = recipes.map(x => x.id);
         console.log(ids);
 
         const res = await fetch('/recipes/all-likes', {
             method: 'POST',
+            signal: controller.signal,
             headers: {
                 'Content-Type': 'application/json'
               },
@@ -89,39 +94,91 @@ function Recipes({isAuth}){
         })
 
         const data = await res.json();
-        console.log('all likes returned', data);
+        console.log('all likes returned', await data);
 
-        const addLikes = recipes.map(x => Object.assign(x, data.find(y => y.id === x.id)));
-        return addLikes
+        const addLikes = await recipes.map(x => Object.assign(x, data.find(y => y.id === x.id)));
+        console.log(addLikes);
+        return await addLikes;
     }
-    
-    // get recipes on load and refresh
-    useEffect(() => {
-        const abortController = new AbortController();
-        let ignore = false;
+    catch(err){
+        console.log(err);
+        return 
+    }
+    }
 
-        const getRecipes = async () => {
-            const recipesFromServer = await fetchRecipes(1);
-            setMyRecipes([{"page": 1, "recipes" : recipesFromServer}]) // set Recipes array    
+    const getRecipes = async (newOrNext, controller) => {
+        if(newOrNext==='new'){
+            const recipesFromServer = await fetchRecipes(1, recipesPerPage, controller);
+            setMyRecipes([{"page": 1, "recipes" : recipesFromServer}]) // set Recipes array
+            setRecipeSlice(recipesFromServer)    
             setTotalRecipes(recipesFromServer[0].count) // set total number of recipes for pagination, count is my defined sql count over() function on the api being returned along side the recipes data
             setCurrPage(1) // push page state back to the first page
         }
-        if(!ignore){
-            getRecipes();
-            setIsLoading(false)    
+        else if(newOrNext==='next'){
+            const recipesFromServer = await fetchRecipes(currPage, recipesPerPage, controller);
+            setMyRecipes([...myRecipes, {"page": currPage, "recipes" : recipesFromServer}]) // set Recipes array
+            setRecipeSlice(recipesFromServer)    
+            setTotalRecipes(recipesFromServer[0].count) // set total number of recipes for pagination, count is my defined sql count over() function on the api being returned along side the recipes data
         }
+    }
+    
+    // get recipes on load and refresh, and check for existing pages in memory to avoid api call
+
+    useEffect(() => {
+        console.log('useffect 3');
+        const abortController = new AbortController();
+        let ignore = false;
+
+        const alreadyFetched = () => {
+            console.log('already fecthed currpage', currPage);
+            return myRecipes.includes(myRecipes.find(x => x["page"] === currPage))
+        };
+        const checkdata = async() =>{
+        // init & refresh
+        if(!ignore && (myRecipes.length === 0 || refresh)){
+            console.log('initial load 3'); 
+            await getRecipes('new', abortController);
+            setIsLoading(false);
+            setRefresh(false);
+            setCurrPage(1);
+        }
+        // fetch next page
+        else if(!ignore && !alreadyFetched()){
+            console.log('getting recipes 3');
+            await getRecipes('next', abortController);
+            setIsLoading(false);
+            setRefresh(false);
+            return console.log('use EFFECT 3 all good callling new data');  
+        }
+        // already in memory
+        else if(!ignore && alreadyFetched()){
+            await setRecipeSlice(myRecipes.find(x => x["page"] === currPage)["recipes"])
+            setIsLoading(false);
+            return console.log('use EFFECT 3 data instate already');  
+        }
+    }
+
+    checkdata();
+
         return () => {
             ignore = true;
             abortController.abort();
+            console.log('!!!!!!!!! // --  ABORTED -- // !!!!!!!');
         };
         // eslint-disable-next-line 
-    }, [refresh])
+    }, [currPage, refresh])
 
     // set recipes on page
     useEffect(() => {
         let ignore = false;
-        console.log(myRecipes);
-        if(!ignore){ myRecipes? setRecipeSlice(myRecipes.find(x => x["page"] === currPage)["recipes"]) : setRecipeSlice([]); }
+        console.log('myRecipes slice useEffect', myRecipes);
+        console.log(currPage);
+        // try{
+        if(!ignore && !refresh){ myRecipes.length !== 0? setRecipeSlice(myRecipes.find(x => x["page"] === currPage)["recipes"]) : setRecipeSlice([]); }
+        // }
+        // catch(err){
+        //     console.log(err);
+        // }
         return () => { ignore = true; }; 
         // eslint-disable-next-line
     }, [myRecipes]) 
@@ -129,26 +186,11 @@ function Recipes({isAuth}){
 
     // On pagination setCurrPage change, checks if page exists in memory, if not then fetch it and update state.
     const changePage = async(number) => {
+        console.log(number);
         (function () {
             setCurrPage(number);
             setIsLoading(true);
         } ());
-        
-        // returns bool
-        const alreadyFetched = () => {
-            return myRecipes.includes(myRecipes.find(x => x["page"] === number))
-        };
-
-        // fetch new data or useState data
-        if(!alreadyFetched()){
-            const data = await fetchRecipes(number);
-            setMyRecipes([...myRecipes, {"page": number, "recipes" : data}]);
-        }
-        else{
-            setRecipeSlice(myRecipes.find(x => x["page"] === number)["recipes"])
-        }
-
-        setIsLoading(false);
     }
     
      // Recipe data mapped to recipe card components
@@ -160,6 +202,11 @@ function Recipes({isAuth}){
             const fakeArr = new Array(recipesPerPage).fill({});
             return fakeArr.map((x, y) => <RecipeCard key={y} recipe={x} animation={'skeleton'} />) 
         }
+        if(recipeSlice === null || recipeSlice === undefined){
+            const fakeArr = new Array(recipesPerPage).fill({});
+            return fakeArr.map((x, y) => <RecipeCard key={y} recipe={x} animation={'skeleton'} />) 
+        }
+        console.log('displayrecipes recipeSlice',recipeSlice, 'displayrecipes myrecipes',myRecipes, sortFilters);
         return recipeSlice.map((x) => <RecipeCard key={x.id} recipe={x} animation={'fadeIn'} />)
     }
 

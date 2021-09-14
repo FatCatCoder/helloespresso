@@ -6,10 +6,10 @@ function RecipeBtnGrp(props){
     const [sortUsed, setSortUsed] = useState(null);
 
     const handleOnChange = (e) => {
-        props.setSortFilters((prevProps) => ({
-            ...prevProps,
+        props.setSortFilters({
+            ...props.sortFilters,
             [e.target.name]: e.target.value
-        }));
+        });
     }
 
     const handleCheckboxOnChange = (e) => {
@@ -60,11 +60,11 @@ function RecipeBtnGrp(props){
                 <div className="collapse" id="sortCollapse">
                     <div className="card card-body border-0">
                         <div className="list-group container-sm mx-auto">
-                            <button className={`list-group-item ${sortUsed === "postdate DESC"? 'active': ''}`} onClick={() => {props.setSortFilters((filters) => ({...filters, "sortBy": "postdate DESC"})); setSortUsed("postdate DESC");}}><i className="bi bi-arrow-down"></i> Newest Recipe</button>
-                            <button className={`list-group-item ${sortUsed === "postdate ASC"? 'active': ''}`} onClick={() => {props.setSortFilters((filters) => ({...filters, "sortBy": "postdate ASC"})); setSortUsed("postdate ASC");}}><i className="bi bi-arrow-up"></i> Oldest Recipe</button>                
-                            <button className={`list-group-item ${sortUsed === "roastdate DESC"? 'active': ''}`} onClick={() => {props.setSortFilters((filters) => ({...filters, "sortBy": "roastdate DESC"})); setSortUsed("roastdate DESC");}}><i className="bi bi-arrow-down"></i> Fresh Roast</button>
-                            <button className={`list-group-item ${sortUsed === "roastdate ASC"? 'active': ''}`} onClick={() => {props.setSortFilters((filters) => ({...filters, "sortBy": "roastdate ASC"})); setSortUsed("roastdate ASC");}}><i className="bi bi-arrow-up"></i> Oldest Roast</button>
-                            <button className={`list-group-item ${sortUsed === "popular DESC"? 'active': ''}`} onClick={() => {props.setSortFilters((filters) => ({...filters, "sortBy": "popular DESC"})); setSortUsed("popular DESC");}}><i className="bi bi-heart"></i> Popular</button>
+                            <button className={`list-group-item ${sortUsed === "postdate DESC"? 'active': ''}`} onClick={() => {props.setSortFilters(({...props.sortFilters, "sortBy": "postdate DESC"})); setSortUsed("postdate DESC");}}><i className="bi bi-arrow-down"></i> Newest Recipe</button>
+                            <button className={`list-group-item ${sortUsed === "postdate ASC"? 'active': ''}`} onClick={() => {props.setSortFilters(({...props.sortFilters, "sortBy": "postdate ASC"})); setSortUsed("postdate ASC");}}><i className="bi bi-arrow-up"></i> Oldest Recipe</button>                
+                            <button className={`list-group-item ${sortUsed === "roastdate DESC"? 'active': ''}`} onClick={() => {props.setSortFilters(({...props.sortFilters, "sortBy": "roastdate DESC"})); setSortUsed("roastdate DESC");}}><i className="bi bi-arrow-down"></i> Fresh Roast</button>
+                            <button className={`list-group-item ${sortUsed === "roastdate ASC"? 'active': ''}`} onClick={() => {props.setSortFilters(({...props.sortFilters, "sortBy": "roastdate ASC"})); setSortUsed("roastdate ASC");}}><i className="bi bi-arrow-up"></i> Oldest Roast</button>
+                            <button className={`list-group-item ${sortUsed === "popular DESC"? 'active': ''}`} onClick={() => {props.setSortFilters(({...props.sortFilters, "sortBy": "popular DESC"})); setSortUsed("popular DESC");}}><i className="bi bi-heart"></i> Popular</button>
                         </div>
                     </div>
                 </div>

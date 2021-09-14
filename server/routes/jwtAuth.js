@@ -10,47 +10,12 @@ const redisClient = redis.createClient();
 
 require('dotenv').config({ path: '../../.env' })
 
-
-// --- middleware --- //
-
-// blacklist middleware
-function blacklistCheck(req, res, next){
-    const token = req.headers.authorization;
-    const tokenSplit = token.split(' ');
-    try{
-    const decoded = jwt.verify(tokenSplit[1], process.env.SECRET);
-    }
-    catch(err){
-        if (err.name == 'TokenExpiredError') {
-            console.log('Blacklist Jwt auth error');
-            //console.error(error.message);
-            res.status(401).json({"verified": false});
-            }
-            else{
-                res.status(500);
-            }
-    }
-    //const decoded = jwtValidate({getToken: tokenSplit[1], secret: process.env.SECRET, algorithms: ['HS256']})
-
-    redisClient.get(tokenSplit[1], (error, data) => {
-        if(error){
-            return res.status(403).send({ error });
-        }
-        else if(data){
-            console.log('you are blacklisted', data)
-            return res.status(403).send({ error });
-        }
-        else if(!data){
-            return next();
-        }
-        
-    });
-}
-
+const blacklistCheck = require('../utils/blacklist');
 
 // --- routes --- //
 
 // logout
+
 router.post('/logout', (req, res) => {
     // get token and get user id
     //const token = req.headers.authorization;

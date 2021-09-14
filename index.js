@@ -11,6 +11,8 @@ require("dotenv").config();
 console.log(process.env.NODE_ENV);
 
 // middleware
+
+app.use(require('express-status-monitor')());
 app.use(helmet.hidePoweredBy({ setTo: 'foo' })); 
 app.disable('x-powered-by')
 app.use(helmet());
@@ -28,11 +30,11 @@ app.set('view engine', 'hbs');
 
 
 // simple invalid JWT handling 
-app.use(function (err, req, res, next) {
-    if (err.name === 'UnauthorizedError') {
-      res.status(401).json({"verified": false});
-    }
-  });
+// app.use(function (err, req, res, next) {
+//     if (err.name === 'UnauthorizedError') {
+//       res.status(401).json({"verified": false});
+//     }
+//   });
 
 
 // routes
@@ -57,7 +59,26 @@ if (process.env.NODE_ENV === "production"){
   })
 }
 
+
 // listening...
 app.listen(PORT, () => {
     console.log(`server is listening on port ${PORT}....`)
+    // process.send('ready')
 });
+
+// // pm2
+// process.on('SIGINT', function() {
+//   db.stop(function(err) {
+//     process.exit(err ? 1 : 0)
+//   })
+// })
+
+// process.on('message', function(msg) {
+//   if (msg == 'shutdown') {
+//     console.log('Closing all connections...')
+//     setTimeout(function() {
+//       console.log('Finished closing connections')
+//       process.exit(0)
+//     }, 1500)
+//   }
+// })

@@ -8,10 +8,22 @@ const useShotFormStore = create((set, get) => ({
 
 // eventually for recipes inMemory state persistance when navigating back and forth between pages.
 const useRecipesStore = create((set, get) => ({
-  recipes: [],
-  setRecipes: (data) => set(state => ({recipes: data})),
+  myRecipes: [],
+  setMyRecipes: (data) => set(state => ({myRecipes: data})),
+  recipeSlice: [],
+  setRecipeSlice: (data) => set(state => ({recipeSlice: data})),
   currPage: 1,
-  setCurrPage: (number) => set(state => ({currPage: number}))
+  setCurrPage: (number) => set(state => ({currPage: number})),
+  recipesPerPage: 8,
+  setRecipesPerPage: (number) => set(state => ({recipesPerPage: number})),
+  totalRecipes: 8,
+  setTotalRecipes: (number) => set(state => ({totalRecipes: number})),
+  sortFilters: {},
+  setSortFilters: (data) => set(state => ({sortFilters: data})),
+  isLoading: true,
+  setIsLoading: (bool) => set(state => ({isLoading: bool})),
+  refresh: false,
+  setRefresh: (bool) => set(state => ({refresh: bool}))
 }))
 
 const globalStore = create((set, get) => ({
