@@ -14,6 +14,8 @@ const useRecipesStore = create((set, get) => ({
   setRecipeSlice: (data) => set(state => ({recipeSlice: data})),
   currPage: 1,
   setCurrPage: (number) => set(state => ({currPage: number})),
+  nextPage: 1,
+  setNextPage: (number) => set(state => ({nextPage: number})),
   recipesPerPage: 8,
   setRecipesPerPage: (number) => set(state => ({recipesPerPage: number})),
   totalRecipes: 8,

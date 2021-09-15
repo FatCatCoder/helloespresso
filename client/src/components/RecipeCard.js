@@ -45,7 +45,7 @@ function RecipeCard({recipe, animation}){
                     <p className="container smaller-text card-text text-capitalize">Notes: <span className="text-muted">{recipe.tastingnotes !== undefined ? recipe.tastingnotes: 'Good Vibes & Patience'}</span></p>
                     <p className="card-text"><small className="text-muted">Date Roasted: {recipe.roastdate !== undefined ? new Date(recipe.roastdate).toLocaleDateString(): 'Any time now...'}</small></p>
                 </div>
-                <i className="bi bi-heart-fill text-danger border"> x {recipe?.likes ?? 0} </i>
+                <i className="bi bi-heart-fill text-danger border"> x {recipe?.likes ?? recipe.popular ?? 0} </i>
             </div> 
         </div>
         </Link>
