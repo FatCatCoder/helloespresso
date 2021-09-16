@@ -4,21 +4,14 @@ const argon2 = require('argon2');
 const jwtGenerator = require('../utils/jwtGenerator');
 const jwtValidate = require('express-jwt');
 const jwt = require('jsonwebtoken');
-
+const blacklistCheck = require('../utils/blacklist');
 const redis = require("redis");
 const redisClient = redis.createClient();
-
 require('dotenv').config({ path: '../../.env' })
 
-const blacklistCheck = require('../utils/blacklist');
-
-// --- routes --- //
 
 // logout
-
 router.post('/logout', (req, res) => {
-    // get token and get user id
-    //const token = req.headers.authorization;
     try{
         const {token} = req.body;
         console.log(token)
@@ -44,7 +37,6 @@ router.post('/logout', (req, res) => {
 })
 
 // login
-
 router.post('/login', async(req, res) => {
     try {
         // destructor req.body 
@@ -66,7 +58,7 @@ router.post('/login', async(req, res) => {
         }
 
         // give jwt token
-        const token = 'Bearer ' + jwtGenerator(user.rows[0].id);
+        const token = 'Bearer ' + jwtGenerator(user.rows[0].id, '4h');
         res.set('Authorization', token).send();
 
 
@@ -127,8 +119,7 @@ router.get("/verify-auth", blacklistCheck, jwtValidate({secret: process.env.SECR
     }
 })
 
-// get TTL on redis key
-
+// get TTL on redis key // remove in production //
 router.get('/ttl', (req, res) => {
     //const token = req.headers.authorization;
     const {token} = req.body;

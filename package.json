@@ -21,6 +21,9 @@
         "prod": "set NODE_ENV=production nodemon index.js"
     },
     "notes": {
-        "pm2": {"--watch": "restarts server automatically", "-i max": "starts cluster with max cores"}
+        "pm2": {
+            "--watch": "restarts server automatically",
+            "-i max": "starts cluster with max cores"
+        }
     }
 }

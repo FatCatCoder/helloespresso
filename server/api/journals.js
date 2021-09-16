@@ -2,12 +2,13 @@ const router = require('express').Router();
 const pool = require('../../db');
 const format = require('pg-format');
 const jwtValidate = require('express-jwt');
+const blacklistCheck = require('../utils/blacklist');
 
 
 //  -- routes -- //
 
 // get all journals
-router.post('/', jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
+router.post('/', blacklistCheck, jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
     try{
         const {user_id} = req.body;
         console.log(user_id);
@@ -20,7 +21,7 @@ router.post('/', jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}
 })
 
 // add to journal
-router.post('/new', jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
+router.post('/new', blacklistCheck, jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
     try{
         // log journal
         const {user_id, journalData, ShotLog} = req.body;
@@ -46,7 +47,7 @@ router.post('/new', jwtValidate({secret: process.env.SECRET, algorithms: ['HS256
 })
 
 // delete a journal
-router.post('/delete', jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
+router.post('/delete', blacklistCheck, jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
     try{
         const {id} = req.body;
 

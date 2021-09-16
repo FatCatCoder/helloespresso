@@ -33,7 +33,8 @@ function RecipePage(props){
             const res = await fetch('/recipes/like', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('Authorization')
                 },
                 body: JSON.stringify({"recipe_id" : id, "user_id": user_id() })
             })
@@ -60,17 +61,13 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
             const fetchRecipe = async () => {
                 const res = await fetch(`/recipes/${id}`)
                 const data = await res.json()
-                //recipeUserId = data[0]?.userId
                 setRecipe(data[0]);
             }
-
             // If not in prop state then fetch from 
-            
             if (props.recipe.length === 0 || recipe === undefined) {
                 fetchRecipe();
             }
         }
-
         return () => {
             ignore = true;
             abortController.abort();
@@ -90,9 +87,10 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
                 const res = await fetch('/recipes/liked', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('Authorization')
                     },
-                    body: JSON.stringify({"recipe_id" : id, "user_id": user_id() })
+                    body: JSON.stringify({"recipe_id" : id, "user_id": user_id()})
                 })
                 const data = await res.json()
                 

@@ -20,7 +20,7 @@ function JournalItemContent({myEntries, deleteJournal}){
         const fetchShots = async () => {
             const res = await fetch('/shots', {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: {"Content-Type": "application/json",  "Authorization": localStorage.getItem('Authorization')},
                 body: JSON.stringify({journal_id: id})
             })
 

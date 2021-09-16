@@ -105,7 +105,7 @@ function RecipeForm({getUserId, refresh, setRefresh}){
         
     }
 
-    
+
     // Add new recipe to server and upload local state with database returned object
     const addRecipe = async (recipe) => {
         recipe["userId"] = await getUserId();
@@ -115,13 +115,13 @@ function RecipeForm({getUserId, refresh, setRefresh}){
             mode: 'cors',
             headers: {
                 'Accept': 'application/json',
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Authorization': localStorage.getItem('Authorization')
             },
             body: JSON.stringify(recipe)
         })
 
         const data = await res.json();
-        console.log(data);
         setNewShot({});
     }
 

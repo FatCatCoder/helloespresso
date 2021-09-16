@@ -30,15 +30,26 @@ const useRecipesStore = create((set, get) => ({
 
 const globalStore = create((set, get) => ({
   userId: '',
+  getJWTFromStorage: async() => {
+    try{
+      const token = localStorage.getItem('Authorization');
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace('-', '+').replace('_', '/');
+      return await JSON.parse(window.atob(base64));
+    }
+    catch(err){
+      console.log(err);
+    }
+  },
   getUserIdFromJWT: (token) => {
     try{
-    if(!token){
-      token = localStorage.getItem('Authorization');
-    }
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace('-', '+').replace('_', '/');
-    set({userId: JSON.parse(window.atob(base64)).user.id});
-    return JSON.parse(window.atob(base64)).user.id;
+      if(!token){
+        token = localStorage.getItem('Authorization');
+      }
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace('-', '+').replace('_', '/');
+      set({userId: JSON.parse(window.atob(base64)).user.id});
+      return JSON.parse(window.atob(base64)).user.id;
     }
     catch(err){
       console.log(err);

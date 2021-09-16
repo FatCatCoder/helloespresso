@@ -1,11 +1,11 @@
 const router = require('express').Router();
 const pool = require('../../db');
+const blacklistCheck = require('../utils/blacklist');
 const serverTimingMiddleware = require('server-timing-header');
 
 
 // -- Utils -- //
 
-// check if string is alphanumeric
 function isAlphaNumeric(str) {
     var code, i, len;
   
@@ -21,15 +21,8 @@ function isAlphaNumeric(str) {
     return true;
   };
 
-// return total number recipes from query
-function totalRecipes(query){
-    const qry = 'COUNT(*) OVER() AS count';
-}
-
-
 
 // -- routes -- //
-
 
 // give total number of recipes
 router.get('/total', async(req, res) => {
@@ -40,7 +33,8 @@ router.get('/total', async(req, res) => {
 // get recipes based on parameters, main API entry
 router.post('/', async(req, res) => {
     try{
-        req.serverTiming.from('api');
+        req.serverTiming.from('api'); // timing-api on response
+
         const {offsetPage, limitAmount, sortFilters} = req.body;
         console.log(sortFilters);
 
@@ -48,11 +42,10 @@ router.post('/', async(req, res) => {
         console.log(filtersList)
 
         const checkForBadChars = filtersList.every((x, y) => isAlphaNumeric(x[1]));
-        console.log(checkForBadChars)
 
         if(!checkForBadChars){
             console.log('bad char')
-            return res.status(405).send({"errorMsg": "Invaild Character in request"})
+            return res.status(405).send({"message": "Invalid Character in request"})
         }
 
         // if no filters, just get all posts
@@ -177,13 +170,12 @@ router.get('/:id', async(req, res) => {
 })
 
 // add new recipe 
-router.post('/new', async (req,res) => {
+router.post('/new', blacklistCheck, async(req, res) => {
     try {
         const recipe = req.body;
         console.log(recipe);
 
         const addRecipe = await pool.query("INSERT INTO recipes(user_id, bean, region, roaster, roastDate, dose, yield, time, grind, grinder, machine, tastingNotes, notes, roast, process) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *", [recipe.userId, recipe.bean, recipe.region, recipe.roaster, recipe.roastDate, recipe.dose, recipe.yield, recipe.time, recipe.grind, recipe.grinder, recipe.machine, recipe.tastingNotes, recipe.notes, recipe.roast, recipe.process]);
-        //console.log(addRecipe.rows[0]);
         res.send(addRecipe.rows[0]);
 
     } catch (error) {
@@ -194,28 +186,22 @@ router.post('/new', async (req,res) => {
 
 
 
-
-
 // -- like routes -- //
-
-
-
 
 //get number of likes on a recipe
 router.post('/likes', async(req, res) => {
     try{
-    const {id} = req.body;
-    
-    const recipes = await pool.query("SELECT COUNT(*) FROM likes WHERE recipe_id = $1", [id]);
-    res.send(recipes.rows[0].count);
-
+        const {id} = req.body;
+        
+        const recipes = await pool.query("SELECT COUNT(*) FROM likes WHERE recipe_id = $1", [id]);
+        res.send(recipes.rows[0].count);
     }
     catch (error) {
         res.status(500);
     }
 })
 
-// batch get number of likes on a recipe
+// likes for each recipe in array
 router.post('/all-likes', async(req, res) => {
     try{
         const ids = req.body;
@@ -226,20 +212,15 @@ router.post('/all-likes', async(req, res) => {
          INNER JOIN likes AS L on CAST(L.recipe_id AS TEXT) = CAST(idFromArray AS TEXT)
          GROUP BY L.recipe_id`);
 
-        console.log(recipes.rows);
         res.send(recipes.rows);
     }
-
     catch (error) {
         res.status(500);
     }
 })
 
-//like a recipe
-// add auth
-router.post('/like', async(req, res) => {
-    
-    
+// like a recipe
+router.post('/like', blacklistCheck, async(req, res) => {
     try{
         const {user_id, recipe_id} = req.body;
         
@@ -259,9 +240,8 @@ router.post('/like', async(req, res) => {
     }
 })
 
-//check if a recipe is liked by user
-router.post('/liked', async(req, res) => {
-    
+// check if a recipe is liked by user
+router.post('/liked', blacklistCheck, async(req, res) => {
     try{
         const {user_id, recipe_id} = req.body;
         

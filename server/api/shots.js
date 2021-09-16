@@ -1,10 +1,13 @@
 const router = require('express').Router();
 const pool = require('../../db');
-const format = require('pg-format');
+// const format = require('pg-format');
+const blacklistCheck = require('../utils/blacklist');
 
 
-// routes
-router.post('/', async(req, res) => {
+// -- routes -- //
+
+// get all shots for a journal
+router.post('/', blacklistCheck, async(req, res) => {
     console.log('shots');
     try{
         const {journal_id} = req.body;
@@ -18,24 +21,25 @@ router.post('/', async(req, res) => {
     }
 })
 
-// add new shot
-router.post('/new', async(req, res) => {
-    try {
-        const {journal_id, shotData} = req.body;
-        console.log(journal_id, shotData);
+// add new shots from array
 
-        const valuesMap = shotData.map((x, y) => [y, journal_id, x.dose, x.yield, x.time, x.grind, x.notes])
+// router.post('/new', blacklistCheck, async(req, res) => {
+//     try {
+//         const {journal_id, shotData} = req.body;
+//         console.log(journal_id, shotData);
 
-        const queryStr = format('INSERT INTO shots(queue, journal_id, dose, yield, time, grind, notes) VALUES %L ', valuesMap);
+//         const valuesMap = shotData.map((x, y) => [y, journal_id, x.dose, x.yield, x.time, x.grind, x.notes])
 
-        const newShot = await pool.query(queryStr);
+//         const queryStr = format('INSERT INTO shots(queue, journal_id, dose, yield, time, grind, notes) VALUES %L ', valuesMap);
 
-        console.log(newShot);
-        res.status(200).send('good shot data');
+//         const newShot = await pool.query(queryStr);
 
-    } catch (error) {
-        console.log(error)
-    }
-})
+//         console.log(newShot);
+//         res.status(200).send('good shot data');
+
+//     } catch (error) {
+//         console.log(error)
+//     }
+// })
 
 module.exports = router;

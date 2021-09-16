@@ -32,31 +32,33 @@ function Journal({isAuth}){
     const [currPage, setCurrPage] = useState(1);
     // eslint-disable-next-line
     const [recipesPerPage, setRecipesPerPage] = useState(8);
-
-    const jwtDecode = () => {
-        const token = localStorage.getItem('Authorization');
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace('-', '+').replace('_', '/');
-        return JSON.parse(window.atob(base64));
-    }
+    const getUserIdFromJWT = globalStore(state => state.getUserIdFromJWT);
+    
 
     useEffect(() => {
         const abortController = new AbortController();
         let ignore = false;
-
-        if(!ignore && isAuth){
-            const userData = jwtDecode();
-            const fetchJournalEntries = async () => { 
-                const res = await fetch('/journals', {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json", "Authorization": localStorage.getItem('Authorization')},
-                    body: JSON.stringify({user_id: userData.user.id})
-                })
-                const data = await res.json();
-                console.log(data);
-                setMyEntries(data.map(x => x))
+        try{
+            if(!ignore && isAuth){
+                const userData = getUserIdFromJWT();
+                const fetchJournalEntries = async () => { 
+                    const res = await fetch('/journals', {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json", "Authorization": localStorage.getItem('Authorization')},
+                        body: JSON.stringify({user_id: userData})
+                    })
+                    const data = await res.json();
+                    console.log(data);
+                    setMyEntries(data.map(x => x))
+                }
+                fetchJournalEntries()
             }
-            fetchJournalEntries()
+            else if (!ignore && !isAuth){
+                history.push('/login')
+            }
+        }
+        catch(err){
+            history.push('/login')
         }
         
         return () => {
