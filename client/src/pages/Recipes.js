@@ -196,20 +196,25 @@ function Recipes({isAuth}){
     
      // Recipe data mapped to recipe card components
      const displayRecipes = () => {
-         console.log('display recipes', isLoading);
-        if(recipeSlice[0]?.count === 0){
-            return <ErrorScreen errorMessage={'All out of coffee, try a different search?'} />
+        try{
+            console.log('display recipes', isLoading);
+            if(recipeSlice[0]?.count === 0){
+                return <ErrorScreen errorMessage={'All out of coffee, try a different search?'} />
+            }
+            else if(isLoading){
+                const fakeArr = new Array(recipesPerPage).fill({});
+                return fakeArr.map((x, y) => <RecipeCard key={y} recipe={x} animation={'skeleton'} />) 
+            }
+            else if(recipeSlice === null || recipeSlice === undefined){
+                const fakeArr = new Array(recipesPerPage).fill({});
+                return fakeArr.map((x, y) => <RecipeCard key={y} recipe={x} animation={'skeleton'} />) 
+            }
+            console.log('displayrecipes recipeSlice',recipeSlice, 'displayrecipes myrecipes', myRecipes, 'sort filters' ,sortFilters);
+            return recipeSlice.map((x) => <RecipeCard key={x.id} recipe={x} animation={'fadeIn'} />)
         }
-        else if(isLoading){
-            const fakeArr = new Array(recipesPerPage).fill({});
-            return fakeArr.map((x, y) => <RecipeCard key={y} recipe={x} animation={'skeleton'} />) 
+        catch(error){
+            return <ErrorScreen errorMessage={'try something else?'} />
         }
-        else if(recipeSlice === null || recipeSlice === undefined){
-            const fakeArr = new Array(recipesPerPage).fill({});
-            return fakeArr.map((x, y) => <RecipeCard key={y} recipe={x} animation={'skeleton'} />) 
-        }
-        console.log('displayrecipes recipeSlice',recipeSlice, 'displayrecipes myrecipes',myRecipes, sortFilters);
-        return recipeSlice.map((x) => <RecipeCard key={x.id} recipe={x} animation={'fadeIn'} />)
     }
 
     const loadingRecipes =() => {
@@ -227,7 +232,7 @@ function Recipes({isAuth}){
                     <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} getUserId={getUserId} isLoggedIn={isLoggedIn} />
 
                     <div className="container h-100 row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
-                        {isLoading? loadingRecipes(): displayRecipes()}
+                        {displayRecipes()}
                     </div>
 
                     <Pagination className={"container text-center mx-auto p-3"} itemsPerPage={recipesPerPage} totalItems={totalRecipes} currPage={currPage} setCurrPage={changePage} />

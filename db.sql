@@ -19,6 +19,7 @@
 CREATE DATABASE espresso;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pg_trgm";
 
 CREATE TABLE users (
   id UUID DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
@@ -30,8 +31,9 @@ CREATE TABLE users (
 
 
 /*
-INSERT INTO users(name, email, password) VALUES('FatCat', 'fatcat@gmail.com', '1234');
-INSERT INTO users(name, email, password) VALUES('Dood', 'thedood@gmail.com', '1234');
+INSERT INTO users(name, email, password) VALUES('user', 'user@email.com', 'user');
+INSERT INTO users(name, email, password) VALUES('user2', 'user2@email.com', 'user2');
+INSERT INTO users(name, email, password) VALUES('user3', 'user3@email.com', 'user3');
 */
 
 CREATE TABLE journals (
@@ -152,16 +154,15 @@ kenya b3cb2acc-69b8-464e-ae4b-b511b277a9ef
 
 
 -- selects FatCats Journals and returns these attributes from them
-SELECT Journals.id, user_id, bean, region, roaster, "date", "name" FROM Journals LEFT JOIN Users ON user_id = Users.id WHERE Users.id = 'a1911c9b-1548-438b-9656-d95489f4309d';
+  -- SELECT Journals.id, user_id, bean, region, roaster, "date", "name" FROM Journals LEFT JOIN Users ON user_id = Users.id WHERE Users.id = 'a1911c9b-1548-438b-9656-d95489f4309d';
 
 -- gets all the user journals and user info
-SELECT * FROM journals LEFT JOIN Users ON user_id = Users.id WHERE Users.id = 'b5ca3e9a-3104-4690-9030-217766827477';
+  -- SELECT * FROM journals LEFT JOIN Users ON user_id = Users.id WHERE Users.id = 'b5ca3e9a-3104-4690-9030-217766827477';
 
 -- gets just user journals
-SELECT * FROM journals WHERE user_id = 'b5ca3e9a-3104-4690-9030-217766827477';
+  -- SELECT * FROM journals WHERE user_id = 'b5ca3e9a-3104-4690-9030-217766827477';
 
 -- select a journal entry and all its shots
 
 -- gets a column and groups the number of times it repeats in a table
-
-SELECT user_id, COUNT(*) FROM Journals WHERE user_id = (SELECT id FROM Users WHERE name='FatCat') GROUP BY user_id;
+  -- SELECT user_id, COUNT(*) FROM Journals WHERE user_id = (SELECT id FROM Users WHERE name='FatCat') GROUP BY user_id;

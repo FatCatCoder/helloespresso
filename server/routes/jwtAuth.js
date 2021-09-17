@@ -17,7 +17,6 @@ router.post('/logout', (req, res) => {
         console.log(token)
         const tokenSplit = token.split(' ');
         const decoded = jwt.verify(tokenSplit[1], process.env.SECRET);
-        //const decoded = jwtValidate({getToken: token, secret: process.env.SECRET, algorithms: ['HS256']})
         console.log(decoded, decoded.user)
         const EXP = decoded.exp - Math.floor(new Date().getTime()/1000.0)
 
@@ -32,7 +31,7 @@ router.post('/logout', (req, res) => {
     }
     catch(error){
         console.log(error);
-        res.send({"message": error, "success": false});
+        res.send({"message": "error", "success": false});
     }
 })
 

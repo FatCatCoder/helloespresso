@@ -1,9 +1,11 @@
 import {useState} from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
+import {globalStore} from '../store.js';
 
 function Register({setIsAuth}) {
     const history = useHistory();
     const { state } = useLocation();
+    const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
 
     const [errors, setErrors] = useState({"boolean": false, "message": ""});
     const [success, setSuccess] = useState({"success": false, "message": ""});
@@ -32,17 +34,22 @@ function Register({setIsAuth}) {
             });
 
             const parseRes = response.headers.get('Authorization');
+            console.log(parseRes)
 
             if (parseRes !== null){
               localStorage.setItem('Authorization', parseRes);
               setIsAuth(true);
+              setIsLoggedIn(true);
               setSuccess({"success": true, "message": "You are now Registered and logged in!"})
-              history.push(state.location);
+              history.push(state.going);
+            }
+            else{
+                throw new Error('500');
             }
 
         } catch (error) {
             console.log(error.message);
-            setErrors({message: "500: Server Error"})
+            setErrors({message: "500: Server Error", boolean: "false"})
         }
     }
 

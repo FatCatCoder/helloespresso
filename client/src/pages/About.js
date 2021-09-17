@@ -23,6 +23,7 @@ function About({setIsAuth}) {
 
   // Del token from storage, blacklist on server, set auth to false
   const logout = async () => {
+    console.log(isLoggedIn)
     if(isLoggedIn){
       const token = localStorage.getItem('Authorization');
       localStorage.removeItem('Authorization');
