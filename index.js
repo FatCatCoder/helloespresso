@@ -41,17 +41,16 @@ app.use("/shots", require("./server/api/shots"));
 // --check production or dev env -- //
 
 if (process.env.NODE_ENV === "production"){
-  //Server send
   app.use(express.static(path.join(__dirname, './client/build')));
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "./client/build/index.html.gz"));
+    res.sendFile(path.join(__dirname, "./client/build/index.html"));
   })
 }
 
 // listening...
 app.listen(PORT, () => {
     console.log(`server is listening on port ${PORT}....`)
-    // process.send('ready')
+    process.send('ready')
 });
 
 
@@ -59,18 +58,18 @@ app.listen(PORT, () => {
 
 // -- pm2 -- //
 
-// process.on('SIGINT', function() {
-//   db.stop(function(err) {
-//     process.exit(err ? 1 : 0)
-//   })
-// })
+process.on('SIGINT', function() {
+  db.stop(function(err) {
+    process.exit(err ? 1 : 0)
+  })
+})
 
-// process.on('message', function(msg) {
-//   if (msg == 'shutdown') {
-//     console.log('Closing all connections...')
-//     setTimeout(function() {
-//       console.log('Finished closing connections')
-//       process.exit(0)
-//     }, 1500)
-//   }
-// })
+process.on('message', function(msg) {
+  if (msg == 'shutdown') {
+    console.log('Closing all connections...')
+    setTimeout(function() {
+      console.log('Finished closing connections')
+      process.exit(0)
+    }, 1500)
+  }
+})
