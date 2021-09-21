@@ -64,7 +64,7 @@ function Recipes({isAuth}){
                 // }
                 console.log(sortFilters);
         
-                const res = await fetch('/recipes', {
+                const res = await fetch('/api/recipes', {
                     method: 'POST',
                     signal: controller?.signal,
                     headers: {
@@ -90,7 +90,7 @@ function Recipes({isAuth}){
         const getAllLikes = async (recipes, controller) => {
             try{
                 const ids = recipes.map(x => x.id);
-                const res = await fetch('/recipes/all-likes', {
+                const res = await fetch('/api/recipes/all-likes', {
                     method: 'POST',
                     signal: controller?.signal,
                     headers: {

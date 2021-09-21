@@ -4,33 +4,6 @@ import {useState, useEffect} from 'react';
 // card display object for recipes page
 
 function RecipeCard({recipe, animation}){
-    //const [likes, setLikes] = useState(defaultLikes);
-
-    // useEffect(() => {
-    //     const abortController = new AbortController();
-    //     let ignore = false;
-
-    //     const fetchLikes = async () => {
-    //         const res = await fetch('/recipes/likes', {
-    //             method: 'POST',
-    //             //signal: abortController.signal,
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({"id" : recipe.id})
-    //         })
-    //         const data = await res.json()
-    //         //setLikes(data)
-    //     }
-        
-    //     if(!ignore && animation !== 'skeleton'){
-    //         //fetchLikes();
-    //     }
-
-    //     return () => { ignore = true; abortController.abort(); }; 
-    // }, [recipe.id])
-
-
     return(
         <Link to={`/recipes/${recipe.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <div className="col h-100">

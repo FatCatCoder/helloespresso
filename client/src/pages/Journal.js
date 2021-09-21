@@ -42,7 +42,7 @@ function Journal({isAuth}){
             if(!ignore && isAuth){
                 const userData = getUserIdFromJWT();
                 const fetchJournalEntries = async () => { 
-                    const res = await fetch('/journals', {
+                    const res = await fetch('/api/journals', {
                         method: "POST",
                         headers: {"Content-Type": "application/json", "Authorization": localStorage.getItem('Authorization')},
                         body: JSON.stringify({user_id: userData})
@@ -69,7 +69,7 @@ function Journal({isAuth}){
 
     const deleteJournal = async (id) => {
         try{
-            const res = await fetch('/journals/delete', {
+            const res = await fetch('/api/journals/delete', {
                 method: "POST",
                 headers: {"Content-Type": "application/json", "Authorization": localStorage.getItem('Authorization')},
                 body: JSON.stringify({id})

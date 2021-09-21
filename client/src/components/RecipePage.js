@@ -20,6 +20,7 @@ function RecipePage(props){
     const [liked, setLiked] = useState(false);
     const [recipe, setRecipe] = useState(props.recipe.find(obj => obj.id === id));
 
+    // placeholder 
     const reportRecipe = () => {
         console.log('reported you nerd');
     }
@@ -30,7 +31,7 @@ function RecipePage(props){
         const validity = await isValid();
         
         if(validity){
-            const res = await fetch('/recipes/like', {
+            const res = await fetch('/api/recipes/like', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -42,9 +43,10 @@ function RecipePage(props){
             const data = await res.json()   
             setLiked(data.bool)
         }
-            else{
-                setBussinText({"text" : "Login to Like!", "click": () => history.push('/login')})
-            }
+
+        else {
+            setBussinText({"text" : "Login to Like!", "click": () => history.push('/login')})
+        }
     }
 
 // like button text and onClick action as an object
@@ -59,7 +61,7 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
 
         if(!ignore){
             const fetchRecipe = async () => {
-                const res = await fetch(`/recipes/${id}`)
+                const res = await fetch(`/api/recipes/${id}`)
                 const data = await res.json()
                 setRecipe(data[0]);
             }
@@ -84,7 +86,7 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
         if(!ignore){
             // get initial isLiked from server
             const fetchLiked = async () => {
-                const res = await fetch('/recipes/liked', {
+                const res = await fetch('/api/recipes/liked', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -110,7 +110,7 @@ function RecipeForm({getUserId, refresh, setRefresh}){
     const addRecipe = async (recipe) => {
         recipe["userId"] = await getUserId();
         
-        const res = await fetch('/recipes/new', {
+        const res = await fetch('/api/recipes/new', {
             method: 'POST',
             mode: 'cors',
             headers: {

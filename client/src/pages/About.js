@@ -28,7 +28,7 @@ function About({setIsAuth}) {
       const token = localStorage.getItem('Authorization');
       localStorage.removeItem('Authorization');
 
-      const res = await fetch('/logout', {
+      const res = await fetch('/api/logout', {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({token: token})

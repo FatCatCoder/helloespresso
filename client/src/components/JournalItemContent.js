@@ -18,7 +18,7 @@ function JournalItemContent({myEntries, deleteJournal}){
         let ignore = false;
 
         const fetchShots = async () => {
-            const res = await fetch('/shots', {
+            const res = await fetch('/api/shots', {
                 method: "POST",
                 headers: {"Content-Type": "application/json",  "Authorization": localStorage.getItem('Authorization')},
                 body: JSON.stringify({journal_id: id})

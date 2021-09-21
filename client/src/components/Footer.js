@@ -33,7 +33,7 @@ function Footer ({ shotList, setShotList}){
     const addEntryToJournal = async(entry) => {
         const userId = await getUserId();
 
-        const res = await fetch('/journals/new', {
+        const res = await fetch('/api/journals/new', {
             method: 'POST',
             headers: {"Content-Type": "application/json", "Authorization": localStorage.getItem('Authorization')},
             body: JSON.stringify({"journalData": entry, "ShotLog": shotList, "user_id": userId})

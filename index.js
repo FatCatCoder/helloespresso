@@ -4,7 +4,7 @@ const cors = require("cors");
 const path = require("path");
 const helmet = require('helmet');
 const serverTimingMiddleware = require('server-timing-header');
-const expressStaticGzip = require("express-static-gzip");
+// const expressStaticGzip = require("express-static-gzip");
 const PORT = process.env.PORT || 5000;
 require("dotenv").config();
 
@@ -18,34 +18,39 @@ app.use(express.json()) //allows access req.body
 app.use(express.urlencoded({extended: false}));
 app.use(cors());
 app.use(serverTimingMiddleware({sendHeaders: (process.env.NODE_ENV !== 'production')}));
-app.use('/', expressStaticGzip('./client/build'));
+// app.use('/', expressStaticGzip('./client/build'));
 app.use(express.static(path.join(__dirname, './server/views/images')));
 app.set('views', path.join(__dirname, '/server/views'));
 app.set('view engine', 'hbs');
 
 
 
-// -- routes -- //
+// -- API routes -- //
 
-app.use("/", require("./server/routes/jwtAuth"));
+app.use("/api", require("./server/api/jwtAuth"));
 
-app.use("/password-reset", require("./server/routes/passwordReset"));
+app.use("/api/password-reset", require("./server/api/passwordReset"));
 
-app.use("/recipes", require("./server/api/recipes"));
+app.use("/api/recipes", require("./server/api/recipes"));
 
-app.use("/journals", require("./server/api/journals"));
+app.use("/api/journals", require("./server/api/journals"));
 
-app.use("/shots", require("./server/api/shots"));
+app.use("/api/shots", require("./server/api/shots"));
+
+app.get('/api/underattack', (req, res) => {
+  console.log('Under attack!');
+  res.send('Under attack!');
+})
 
 
 // --check production or dev env -- //
 
-if (process.env.NODE_ENV === "production"){
-  app.use(express.static(path.join(__dirname, './client/build')));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "./client/build/index.html"));
-  })
-}
+// if (process.env.NODE_ENV === "production"){
+//   app.use(express.static(path.join(__dirname, './client/build')));
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "./client/build/index.html"));
+//   })
+// }
 
 // listening...
 app.listen(PORT, () => {

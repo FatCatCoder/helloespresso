@@ -27,7 +27,7 @@ function Register({setIsAuth}) {
         try {
             const body = {email, password, name};
 
-            const response = await fetch("/register", {
+            const response = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-type": "application/json"},
                 body: JSON.stringify(body)

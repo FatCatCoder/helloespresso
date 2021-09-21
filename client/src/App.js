@@ -30,7 +30,7 @@ function App (){
     if(!ignore){
       const startAuth = async () => {
         try {
-          const response = await fetch('/verify-auth', {
+          const response = await fetch('/api/verify-auth', {
             method: "GET",
             headers: {Authorization: localStorage.Authorization}
           })

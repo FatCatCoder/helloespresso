@@ -27,7 +27,7 @@ function PasswordResetToken() {
         try {
             const body = { newPassword, token };
 
-            const response = await fetch(`/password-reset/${token}`, {
+            const response = await fetch(`/api/password-reset/${token}`, {
                 method: "POST",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify(body)

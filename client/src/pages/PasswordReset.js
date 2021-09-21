@@ -28,7 +28,7 @@ function PasswordReset() {
         try {
             const body = { usernameOrEmail };
 
-            const response = await fetch('/password-reset', {
+            const response = await fetch('/api/password-reset', {
                 method: "POST",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify(body)

@@ -61,13 +61,13 @@ const globalStore = create((set, get) => ({
   },
   checkValidToken: async () => {
     try {
-      const isValid = await fetch('/verify-auth', {
+      const isValid = await fetch('/api/verify-auth', {
         method: "GET",
         headers: { 'Authorization': localStorage.getItem('Authorization') }
       })
-      console.log(isValid.data.verified);
+      const parseRes = await isValid.json();
 
-      if(isValid.data.verified){
+      if(parseRes.verified){
         set(state => ({isLoggedIn: true}))
         return true;
       }

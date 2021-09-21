@@ -29,7 +29,7 @@ function Login({setIsAuth}) {
         e.preventDefault();
         try {
             const body = { email, password };
-            const response = await fetch('/login', {
+            const response = await fetch('/api/login', {
                 method: "POST",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify(body)
