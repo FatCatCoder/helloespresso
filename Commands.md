@@ -15,4 +15,10 @@
 - goaccess /var/log/nginx/access.log -o /var/www/helloespresso/html/report.html --log-format=COMBINED --real-time-html
 
 ### check for errors, reload conf, and check status
-- sudo nginx -t && systemctl reload nginx && systemctl status nginx
+- sudo nginx -t && systemctl reload nginx && systemctl status nginx || systemctl restart nginx && systemctl status nginx
+
+### restart 
+- sudo systemctl restart nginx
+
+### list packages
+- nginx -V 2>&1 | tr ' ' '\n'

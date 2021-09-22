@@ -13,15 +13,17 @@ import Pagination from '../components/Pagination.js';
 import JournalItemContent from '../components/JournalItemContent.js';
 import JournalItem from '../components/JournalItem.js';
 import LoadingSpinner from '../components/LoadingSpinner.js';
+import Login from './Login.js';
 
 
 // journal page, displays logged in users entries, or login screen
 
-function Journal({isAuth}){
+function Journal(){
     let match = useRouteMatch();
     const history = useHistory();
     const setCurrentPage = globalStore(state => state.setCurrentPage);
     const loadingAuth = globalStore(state => state.loadingAuth);
+    const isLoggedIn = globalStore(state => state.isLoggedIn);
     useEffect(() => {
         setCurrentPage(window.location.pathname)
     }, [])
@@ -33,13 +35,15 @@ function Journal({isAuth}){
     // eslint-disable-next-line
     const [recipesPerPage, setRecipesPerPage] = useState(8);
     const getUserIdFromJWT = globalStore(state => state.getUserIdFromJWT);
+
+    const [errors, setErrors] = useState({"message": '', "success": true});
     
 
     useEffect(() => {
         const abortController = new AbortController();
         let ignore = false;
         try{
-            if(!ignore && isAuth){
+            if(!ignore && isLoggedIn){
                 const userData = getUserIdFromJWT();
                 const fetchJournalEntries = async () => { 
                     const res = await fetch('/api/journals', {
@@ -53,7 +57,7 @@ function Journal({isAuth}){
                 }
                 fetchJournalEntries()
             }
-            else if (!ignore && !isAuth){
+            else if (!ignore && !isLoggedIn){
                 history.push('/login')
             }
         }
@@ -65,28 +69,28 @@ function Journal({isAuth}){
             ignore = true;
             abortController.abort();
         }; 
-    }, [isAuth])
+    }, [isLoggedIn])
 
     const deleteJournal = async (id) => {
-        try{
+        try{   
             const res = await fetch('/api/journals/delete', {
                 method: "POST",
                 headers: {"Content-Type": "application/json", "Authorization": localStorage.getItem('Authorization')},
                 body: JSON.stringify({id})
             })
 
-            const parseRes = res.json();
+            const parseRes = await res.json();
 
             if(parseRes.success){
                 const deleteEntry = setMyEntries(prevEntries => prevEntries.filter(x => x.id !== id))
-                history.push('/journal');
+                return history.push('/journal');
             }
+            setErrors(parseRes);
         }
         catch(error){
-            console.log('Cannot Delete Journal At This Time.');
+            setErrors({"message": 'coffee got spilled on the server, please wait for it to dry', "success": false})
         }     
     }
-
     
     // for pagination
     const indexOfLastPost = currPage * recipesPerPage;
@@ -97,10 +101,10 @@ function Journal({isAuth}){
     if(loadingAuth){
         return <div className="text-center pb-5"><LoadingSpinner /></div>
     }
+
     // if auth give page else redirect login 
     return(
         <div className="text-center pb-5">
-            {isAuth?
             <Switch>
                 <Route exact path={match.path}>
                     <h1 className="display-2">Journal</h1>
@@ -113,11 +117,9 @@ function Journal({isAuth}){
                 </Route>
 
                 <Route path={`${match.path}/:id`}>
-                    <JournalItemContent myEntries={myEntries} deleteJournal={deleteJournal} />
+                    <JournalItemContent myEntries={myEntries} deleteJournal={deleteJournal} errors={errors} />
                 </Route>
             </Switch>
-            :
-            (<Redirect to={{pathname: "/login", state: {location: "/journal", going: "/journal"}}} />)}
         </div>
         
     )

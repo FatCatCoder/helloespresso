@@ -10,6 +10,7 @@
     "autoprefixer": "^10.2.5",
     "bootstrap": "^5.0.0-beta3",
     "bootstrap-icons": "^1.4.1",
+    "gzipper": "^5.0.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-beta.4",
     "react-dom": "^17.0.2",
@@ -23,11 +24,11 @@
     "yup": "^0.32.9",
     "zustand": "^3.5.1"
   },
-  "devDependencies": {},
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "buildgzip": "react-scripts build && gzipper c --level 9 --verbose ./build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

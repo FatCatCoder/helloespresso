@@ -5,7 +5,7 @@ import Toast from 'react-bootstrap/Toast'
 import ToastContainer from 'react-bootstrap/ToastContainer'
 import Fade from 'react-reveal/Fade';
 
-function About({setIsAuth}) {
+function About() {
   // nav
   const setCurrentPage = globalStore(state => state.setCurrentPage);
   useEffect(() => {
@@ -39,7 +39,6 @@ function About({setIsAuth}) {
       if(parseRes.success){
         setShow(true)
         setIsLoggedIn(false);
-        setIsAuth(false);
       }
     }
   }

@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 // components
 import Shot from './Shot.js';
 
-function JournalItemContent({myEntries, deleteJournal}){
+function JournalItemContent({myEntries, deleteJournal, errors}){
     let {id} = useParams();
     
     
@@ -50,12 +50,11 @@ function JournalItemContent({myEntries, deleteJournal}){
         <div className="container text-center pb-5">
             <h1 className="display-4 text-capitalize">{ myEntry?.bean ?? 'bean'} ({myEntry?.region ?? 'region'}) - {myEntry?.roaster ?? 'roaster'}</h1>
             <h3 className="fs-4 fw-light text-muted text-capitalize">logged on: { new Date(myEntry?.postdate).toLocaleDateString()?? 'postdate'}</h3>
-
             <div className="container pb-3">
                 {pulls}
             </div>
-
             <button className="btn btn-danger" onClick={deleteCount !== 1? () => {setTimeout(() => {setDeleteCount(deleteCount + 1)}, 500);}: () => deleteJournal(myEntry.id) }>{deleteCount === 0? 'Delete Journal': 'Are you sure?'}</button>
+            {!errors.success?? errors.message}
         </div>
     )
 }

@@ -1,15 +1,27 @@
 import {useState} from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams, Switch, Route } from 'react-router-dom';
 import {globalStore} from '../store.js';
 import '../assets/FormStyles.css'
 
 
-function Login({setIsAuth}) {
+function Login(props) {
     const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
+    const setCurrentPage = globalStore(state => state.setCurrentPage);
 
     // routing after login
     const history = useHistory();
-    const { state } = useLocation();
+    const location = useLocation();
+    const params = useParams();
+    let {state} = location.state || { from: { pathname: "/" } };
+    console.log(location);
+    console.log(state);
+    console.log(params);
+    console.log(window.location.pathname);
+    console.log(props);
+    
+    
+    
+
 
     // form state & utils
     const [errors, setErrors] = useState({"boolean": false, "message": ""});
@@ -40,10 +52,13 @@ function Login({setIsAuth}) {
 
             if (parseRes !== null){
               localStorage.setItem('Authorization', parseRes);
-              setIsAuth(true);
               setIsLoggedIn(true);
+              
+              
               if(state !== undefined){
-                console.log(state)
+                
+                console.log('state going',state.going)
+                setCurrentPage(state.going)
                 history.push(state.going);
               }
               else{

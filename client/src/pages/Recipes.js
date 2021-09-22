@@ -19,7 +19,7 @@ import ErrorScreen from '../components/ErrorScreen.js';
 
 
 
-function Recipes({isAuth}){
+function Recipes(){
     console.log('Render');
     // nav and header
     let match = useRouteMatch();
@@ -239,7 +239,7 @@ function Recipes({isAuth}){
                 </Route>
 
                 <Route exact path={`/recipes/new`} 
-                    render={props => isAuth ? 
+                    render={props => isLoggedIn ? 
                         (
                     
                         <RecipeForm getUserId={getUserId} refresh={refresh} setRefresh={setRefresh} />

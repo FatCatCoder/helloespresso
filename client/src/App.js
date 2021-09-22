@@ -36,17 +36,15 @@ function App (){
           })
     
           if(response.status === 401 || response.status === 500){
-            setIsAuth(false);
+            setIsLoggedIn(false)
           }
     
           const parseRes = await response.json();
-          parseRes.verified === true ? setIsAuth(true): setIsAuth(false);
           parseRes.verified === true ? setIsLoggedIn(true): setIsLoggedIn(false);
           setLoadingAuth(false);
 
         } catch (error) {
             console.log(error.message)
-            setIsAuth(false);
             setIsLoggedIn(false);
             setLoadingAuth(false);
         }
@@ -70,8 +68,7 @@ function App (){
   return (
     <>
     { /* isAuth !== null ? */
-    <Router>
-      <ScrollToTop />
+    
       <div className="App">
       <Header />
 
@@ -80,40 +77,36 @@ function App (){
           <Pull />
         </Route>
 
-        <Route path="/journal">
-          <Journal isAuth={isAuth} />  
-        </Route>
+        <Route path="/journal"
+          render={() => isLoggedIn ? (<Journal />) : (<Redirect to={{pathname: "/login", state: {location: "/journal", going: "/journal"}}} />)}
+          />
 
         <Route path="/recipes">
-          <Recipes isAuth={isAuth} />
+          <Recipes />
         </Route>
 
         <Route path="/about">
-          <About setIsAuth={setIsAuth}/>
+          <About />
         </Route>
 
         <Route path="/login"
-          render={({location}) => isAuth ? (<Redirect to={{pathname: "/", state: {location: "/"}}} />) : (<Login setIsAuth={setIsAuth} />)} 
+          render={(props) => isLoggedIn ? (<Redirect to={{pathname: "/", state: {location: "/", going: '/'}}} />) : (<Login {...props} />)} 
         />
 
         <Route path="/register"
-          render={props => isAuth ? (null) : (<Register setIsAuth={setIsAuth} />)}
+          render={(...props) => isLoggedIn ? (null) : (<Register props={props} />)}
         />
 
         <Route path="/password-reset"
-          render={({location}) => isAuth ? (<Redirect to={{pathname: "/", state: {location: "/"}}} />) : (<PasswordReset />)} 
+          render={({location}) => isLoggedIn ? (<Redirect to={{pathname: "/", state: {location: "/"}}} />) : (<PasswordReset />)} 
         />
-
-        <Route path="/test">
-          <Test />
-        </Route>
 
         <Route path="*" render={() => <ErrorScreen errorMessage={'404 - No coffee here :('} />} />
 
       </Switch>
       
     </div>
-    </Router>
+    
     /*:
     
     <div className="position-absolute top-50 start-50">

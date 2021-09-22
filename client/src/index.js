@@ -5,12 +5,17 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import {BrowserRouter as Router} from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop.js';
 //import reportWebVitals from './reportWebVitals';
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <ScrollToTop />
+      <App />
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

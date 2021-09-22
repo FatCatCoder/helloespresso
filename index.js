@@ -27,6 +27,8 @@ app.set('view engine', 'hbs');
 
 // -- API routes -- //
 
+app.use("/admin", require("./server/routes/admin"));
+
 app.use("/api", require("./server/api/jwtAuth"));
 
 app.use("/api/password-reset", require("./server/api/passwordReset"));
