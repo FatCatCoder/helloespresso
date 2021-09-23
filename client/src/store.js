@@ -57,6 +57,8 @@ const globalStore = create((set, get) => ({
   },
   isLoggedIn: false,
   setIsLoggedIn: (bool) => {
+    console.log('setting auth', bool);
+    
     set(state => ({isLoggedIn: bool}))
   },
   checkValidToken: async () => {
@@ -86,6 +88,22 @@ const globalStore = create((set, get) => ({
   loadingAuth: true,
   setLoadingAuth: (bool) => {
     set(state => ({loadingAuth: bool}))
+  },
+  showGlobalToast: false,
+  globalToastBody: (message) => `<strong className="mx-auto">${message?? 'Hello!'}</strong>`,
+  setGlobalToastBody: (message) => {set(state => ({globalToastBody: (message)}))},
+  setShowGlobalToast: (bool) => {set(state => ({showGlobalToast: bool}))},
+  globalToast: (message) => {
+    const toggle = get().showGlobalToast
+    const body = get().setGlobalToastBody;
+
+    if(toggle === false){
+      set(state => ({showGlobalToast: true}))
+      body(message)
+    }
+    else{
+      set(state => ({showGlobalToast: false}))
+    }
   }
 }))
 

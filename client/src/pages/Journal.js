@@ -13,28 +13,30 @@ import Pagination from '../components/Pagination.js';
 import JournalItemContent from '../components/JournalItemContent.js';
 import JournalItem from '../components/JournalItem.js';
 import LoadingSpinner from '../components/LoadingSpinner.js';
-import Login from './Login.js';
 
 
-// journal page, displays logged in users entries, or login screen
+// Displays loggedin user journals, or redirects to login
 
 function Journal(){
+    // auth & routing
     let match = useRouteMatch();
     const history = useHistory();
     const setCurrentPage = globalStore(state => state.setCurrentPage);
     const loadingAuth = globalStore(state => state.loadingAuth);
     const isLoggedIn = globalStore(state => state.isLoggedIn);
+    const getUserIdFromJWT = globalStore(state => state.getUserIdFromJWT);
+    
     useEffect(() => {
         setCurrentPage(window.location.pathname)
     }, [])
 
-    const [myEntries, setMyEntries] = useState([]);
 
     // for pagination
     const [currPage, setCurrPage] = useState(1);
+
     // eslint-disable-next-line
     const [recipesPerPage, setRecipesPerPage] = useState(8);
-    const getUserIdFromJWT = globalStore(state => state.getUserIdFromJWT);
+    const [myEntries, setMyEntries] = useState([]);
 
     const [errors, setErrors] = useState({"message": '', "success": true});
     
@@ -42,6 +44,7 @@ function Journal(){
     useEffect(() => {
         const abortController = new AbortController();
         let ignore = false;
+
         try{
             if(!ignore && isLoggedIn){
                 const userData = getUserIdFromJWT();
@@ -57,8 +60,9 @@ function Journal(){
                 }
                 fetchJournalEntries()
             }
-            else if (!ignore && !isLoggedIn){
-                history.push('/login')
+            else if (!ignore && !isLoggedIn && !loadingAuth){
+                setCurrentPage('/journal')
+                history.push('/login', {going: '/journal'})
             }
         }
         catch(err){

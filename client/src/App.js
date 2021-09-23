@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { globalStore, useRecipesStore} from './store.js';
+import { globalStore} from './store.js';
+import ToastContainer from 'react-bootstrap/ToastContainer'
+import Toast from 'react-bootstrap/Toast'
 
 // pages
 import Pull from './pages/Pull.js';
@@ -13,23 +15,33 @@ import PasswordReset from './pages/PasswordReset.js';
 
 // components
 import Header from './components/Header.js';
-import ScrollToTop from './components/ScrollToTop.js';
 import ErrorScreen from './components/ErrorScreen.js';
-import Test from './Test.js';
 
 function App (){
+  // auth
   const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
   const isLoggedIn = globalStore(state => state.isLoggedIn)
   const setLoadingAuth = globalStore(state => state.setLoadingAuth);
-  const [isAuth, setIsAuth] = useState(null);
+  const loadingAuth = globalStore(state => state.loadingAuth);
 
+  // global toast message system, butter & jam on the side
+  const setShowGlobalToast = globalStore(state => state.setShowGlobalToast);
+  const showGlobalToast = globalStore(state => state.showGlobalToast);
+  const globalToastBody = globalStore(state => state.globalToastBody);
+  
   useEffect(() => {
+    console.log('app.js useeffect');
+    
     const abortController = new AbortController();
     let ignore = false;
 
     if(!ignore){
+      console.log('app useeffect if');
+      
       const startAuth = async () => {
         try {
+          console.log('start auth try');
+          
           const response = await fetch('/api/verify-auth', {
             method: "GET",
             headers: {Authorization: localStorage.Authorization}
@@ -40,6 +52,8 @@ function App (){
           }
     
           const parseRes = await response.json();
+          console.log(parseRes);
+          
           parseRes.verified === true ? setIsLoggedIn(true): setIsLoggedIn(false);
           setLoadingAuth(false);
 
@@ -57,18 +71,12 @@ function App (){
             ignore = true;
             abortController.abort();
         }; 
-  }, [setIsLoggedIn, isLoggedIn])
-
-  const globalRecipes = useRecipesStore(state => state.myRecipes);
-  const recipenumber = useRecipesStore(state => state.currPage);
-  const recipeslice = useRecipesStore(state => state.recipeSlice);
-  console.log('recipes store check',globalRecipes, recipenumber, recipeslice);
+  }, [setIsLoggedIn, isLoggedIn, loadingAuth, setLoadingAuth])
  
-  // Main router for app, checks for auth in token before load
+  // Main router for app //
+
   return (
     <>
-    { /* isAuth !== null ? */
-    
       <div className="App">
       <Header />
 
@@ -78,7 +86,7 @@ function App (){
         </Route>
 
         <Route path="/journal"
-          render={() => isLoggedIn ? (<Journal />) : (<Redirect to={{pathname: "/login", state: {location: "/journal", going: "/journal"}}} />)}
+          render={() => (<Journal />) }
           />
 
         <Route path="/recipes">
@@ -90,7 +98,7 @@ function App (){
         </Route>
 
         <Route path="/login"
-          render={(props) => isLoggedIn ? (<Redirect to={{pathname: "/", state: {location: "/", going: '/'}}} />) : (<Login {...props} />)} 
+          render={(...props) => isLoggedIn ? (<Redirect to={props} />) : (<Login {...props} />)} 
         />
 
         <Route path="/register"
@@ -104,15 +112,21 @@ function App (){
         <Route path="*" render={() => <ErrorScreen errorMessage={'404 - No coffee here :('} />} />
 
       </Switch>
+
+      <ToastContainer position='bottom-center'>
+        <Toast className="p-1 mb-2" onClose={() => setShowGlobalToast(false)} show={showGlobalToast} animation={true} delay={1750} autohide>
+          <Toast.Header>
+            <div className="mx-auto text-center">
+              <i class="bi bi-bell"></i>
+              <div dangerouslySetInnerHTML={{__html: globalToastBody}} />
+            </div>
+          </Toast.Header>
+        </Toast>
+      </ToastContainer>
+
+      {/* const globalToast = globalStore(state => state.globalToast); <button onClick={() => globalToast('hello there!')} className="btn btn-warning mx-auto text-center">Gimme Toast</button> */}
       
     </div>
-    
-    /*:
-    
-    <div className="position-absolute top-50 start-50">
-        <LoadingSpinner />
-    </div>
-    */}
     </>
   );
 }

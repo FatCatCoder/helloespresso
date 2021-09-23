@@ -1,28 +1,21 @@
 import {useState} from 'react';
-import { Link, useHistory, useLocation, useParams, Switch, Route } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams, Switch, Route, Redirect } from 'react-router-dom';
 import {globalStore} from '../store.js';
 import '../assets/FormStyles.css'
 
 
 function Login(props) {
-    const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
+    const setIsLoggedIn = globalStore(state => state.setIsLoggedIn);
+    const isLoggedIn = globalStore(state => state.isLoggedIn);
+    const setLoadingAuth = globalStore(state => state.setLoadingAuth);
+    const loadingAuth = globalStore(state => state.loadingAuth);
     const setCurrentPage = globalStore(state => state.setCurrentPage);
 
     // routing after login
     const history = useHistory();
     const location = useLocation();
     const params = useParams();
-    let {state} = location.state || { from: { pathname: "/" } };
-    console.log(location);
-    console.log(state);
-    console.log(params);
-    console.log(window.location.pathname);
-    console.log(props);
     
-    
-    
-
-
     // form state & utils
     const [errors, setErrors] = useState({"boolean": false, "message": ""});
     const [inputs, setInputs] = useState({
@@ -49,21 +42,17 @@ function Login(props) {
 
             const parseRes = response.headers.get('Authorization');
             
-
             if (parseRes !== null){
-              localStorage.setItem('Authorization', parseRes);
-              setIsLoggedIn(true);
-              
-              
-              if(state !== undefined){
+                localStorage.setItem('Authorization', parseRes);
+                setIsLoggedIn(true);
                 
-                console.log('state going',state.going)
-                setCurrentPage(state.going)
-                history.push(state.going);
-              }
-              else{
-                history.push('/');
-              }
+                if(location !== undefined){
+                    setCurrentPage(location.state.going)
+                    history.push(location.state.going);
+                }
+                else{
+                    history.push('/');
+                }
             }
             else if (response.status === 401){
                 const getErrors = async () => {
@@ -73,10 +62,10 @@ function Login(props) {
                 getErrors();   
             }
         } catch (error) {
-            console.log(error.message)
             setErrors({message: "500: Server Error"})
         }
     };
+
 
     return(
         <>

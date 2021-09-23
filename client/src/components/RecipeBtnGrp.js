@@ -51,7 +51,7 @@ function RecipeBtnGrp(props){
                     Filter 
                     <i className="bi bi-chevron-expand"></i>
                 </button>
-
+        
                 <button className="btn btn-primary m-2 float-right" onClick={() => props.setRefresh(!props.refresh)} >
                     <i className="bi bi-arrow-repeat"></i>
                 </button>
