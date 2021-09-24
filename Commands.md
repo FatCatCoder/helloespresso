@@ -22,3 +22,25 @@
 
 ### list packages
 - nginx -V 2>&1 | tr ' ' '\n'
+
+
+# fail2ban
+- /etc/fail2ban/filter.d/nginx-limit-req.conf
+- /var/log/fail2ban.log
+- /var/log/nginx/error.log
+
+### cli realtime log of flagged bans and hits
+- tail -f /var/log/fail2ban.log
+
+### check if active
+- sudo fail2ban-client status
+- sudo fail2ban-client -d
+- sudo sudo fail2ban-client status nginx-limit-req
+- sudo fail2ban-client set nginx-limit-req unbanip 111.111.111.111
+
+
+### restart after changes
+- service fail2ban restart
+
+### regex test
+- fail2ban-regex /var/log/nginx/error.log /etc/fail2ban/filter.d/nginx-limit-req.conf

@@ -58,19 +58,13 @@ router.post('/', async(req, res) => {
         else{
             const userIdFix = filtersList.indexOf(filtersList.find(x => x[0] == 'user_id'));
             if(userIdFix !== -1){
-                console.log(filtersList[userIdFix][1])
                 filtersList[userIdFix][1] = filtersList[userIdFix][1].replace(/\ /g, '-');
-                console.log(filtersList[userIdFix][1].replace(/\ /g, '-'))
             }
-            console.log('fix', userIdFix)
 
             var likedByUserIdFix = filtersList.indexOf(filtersList.find(x => x[0] == 'liked_by_user_id'));
             if(likedByUserIdFix !== -1){
-                console.log(filtersList[likedByUserIdFix][1])
                 filtersList[likedByUserIdFix][1] = filtersList[likedByUserIdFix][1].replace(/\ /g, '-');
-                console.log(filtersList[likedByUserIdFix][1].replace(/\ /g, '-'))
             }
-            console.log('fix', likedByUserIdFix)
 
             // whitelist sort method
             const availableSortKeys = ["postdate ASC", "postdate DESC", "roastdate ASC", "roastdate DESC", "popular DESC"];
