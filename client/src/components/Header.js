@@ -6,6 +6,7 @@ import Fade from 'react-reveal/Fade';
 // components
 import Navbar from './Navbar.js';
 import '../assets/Header.css';
+import {globalStore} from '../store';
 
 // imgs 
 import tamper from '../assets/img/tamper_fix.png';
@@ -15,11 +16,13 @@ import drip from '../assets/img/drip_fix.png';
 
 function Header(){
   const [currPage, setCurrPage] = useState({[window.location.pathname]: true});
+  const setCurrentPage = globalStore(state => state.setCurrentPage);
 
     const handleNav = (e) => {
         setCurrPage(() => ({
             [e.target.name]: true
         }));
+        setCurrentPage(`${e.target.name}`)
     }
 
 

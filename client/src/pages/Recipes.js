@@ -73,6 +73,8 @@ function Recipes(){
                     body: JSON.stringify({"offsetPage": thisPage - 1, "limitAmount": numOf, "sortFilters": sortFilters})
                 })
                 const data = await res.json();
+                console.log('data fetched ', data);
+                
                 
                 // already returned as 'popular' column from table join
                 if(sortFilters?.sortBy === 'popular DESC'){
@@ -194,7 +196,7 @@ function Recipes(){
         } ());
     }
     
-     // Recipe data mapped to recipe card components
+     // Recipes view logic
      const displayRecipes = () => {
         try{
             console.log('display recipes', isLoading);
@@ -215,11 +217,6 @@ function Recipes(){
         catch(error){
             return <ErrorScreen errorMessage={'try something else?'} />
         }
-    }
-
-    const loadingRecipes =() => {
-        const fakeArr = new Array(recipesPerPage).fill({});
-        return fakeArr.map((x, y) => <RecipeCard key={y} recipe={x} animation={'skeleton'} />) 
     }
 
     return(

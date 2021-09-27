@@ -166,3 +166,9 @@ kenya b3cb2acc-69b8-464e-ae4b-b511b277a9ef
 
 -- gets a column and groups the number of times it repeats in a table
   -- SELECT user_id, COUNT(*) FROM Journals WHERE user_id = (SELECT id FROM Users WHERE name='FatCat') GROUP BY user_id;
+
+CREATE TABLE admins (
+  name TEXT NOT NULL UNIQUE,
+  password TEXT NOT NULL,
+  PRIMARY KEY (name)
+);

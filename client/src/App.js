@@ -12,10 +12,12 @@ import Recipes from './pages/Recipes.js';
 import Login from './pages/Login.js';
 import Register from './pages/Register.js';
 import PasswordReset from './pages/PasswordReset.js';
+import LoadingSpinner from './components/LoadingSpinner.js';
 
 // components
 import Header from './components/Header.js';
 import ErrorScreen from './components/ErrorScreen.js';
+
 
 function App (){
   // auth
@@ -36,12 +38,8 @@ function App (){
     let ignore = false;
 
     if(!ignore){
-      console.log('app useeffect if');
-      
       const startAuth = async () => {
-        try {
-          console.log('start auth try');
-          
+        try { 
           const response = await fetch('/api/verify-auth', {
             method: "GET",
             headers: {Authorization: localStorage.Authorization}
@@ -63,7 +61,6 @@ function App (){
             setLoadingAuth(false);
         }
       }
-      // call
       startAuth();
     }
     
@@ -73,7 +70,7 @@ function App (){
         }; 
   }, [setIsLoggedIn, isLoggedIn, loadingAuth, setLoadingAuth])
  
-  // Main router for app //
+  console.log(window.location.pathname);
 
   return (
     <>
@@ -86,8 +83,8 @@ function App (){
         </Route>
 
         <Route path="/journal"
-          render={() => (<Journal />) }
-          />
+          render={() => isLoggedIn ? (<Journal />) : loadingAuth? <LoadingSpinner /> : (<Redirect to={{pathname: "/login", state: {going: "/journal"}}} />) }
+        />
 
         <Route path="/recipes">
           <Recipes />
@@ -98,7 +95,7 @@ function App (){
         </Route>
 
         <Route path="/login"
-          render={(...props) => isLoggedIn ? (<Redirect to={props} />) : (<Login {...props} />)} 
+          render={(props) => isLoggedIn ? (<Redirect to={props?.location || '/'} />) : (<Login {...props} />)} 
         />
 
         <Route path="/register"

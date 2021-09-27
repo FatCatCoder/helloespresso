@@ -36,7 +36,7 @@ router.post('/', async(req, res) => {
         req.serverTiming.from('api'); // timing-api on response
 
         const {offsetPage, limitAmount, sortFilters} = req.body;
-        console.log(sortFilters);
+        console.log('sf', sortFilters);
 
         const filtersList = Object.entries(sortFilters);
         console.log(filtersList)
@@ -50,10 +50,9 @@ router.post('/', async(req, res) => {
 
         // if no filters, just get all posts
         if(sortFilters === undefined || Object.keys(sortFilters).length === 0){
-            
             var recipes = await pool.query("SELECT *, COUNT(*) OVER() AS count FROM recipes LIMIT $1 OFFSET $2", [limitAmount, offsetPage * limitAmount]);
-            
         }
+
         // sort by post date
         else{
             const userIdFix = filtersList.indexOf(filtersList.find(x => x[0] == 'user_id'));
@@ -66,38 +65,28 @@ router.post('/', async(req, res) => {
                 filtersList[likedByUserIdFix][1] = filtersList[likedByUserIdFix][1].replace(/\ /g, '-');
             }
 
-            // whitelist sort method
+            // whitelists & active methods
             const availableSortKeys = ["postdate ASC", "postdate DESC", "roastdate ASC", "roastdate DESC", "popular DESC"];
-            // whitelist filters
             const availableFilterKeys = ["bean", "roaster", "roast", "region", "grinder", "machine", "process", "user_id", "liked_by_user_id"];
 
-            // the sort method requested
             const sortRequest = availableSortKeys.find(x => x == sortFilters.sortBy);
-            // all the filters applied to the query
             const allFilters = filtersList.filter(x => availableFilterKeys.includes(x[0]) && x[1] !== "");
-
             console.log(allFilters)
 
             const addFilters = (WHERE_OR_HAVING) => {
                 queryStr += ` ${WHERE_OR_HAVING}`;
 
                 var filterArray = allFilters.map((currVal, index) =>
-                    //` R.${currVal[0]} = '${currVal[1]}'`).join(" AND");
-
                     ` SIMILARITY(CAST(${currVal[0] !== 'liked_by_user_id'? `R.${currVal[0]}`: `L.user_id`} AS TEXT), CAST('${currVal[1]}' AS TEXT)) > 0.4`).join(" AND");
 
-                console.log(filterArray)
-
                 queryStr += filterArray;
-            }
-           
+            }  
 
         // insert clean sort method into query
-
         console.log(sortRequest);
 
             // simpler search query
-            if(sortRequest !== 'popular DESC' & sortRequest !== undefined){
+            if(sortRequest !== 'popular DESC'){
 
                 // base query
                 var queryStr = `SELECT *, COUNT(*) OVER() AS count FROM recipes AS R ${likedByUserIdFix !== -1?  `INNER JOIN likes AS L
@@ -106,7 +95,7 @@ router.post('/', async(req, res) => {
 
                 // check for filters, then add sort method
                 if((allFilters !== null || allFilters !== undefined) & allFilters.length >= 1){ addFilters('WHERE') }
-                queryStr += ` ORDER BY ${sortRequest}`;
+                queryStr += ` ORDER BY ${sortRequest ?? 'roastdate ASC'}`;
             }
             // if sort by likes, use join query
             else if(sortRequest === "popular DESC"){

@@ -1,43 +1,49 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-// recipes' page new recipe, refresh, and filter & sort buttons
+// new recipe, refresh, and filter & sort buttons
 function RecipeBtnGrp(props){
-    const [sortUsed, setSortUsed] = useState(null);
 
+    // copy to local state
+    const [sortUsed, setSortUsed] = useState(null);
+    const [myRecipesChecked, setMyRecipesChecked] = useState(props.sortFilters.user_id ? true:false);
+    const [likedChecked, setLikedChecked] = useState(props.sortFilters.liked_by_user_id ? true:false);
+
+    // form data updates
     const handleOnChange = (e) => {
         props.setSortFilters({
             ...props.sortFilters,
             [e.target.name]: e.target.value
         });
     }
-
+        // change local state, update global
     const handleCheckboxOnChange = (e) => {
+        e.target.name === 'user_id'? setMyRecipesChecked(e.target.checked) : setLikedChecked(e.target.checked);
+        
         if(e.target.checked){
-            props.setSortFilters((prevProps) => ({
-                ...prevProps,
+            props.setSortFilters({
+                ...props.sortFilters,
                 [e.target.name]: e.target.value
-            }));
+            })
         }
         else if(e.target.checked === false){
             // eslint-disable-next-line
-            props.setSortFilters((prevProps) => (delete prevProps[e.target.name], { 
-                ...prevProps
+            props.setSortFilters((delete props.sortFilters[e.target.name], { 
+                ...props.sortFilters
             }));
         }
     };
 
+    // form
     const handleSubmit = async (event) => {
         event.preventDefault();
-        //props.setRefresh(!props.refresh);
         props.setRefresh(true);
     }
 
     const resetForm = () => { 
         document.getElementById("filterForm").reset();
       }
-    
-    
+
     return(
         <div className="container border mx-auto mb-3">
                 <button onClick={props.goTo} className="btn btn-primary">New</button>
@@ -84,8 +90,7 @@ function RecipeBtnGrp(props){
                                 <div className="col-6 col-md-6 mx-auto">
                                     <label className="" htmlFor="roast">Roast: </label>
                                     <select className="shadow border form-select" onChange={handleOnChange} defaultValue={""} value={props.sortFilters.roast} id="roast" name="roast">
-                                        {//<option value="" selected></option>
-                                        }
+                                        <option value="" selected></option>
                                         <option value="Light">Light</option>
                                         <option value="Medium">Medium</option>
                                         <option value="Dark">Dark</option>
@@ -95,8 +100,7 @@ function RecipeBtnGrp(props){
                                 <div className="col-6 col-md-6 mx-auto">
                                     <label className="" htmlFor="process">Process: </label>
                                     <select className="shadow border form-select" onChange={handleOnChange} defaultValue={""} value={props.sortFilters.process} id="process" name="process">
-                                        {//<option value="" selected></option>
-                                        }
+                                        <option value="" selected></option>
                                         <option value="Washed">Washed</option>
                                         <option value="Natural">Natural</option>
                                         <option value="Honey">Honey</option>
@@ -110,12 +114,12 @@ function RecipeBtnGrp(props){
                             :
                                 <>
                                 <div className="col-6">
-                                    <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="user_id" id="user_id" disabled={!props.isLoggedIn} />
+                                    <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="user_id" id="user_id" disabled={!props.isLoggedIn} checked={myRecipesChecked} />
                                     <label className="form-check-label" htmlFor="user_id">My Recipes</label>
                                 </div>
 
                                 <div className="col-6">
-                                    <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="liked_by_user_id" id="liked_by_user_id" disabled={!props.isLoggedIn} />
+                                    <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="liked_by_user_id" id="liked_by_user_id" disabled={!props.isLoggedIn} checked={likedChecked} />
                                     <label className="form-check-label" htmlFor="liked_by_user_id">Loved Recipes</label>
                                 </div>
                                 </>
