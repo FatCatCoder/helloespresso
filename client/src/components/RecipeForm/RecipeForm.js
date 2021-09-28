@@ -10,6 +10,14 @@ import * as yup from 'yup';
 function RecipeForm({getUserId, refresh, setRefresh}){
     // form data
     const [newShot, setNewShot] = useState({"dose":"", "time":"", "yield":"", "grind": "", "roaster": "", "bean": "", "notes": ""});
+    const setFormErrors = useShotFormStore(state => state.setFormError);
+    const Filter = require("badwords-filter");
+    const filter = new Filter();
+
+
+    // useEffect(() => {
+    //     setFormErrors([]);
+    //   }, [setFormErrors])
 
     // form onChange utils
     const handleCheckboxChange = (e) => {
@@ -37,19 +45,25 @@ function RecipeForm({getUserId, refresh, setRefresh}){
     const history = useHistory();
     const [step, setStep] = useState(0);
 
-    // global errors datastore for local use
-    const setFormErrors = useShotFormStore(state => state.setFormError);
-
     // Recipe Form validation schemas
 
-    // page one
+    yup.addMethod(yup.string, 'noBadWords', function(x) {
+        return this.test('bad-words-test', x ?? 'Invaild Word', function(value) {
+            const { path, createError } = this;
+            console.log(value, filter.isUnclean(value));
+            
+            return !filter.isUnclean(value) || createError({message: x, "value": value, path: path});
+        });
+    });
+
+        // page one
     const schemaBean = yup.object().shape({
-        bean: yup.string().required(),
-        roaster: yup.string().required(),
-        region: yup.string().required(),
+        bean: yup.string().ensure().noBadWords('Invaild word for bean').required(),
+        roaster: yup.string().ensure().noBadWords('Invaild word for roaster').required(),
+        region: yup.string().ensure().noBadWords('Invaild word for region').required(),
         roastDate: yup.date().required(),
         roast: yup.string().required(),
-        process: yup.string().required()
+        process: yup.string().required(),
     })
     const schemaBeanData = {
         bean: newShot.bean,
@@ -59,7 +73,7 @@ function RecipeForm({getUserId, refresh, setRefresh}){
         roast: newShot.roast,
         process: newShot.process
     }
-    // page two
+        // page two
     const schemaDose = yup.object().shape({
         dose: yup.string().required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Dose is not a reasonable number"),
         yield: yup.string().required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Yield is not a reasonable number"),
@@ -72,7 +86,7 @@ function RecipeForm({getUserId, refresh, setRefresh}){
         time: newShot.time,
         grind: newShot.grind
     }
-    // page three
+        // page three
     const schemaOther = yup.object().shape({
         grinder: yup.string().required(),
         machine: yup.string().required(),
@@ -148,8 +162,10 @@ function RecipeForm({getUserId, refresh, setRefresh}){
                 setStep(stepNum);
             })
             .catch(function (err) {
-                setFormErrors(err.errors);
+                // console.log(err, err.name, err.errors, err.inner)
                 console.log(Object.keys(err), err.name, err.value, err.path, err.type, err.errors, err.inner)
+                setFormErrors(err.errors);
+                
             })
       }
 

@@ -17,6 +17,7 @@ import LoadingSpinner from './components/LoadingSpinner.js';
 // components
 import Header from './components/Header.js';
 import ErrorScreen from './components/ErrorScreen.js';
+import Test from './Test.js';
 
 
 function App (){
@@ -105,6 +106,7 @@ function App (){
         <Route path="/password-reset"
           render={({location}) => isLoggedIn ? (<Redirect to={{pathname: "/", state: {location: "/"}}} />) : (<PasswordReset />)} 
         />
+        <Route path='/test' render={() => <Test />} />
 
         <Route path="*" render={() => <ErrorScreen errorMessage={'404 - No coffee here :('} />} />
 
