@@ -88,10 +88,10 @@ function RecipeForm({getUserId, refresh, setRefresh}){
     }
         // page three
     const schemaOther = yup.object().shape({
-        grinder: yup.string().required(),
-        machine: yup.string().required(),
-        tastingNotes: yup.string().required(),
-        notes: yup.string()
+        grinder: yup.string().ensure().noBadWords('Invaild word for grinder').required(),
+        machine: yup.string().ensure().noBadWords('Invaild word for machine').required(),
+        tastingNotes: yup.string().ensure().noBadWords('Invaild word for tastingnotes').required(),
+        notes: yup.string().ensure().noBadWords('Invaild word for notes')
     })
     const schemaOtherData = {
         grinder: newShot.grinder,
@@ -157,13 +157,11 @@ function RecipeForm({getUserId, refresh, setRefresh}){
         }
         schema.validate(schemaData, { abortEarly: false })
             .then(function () {
-                console.log(stepNum)
                 setFormErrors([]);
                 setStep(stepNum);
             })
             .catch(function (err) {
                 // console.log(err, err.name, err.errors, err.inner)
-                console.log(Object.keys(err), err.name, err.value, err.path, err.type, err.errors, err.inner)
                 setFormErrors(err.errors);
                 
             })

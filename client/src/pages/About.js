@@ -85,7 +85,7 @@ function About() {
         <div className="container col-10 col-md-8">
           <h1 className="display-3">@About 2.0</h1>
           <p className="lead fs-2">I Got Plans</p>
-          <ul className="list-group list-group-flush">
+          <ul className="list-group list-group-flush text-center">
             <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Support for other brewing methods (Kalita Wave, Chemex, Kyoto, French Press... More)</li>
             <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Extraction analysis charts for journals</li>
             <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Advanced extraction algorithm</li>

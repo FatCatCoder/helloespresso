@@ -5,17 +5,15 @@ import {globalStore} from '../store.js';
 import Shot from './Shot';
 import AddToJournalModal from './AddToJournalModal.js';
 
-// controls the shot logging system and contains bootstrap offcanvas component which hides the log queue and handles the new journal submit as BS modal form
-
+// controls shot logging system, bootstrap offcanvas log queue, new journal submit.
 function Footer ({ shotList, setShotList}){
     // Auth
     const getUserId = globalStore(state => state.getUserIdFromJWT) 
     const isLoggedIn = globalStore(state => state.isLoggedIn)
 
-     // Footer modal form to log shots as new journal
-     const [journalEntry, setJournalEntry] = useState({});
-     const [show, setShow] = useState(false);
-     
+    // Footer modal
+    const [journalEntry, setJournalEntry] = useState({});
+    const [show, setShow] = useState(false);
 
     const handleModalSubmit = (event) => {
         event.preventDefault();
@@ -45,11 +43,14 @@ function Footer ({ shotList, setShotList}){
             setShow(false)
         }
     }
+    
     // render pulls
     const pulls = shotList.map((pull, index) =>
             <Shot key={index} listNum={index+1} dose={pull.dose} time={pull.time} yield={pull.yield} grind={pull.grind} notes={pull.notes} Sour={pull.Sour} Bitter={pull.Bitter} Weak={pull.Weak} Balanced={pull.Balanced} Strong={pull.Strong} /> 
         );
 
+        console.log(pulls);
+        
 
     return(
         <div id="Footer" className="text-center mx-auto">
@@ -78,7 +79,7 @@ function Footer ({ shotList, setShotList}){
                 </div>
 
                 <div className="offcanvas-body small">
-                    {pulls}
+                    {pulls?.length? pulls : 'Pull some espressso!'}
                 </div>
                 
             </div>

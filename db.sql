@@ -8,14 +8,6 @@
 
 */
 
--- Useful commands -- 
-
-/*
-
-  DROP TABLE IF EXISTS [insert table name here]; 
-
-*/
-
 CREATE DATABASE espresso;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -29,13 +21,6 @@ CREATE TABLE users (
   PRIMARY KEY (id)
 );
 
-
-/*
-INSERT INTO users(name, email, password) VALUES('user', 'user@email.com', 'user');
-INSERT INTO users(name, email, password) VALUES('user2', 'user2@email.com', 'user2');
-INSERT INTO users(name, email, password) VALUES('user3', 'user3@email.com', 'user3');
-*/
-
 CREATE TABLE journals (
   id UUID DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
   bean TEXT CONSTRAINT bean_check CHECK (char_length(bean) <= 32) NOT NULL,
@@ -47,16 +32,6 @@ CREATE TABLE journals (
   user_id uuid NOT NULL,
   CONSTRAINT user_id FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
-/*
-INSERT INTO journals(bean, region, roaster, user_id) VALUES('ethiopia', 'agaro', 'buddy brew', (SELECT id FROM Users WHERE name='FatCat'));
-INSERT INTO journals(bean, region, roaster, user_id) VALUES('burundi', 'mutana', 'buddy brew', (SELECT id FROM Users WHERE name='FatCat'));
-INSERT INTO journals(bean, region, roaster, user_id) VALUES('kenya', 'yayahayu', 'kuma', (SELECT id FROM Users WHERE name='Dood'));
-INSERT INTO journals(bean, region, roaster, user_id) VALUES('brazil', 'yumyum', 'heart', (SELECT id FROM Users WHERE name='user'));
-INSERT INTO journals(bean, region, roaster, user_id) VALUES('ethiopia', 'goodvalley', 'buddy brew', (SELECT id FROM Users WHERE name='user'));
-*/
-
-
 
 CREATE TABLE shots (
   queue SMALLINT,
@@ -70,20 +45,6 @@ CREATE TABLE shots (
   attribute TEXT,
   PRIMARY KEY (queue, journal_id)
 );
-
-/*
-INSERT INTO shots(queue, journal_id, dose, yield, time, grind, notes, attribute) 
-VALUES('1', (SELECT id FROM Journals WHERE region='agaro'), 18, 38, 30, 5, 'good', 'balanced');
-
-INSERT INTO shots(queue, journal_id, dose, yield, time, grind, notes, attribute) 
-VALUES('2', (SELECT id FROM Journals WHERE region='goodvalley'), 20, 36, 22, 8, 'bad', 'sour');
-
-INSERT INTO shots(queue, journal_id, dose, yield, time, grind, notes, attribute) 
-VALUES('1', (SELECT id FROM Journals WHERE bean='burundi'), 18, 39, 28, 4, 'good', 'balanced');
-
-INSERT INTO shots(queue, journal_id, dose, yield, time, grind, notes, attribute) 
-VALUES('1', (SELECT id FROM Journals WHERE bean='kenya'), 19, 42, 32, 10, 'good', 'bitter');
-*/
 
 CREATE TABLE recipes (
   id UUID DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
@@ -107,68 +68,33 @@ CREATE TABLE recipes (
   PRIMARY KEY (id)
 );
 
-/*
-ALTER TABLE recipes
-ADD COLUMN process TEXT NOT NULL;
-*/
-
-/* 
-
-INSERT INTO recipes(user_id, bean, region, roaster, roastDate, dose, yield, time, grind, grinder, machine, tastingNotes, notes, roast, process) VALUES((SELECT id FROM users WHERE name='FatCat'), 'panama', 'hana', 'Bandit', '2021-06-09', '18', '38', '28.5', '4', 'smart grinder pro', 'gaggia classic', 'sour', 'a decent brew', 'medium', 'natural');
-
-INSERT INTO recipes(user_id, bean, region, roaster, roastDate, dose, yield, time, grind, grinder, machine, tastingNotes, notes, roast, process) VALUES((SELECT id FROM users WHERE name='user'), 'ethiopia', 'Agaro', 'Buddy Brew', '2021-06-09', '18', '38', '28.5', '4', 'smart grinder pro', 'gaggia classic', 'sour', 'a decent brew', 'medium', 'natural');
-
-*/
-
 CREATE TABLE likes (
   user_id UUID NOT NULL,
   CONSTRAINT user_id FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
   recipe_id UUID NOT NULL,
-  CONSTRAINT recipe_id FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE,
-  PRIMARY KEY (user_id, recipe_id)
+  PRIMARY KEY (user_id, recipe_id),
+  CONSTRAINT recipe_id FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
 );
-
-/*
-
-INSERT INTO likes (user_id, recipe_id) VALUES ((SELECT id FROM users WHERE name='user'), (SELECT id FROM recipes WHERE bean='ethiopia'));
-
-/*
-
-
-/* 
-test queries
-
-FatCat a1911c9b-1548-438b-9656-d95489f4309d
-
-ethiopia f3712afd-1021-4dde-9086-432a4d1bec0a
-
-burundi f8c1b570-0af6-43bb-b020-b8c3ad3b75f4
-
-
-
-Dood  3cf1f24e-ebdb-4e39-b0c6-5102e18e3a5e
-
-kenya b3cb2acc-69b8-464e-ae4b-b511b277a9ef
-
-*/
-
-
--- selects FatCats Journals and returns these attributes from them
-  -- SELECT Journals.id, user_id, bean, region, roaster, "date", "name" FROM Journals LEFT JOIN Users ON user_id = Users.id WHERE Users.id = 'a1911c9b-1548-438b-9656-d95489f4309d';
-
--- gets all the user journals and user info
-  -- SELECT * FROM journals LEFT JOIN Users ON user_id = Users.id WHERE Users.id = 'b5ca3e9a-3104-4690-9030-217766827477';
-
--- gets just user journals
-  -- SELECT * FROM journals WHERE user_id = 'b5ca3e9a-3104-4690-9030-217766827477';
-
--- select a journal entry and all its shots
-
--- gets a column and groups the number of times it repeats in a table
-  -- SELECT user_id, COUNT(*) FROM Journals WHERE user_id = (SELECT id FROM Users WHERE name='FatCat') GROUP BY user_id;
 
 CREATE TABLE admins (
   name TEXT NOT NULL UNIQUE,
   password TEXT NOT NULL,
   PRIMARY KEY (name)
 );
+
+CREATE TABLE reports (
+  recipe_id UUID UNIQUE NOT NULL,
+  count INTEGER DEFAULT 1,
+  PRIMARY KEY (recipe_id),
+  CONSTRAINT recipe_id FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
+);
+
+-- add one to report count column on unqiue duplicate insert
+
+-- INSERT INTO reports (recipe_id)
+--  VALUES('03869a98-7a2e-49e7-82a6-692e27f56bc0') 
+--  ON CONFLICT (recipe_id) 
+--  DO 
+--  	UPDATE SET count = reports.count + 1 RETURNING *;
+
+

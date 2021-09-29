@@ -3,7 +3,7 @@ import ExtractionWheel from './ExtractionWheel.js';
 
 
 function ShotFormPageFinal({setStep, shotList}){
-    const attribute = shotList[(shotList.length - 1)].attribute;
+    const attribute = shotList[(shotList.length - 1)]?.attribute;
     const helpText = "Need help?";
 
     /*

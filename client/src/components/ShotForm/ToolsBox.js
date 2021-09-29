@@ -36,15 +36,15 @@ import Stopwatch from './Stopwatch';
 
 
 function ToolsBox({handleInputChange}) {
-    const popover = (
-      <Popover id="Popover1">
-        <Popover.Header>Timer</Popover.Header>
-        <Popover.Body><Stopwatch handleInputChange={handleInputChange} /></Popover.Body>
-      </Popover>
-    )
+  const popover = (
+    <Popover id="Popover1">
+      <Popover.Header>Timer</Popover.Header>
+      <Popover.Body><Stopwatch handleInputChange={handleInputChange} /></Popover.Body>
+    </Popover>
+  )
   
   return (
-    <div className="text-center">
+    <div className="pt-2">
       <OverlayTrigger trigger="click" placement={'bottom'} overlay={popover}>
         <Button className="btn bg-light btn-outline-dark" id="Popover1" type="button" aria-label="stopwatch"><i className="bi bi-watch"></i></Button>
       </OverlayTrigger>
