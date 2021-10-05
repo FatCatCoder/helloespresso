@@ -19,7 +19,7 @@
     },
     "scripts": {
         "start": "nodemon index.js",
-        "devpm2": "pm2 start index.js --watch -i max",
+        "pm": "pm2 start index.js --watch -i max",
         "prod": "set NODE_ENV=production nodemon index.js"
     },
     "notes": {

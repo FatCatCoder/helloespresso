@@ -16,10 +16,13 @@ function About() {
   const setIsLoggedIn = globalStore(state => state.setIsLoggedIn);
   const isLoggedIn = globalStore(state => state.isLoggedIn)
 
-  //toast
+  // secret sections
   const [show, setShow] = useState(false);
   const [showSecret, setShowSecret] = useState(false); 
-  const [showSobSection, setShowSobSection] = useState(false); 
+  const [showSobSection, setShowSobSection] = useState(false);
+  
+  // global toast message system, butter & jam on the side
+  const globalToast = globalStore(state => state.globalToast);
 
   // Del token from storage, blacklist on server, set auth to false
   const logout = async () => {
@@ -39,50 +42,37 @@ function About() {
       if(parseRes.success){
         setShow(true)
         setIsLoggedIn(false);
+        globalToast("You've been logged out!")
       }
     }
   }
-
 
   return (
      <div className="container h-100 text-center">
       <div className="container col-xl-10 border border-1 pb-5 pe-3 ps-3">
         <h1 className="display-2">About</h1>
-        <p className=""><em>Less waste, more coffee.</em></p>
+        <p><em>Less waste, more coffee.</em></p>
           
-
-        <p className="">
+        <p className="container">
           An espresso recipe and dialing application to help make brewing a
-          simple experience.
+          simpler experience.
         </p>
 
-        
-        
         <div className="mb-2">
-          
-          <h4 className="">Lets get brewing</h4>
+          <h4>Lets get brewing</h4>
           <Link to={{pathname: `${isLoggedIn? '/about': '/register'}`, state: {location: "/register", going: "/about"}}}><button className="btn btn-dark m-1" type="button" disabled={isLoggedIn}>Register</button></Link>
           <Link to={{pathname: `${isLoggedIn? '/about': '/login'}`, state: {location: "/login", going: "/about"}}}><button className="btn btn-dark m-1" type="button" disabled={isLoggedIn}>Login</button></Link>
-          <button className="btn btn-dark m-1" type="button" onClick={() => logout()}>Logout</button>
+          <button className="btn btn-dark m-1" type="button" onClick={() => logout()} disabled={!isLoggedIn}>Logout</button>
         </div>
-
-      <ToastContainer position='bottom-center'>
-        <Toast className="p-3 mb-2" onClose={() => setShow(false)} show={show} animation={true} delay={1750} autohide>
-          <Toast.Header>
-            <i className="bi bi-hand-thumbs-up"></i>
-            <strong className="me-auto">You've been logged out!</strong>
-          </Toast.Header>
-        </Toast>
-      </ToastContainer>
       </div>
 
       <button className="bg-transparent border-0 text-muted fs-6" type="button" onClick={() => setShowSecret(!showSecret)} data-bs-target="#secret" aria-expanded="false" aria-controls="secret text">
-       wizards only, fools.
+        wizards only, fools.
       </button>
 
       <div className="vh-100 position-relative" id="secret">
       <Fade cascade when={showSecret}>
-        <div className="container col-10 col-md-8">
+        <div className="container col-12 col-md-8">
           <h1 className="display-3">@About 2.0</h1>
           <p className="lead fs-2">I Got Plans</p>
           <ul className="list-group list-group-flush text-center">
@@ -90,7 +80,7 @@ function About() {
             <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Extraction analysis charts for journals</li>
             <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Advanced extraction algorithm</li>
             <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Best results tracking for main equipment setup</li>
-            <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Autocomplete on form inputs for bean, region, roaster, etc...</li>
+            <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Autofill for roasters, bean types, machines, etc...</li>
             <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> A Blog riddled with industry secrets and guru advice?</li>
             <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> User profiles</li>
             <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> Comments?</li>

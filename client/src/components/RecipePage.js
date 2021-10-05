@@ -19,12 +19,12 @@ function RecipePage(props){
     // Data
     const [liked, setLiked] = useState(false);
     const [recipe, setRecipe] = useState(props.recipe.find(obj => obj.id === id));
+    const [isLoading, setIsLoading] = useState(true);
 
     // placeholder 
     const reportRecipe = () => {
         console.log('reported you nerd');
     }
-
 
     // toggle like on server and updates with json returned bool
     const bussinButton = async () => {
@@ -53,7 +53,6 @@ function RecipePage(props){
 const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": bussinButton});
     
 // Effects
-
     // load from state or fetch data
     useEffect(() => {
         const abortController = new AbortController();
@@ -63,12 +62,14 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
             const fetchRecipe = async () => {
                 const res = await fetch(`/api/recipes/${id}`)
                 const data = await res.json()
-                setRecipe(data[0]);
+                data.length? setRecipe(data[0]): setRecipe(null); 
             }
-            // If not in prop state then fetch from 
+
+            // !state then fetch 
             if (props.recipe.length === 0 || recipe === undefined) {
                 fetchRecipe();
             }
+            setIsLoading(false);
         }
         return () => {
             ignore = true;
@@ -78,7 +79,6 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
 
 
     // checks if is liked
-
     useEffect(() => {
         const abortController = new AbortController();
         let ignore = false;
@@ -104,16 +104,15 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
         
         return () => { ignore = true; abortController.abort(); }; 
     }, [id, user_id]);
-    
 
     // Recipe cards or 404 screen
     return(
         <>
         {recipe === null? <ErrorScreen errorMessage={'404 - No coffee here :('} />
          :
-        <div className="container text-center mb-3">
+        <div className={`container text-center mb-3 ${isLoading? 'skeleton': ''}`}>
             <div className="my-2">
-                <h1 className="display-3 text-capitalize">{ recipe?.bean ?? 'Bean'  } - {recipe?.roaster ?? 'Roaster'}</h1>
+                <h1 className="display-3 text-capitalize">{ recipe?.bean ?? 'Please'  } - {recipe?.roaster ?? 'Hold'}</h1>
                 <h2 className="text-muted text-capitalize">Region: {recipe?.region}</h2>
                 
             </div>

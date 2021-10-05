@@ -121,9 +121,7 @@ function App (){
           </Toast.Header>
         </Toast>
       </ToastContainer>
-
-      {/* const globalToast = globalStore(state => state.globalToast); <button onClick={() => globalToast('hello there!')} className="btn btn-warning mx-auto text-center">Gimme Toast</button> */}
-      
+     
     </div>
     </>
   );

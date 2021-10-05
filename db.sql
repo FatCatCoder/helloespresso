@@ -69,7 +69,6 @@ CREATE TABLE recipes (
 );
 
 CREATE TABLE likes (
-  user_id UUID NOT NULL,
   CONSTRAINT user_id FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
   recipe_id UUID NOT NULL,
   PRIMARY KEY (user_id, recipe_id),

@@ -141,9 +141,7 @@ router.post('/', async(req, res) => {
 router.get('/:id', async(req, res) => {
     try{
         const {id} = req.params;
-        
         const recipe = await pool.query("SELECT * FROM recipes WHERE id = $1", [id]);
-        console.log(recipe)
         res.send(recipe.rows);
     }
     catch(err){

@@ -17,14 +17,14 @@ router.get("/", (req, res) => {
         console.log('verify-auth good');
         return res.sendStatus(200);
     } catch (error) {
-        if (err.name === 'UnauthorizedError'|| error.name === 'UnauthorizedError' ) {
-        return res.sendStatus(403);
+        if (err.name === 'UnauthorizedError'|| error.name === 'UnauthorizedError' ) {    
+            return res.sendStatus(403);
         }
         else if (err.name == 'TokenExpiredError'|| error.name == 'TokenExpiredError' ) {
             return res.sendStatus(403);
             }
         else{
-            res.status(500)
+            return res.status(500);
         }
     }
 })
@@ -45,7 +45,7 @@ router.post('/', async(req, res) => {
         }
         // give jwt token
         const token = 'Bearer ' + jwtGenerator('admin', '1h', process.env.ADMIN_SECRET);
-        return res.send('Authorization', token);
+        return res.setHeader('Authorization', token).status(200).send();
     } 
     catch (error) {
         res.status(500).send("server error"); 

@@ -20,12 +20,14 @@ import ErrorScreen from '../components/ErrorScreen.js';
 
 
 function Recipes(){
-    console.log('Render');
     // nav and header
     let match = useRouteMatch();
     const history = useHistory();
     const setCurrentPage = globalStore(state => state.setCurrentPage);
     
+    const getUserId = globalStore(state => state.getUserIdFromJWT)
+    const isLoggedIn = globalStore(state => state.isLoggedIn)
+
     useEffect(() => {
         setCurrentPage(window.location.pathname)
     }, [])
@@ -41,14 +43,9 @@ function Recipes(){
         isLoading, setIsLoading,
         sortFilters, setSortFilters,
         } = useRecipesStore();
-
-    const getUserId = globalStore(state => state.getUserIdFromJWT)
-    const isLoggedIn = globalStore(state => state.isLoggedIn)
-    
     
     // get recipes on load and refresh, and check for existing pages in memory to avoid api call
     useEffect(() => {
-        console.log('useEffect');
         const abortController = new AbortController();
         let ignore = false;
 
@@ -57,12 +54,11 @@ function Recipes(){
         };
         
         // POST, setMyRecipes from server based on currPage and amount, checks for null filter requirements
-        const fetchRecipes = async (thisPage = currPage, numOf = recipesPerPage , controller) => {
+        const fetchRecipes = async (thisPage = currPage, numOf = recipesPerPage, controller) => {
             try{ 
                 // if(Object.keys(sortFilters) !== 0 && (sortFilters?.sortBy === null || sortFilters?.sortBy == undefined)){
                 //     setSortFilters({...sortFilters, "sortBy": "postdate DESC"})
                 // }
-                console.log(sortFilters);
         
                 const res = await fetch('/api/recipes', {
                     method: 'POST',
@@ -72,15 +68,14 @@ function Recipes(){
                     },
                     body: JSON.stringify({"offsetPage": thisPage - 1, "limitAmount": numOf, "sortFilters": sortFilters})
                 })
-                const data = await res.json();
-                console.log('data fetched ', data);
-                
+                const data = await res.json();              
                 
                 // already returned as 'popular' column from table join
                 if(sortFilters?.sortBy === 'popular DESC'){
                     return await data;
                 }
-                // grab likes, merge json
+
+                // merge fecthed likes to recipes
                 const recipesWithLikes = await getAllLikes(data, controller)
                 return await recipesWithLikes;
             }
@@ -143,7 +138,7 @@ function Recipes(){
             const returnedData = getRecipes('new', abortController);
 
             if(returnedData === 'AbortError'){
-                console.log('abort error on returned data after new');
+                console.log('error');
             }
             else{
                 setRefresh(false);
@@ -155,7 +150,7 @@ function Recipes(){
             const returnedData = getRecipes('next', abortController);
 
             if(returnedData === 'AbortError'){
-                console.log('abort error on get recipes after next');
+                console.log('error');
             }
             else{
                 setRefresh(false);
@@ -189,7 +184,6 @@ function Recipes(){
 
     // On pagination setCurrPage change, checks if page exists in memory, if not then fetch it and update state.
     const changePage = async(number) => {
-        console.log(number);
         (function () {
             setIsLoading(true);
             setCurrPage(number); 

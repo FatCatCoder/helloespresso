@@ -4,6 +4,10 @@ const format = require('pg-format');
 const jwtValidate = require('express-jwt');
 const blacklistCheck = require('../utils/blacklist');
 
+const redis = require("redis");
+const redisClient = redis.createClient();
+require('dotenv').config({ path: '../../.env' })
+
 
 //  -- routes -- //
 

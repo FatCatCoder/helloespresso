@@ -25,6 +25,7 @@ function Journal(){
     const loadingAuth = globalStore(state => state.loadingAuth);
     const isLoggedIn = globalStore(state => state.isLoggedIn);
     const getUserIdFromJWT = globalStore(state => state.getUserIdFromJWT);
+    const globalToast = globalStore(state => state.globalToast);
     
     useEffect(() => {
         setCurrentPage(window.location.pathname)
@@ -55,7 +56,6 @@ function Journal(){
                         body: JSON.stringify({user_id: userData})
                     })
                     const data = await res.json();
-                    console.log(data);
                     setMyEntries(data.map(x => x))
                 }
                 fetchJournalEntries()
@@ -82,13 +82,14 @@ function Journal(){
                 headers: {"Content-Type": "application/json", "Authorization": localStorage.getItem('Authorization')},
                 body: JSON.stringify({id})
             })
-
             const parseRes = await res.json();
 
             if(parseRes.success){
-                const deleteEntry = setMyEntries(prevEntries => prevEntries.filter(x => x.id !== id))
+                setMyEntries(prevEntries => prevEntries.filter(x => x.id !== id))
+                globalToast('Goodbye Journal')
                 return history.push('/journal');
             }
+
             setErrors(parseRes);
         }
         catch(error){
@@ -101,7 +102,7 @@ function Journal(){
     const indexOfFirstPost = indexOfLastPost - recipesPerPage;
     const currRecipes = myEntries.slice(indexOfFirstPost, indexOfLastPost);
 
-    // wait for app.js to fetch auth from server
+   
     if(loadingAuth){
         return <div className="text-center pb-5"><LoadingSpinner /></div>
     }

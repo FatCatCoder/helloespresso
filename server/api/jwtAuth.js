@@ -14,19 +14,16 @@ require('dotenv').config({ path: '../../.env' })
 router.post('/logout', (req, res) => {
     try{
         const {token} = req.body;
-        console.log(token)
         const tokenSplit = token.split(' ');
         const decoded = jwt.verify(tokenSplit[1], process.env.SECRET);
-        console.log(decoded, decoded.user)
         const EXP = decoded.exp - Math.floor(new Date().getTime()/1000.0)
 
         redisClient.setex(tokenSplit[1], EXP, decoded.user.id, (error, data) => {
             if(error){
                 console.log(error, data);
-                res.send({error});
+                res.send({"message": "logout error", "success": false});
             }
         })
-
         res.send({"message": "logged out", "success": true});
     }
     catch(error){

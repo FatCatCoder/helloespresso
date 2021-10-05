@@ -1,7 +1,4 @@
 import {Link} from 'react-router-dom';
-import {useState, useEffect} from 'react';
-
-// card display object for recipes page
 
 function RecipeCard({recipe, animation}){
     return(
