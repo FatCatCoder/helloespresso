@@ -2,13 +2,14 @@ const router = require('express').Router();
 const pool = require('../../db');
 const blacklistCheck = require('../utils/blacklist');
 const serverTimingMiddleware = require('server-timing-header');
+const jwtDecoder = require('../utils/jwtDecoder')
+const Joi = require('joi');
 
 
 // -- Utils -- //
 
 function isAlphaNumeric(str) {
     var code, i, len;
-  
     for (i = 0, len = str.length; i < len; i++) {
       code = str.charCodeAt(i);
       if (!(code > 47 && code < 58) && // numeric (0-9)
@@ -20,6 +21,24 @@ function isAlphaNumeric(str) {
     }
     return true;
   };
+
+const recipeSchema = Joi.object({
+    userId: Joi.string().token().required(),
+    bean: Joi.string().required(),
+    region: Joi.string().required(),
+    roaster: Joi.string().required(),
+    roastDate: Joi.date().required(),
+    dose: Joi.string().max(5).required(),
+    yield: Joi.string().max(5).required(),
+    time: Joi.string().max(5).required(),
+    grind: Joi.string().required(),
+    grinder: Joi.string().required(),
+    machine: Joi.string().required(),
+    tastingNotes: Joi.string().required(),
+    notes: Joi.string(),
+    roast: Joi.string().required(),
+    process: Joi.string().required(), 
+})
 
 
 // -- routes -- //
@@ -153,27 +172,40 @@ router.get('/:id', async(req, res) => {
 // add new recipe 
 router.post('/new', blacklistCheck, async(req, res) => {
     try {
+        // validate data
         const recipe = req.body;
-        console.log(recipe);
-
-        const addRecipe = await pool.query("INSERT INTO recipes(user_id, bean, region, roaster, roastDate, dose, yield, time, grind, grinder, machine, tastingNotes, notes, roast, process) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *", [recipe.userId, recipe.bean, recipe.region, recipe.roaster, recipe.roastDate, recipe.dose, recipe.yield, recipe.time, recipe.grind, recipe.grinder, recipe.machine, recipe.tastingNotes, recipe.notes, recipe.roast, recipe.process]);
-        res.send(addRecipe.rows[0]);
+        const validData = await recipeSchema.validateAsync(recipe);
+        validData.userId = await validData.userId.replace(/_/g, '-'); // humpty dumpty the token
+        
+        // validate user
+        const token = jwtDecoder(req.headers.authorization);
+        if(token.user.id !== validData.userId){
+            throw new Error('Incorrect user attempting to submit another users recipe');
+        }
+        // insert into DB
+        const addRecipe = await pool.query("INSERT INTO recipes(user_id, bean, region, roaster, roastDate, dose, yield, time, grind, grinder, machine, tastingNotes, notes, roast, process) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *", [validData.userId, validData.bean, validData.region, validData.roaster, validData.roastDate, validData.dose, validData.yield, validData.time, validData.grind, validData.grinder, validData.machine, validData.tastingNotes, validData.notes, validData.roast, validData.process]);
+        if(addRecipe.rowCount !== 1){
+            throw new Error('Failed to submit');
+        }
+        // OK
+        res.send({"success": true, "message": "Recipe submited!"});
 
     } catch (error) {
-        console.log(error)
-        res.status(500);
+        console.log(error.message, error);
+        res.status(500).send({"success": false, "message": "Failed to submit"});;
     }
 })
 
 
-
+//                   //
 // -- like routes -- //
+//                   //
 
-//get number of likes on a recipe
+
+// get number of likes on a recipe
 router.post('/likes', async(req, res) => {
     try{
         const {id} = req.body;
-        
         const recipes = await pool.query("SELECT COUNT(*) FROM likes WHERE recipe_id = $1", [id]);
         res.send(recipes.rows[0].count);
     }
@@ -186,7 +218,6 @@ router.post('/likes', async(req, res) => {
 router.post('/all-likes', async(req, res) => {
     try{
         const ids = req.body;
-        
         const recipes = await pool.query(
             `SELECT L.recipe_id AS id, COUNT(L.recipe_id) AS likes
          FROM unnest(ARRAY[${ids.map(x => `'${x}'`)}]) idFromArray

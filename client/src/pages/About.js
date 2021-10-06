@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import {globalStore} from '../store.js'
-import Toast from 'react-bootstrap/Toast'
-import ToastContainer from 'react-bootstrap/ToastContainer'
 import Fade from 'react-reveal/Fade';
 
 function About() {
@@ -10,6 +8,7 @@ function About() {
   const setCurrentPage = globalStore(state => state.setCurrentPage);
   useEffect(() => {
     setCurrentPage(window.location.pathname)
+    // eslint-disable-next-line
 }, [])
 
   // auth
@@ -17,6 +16,7 @@ function About() {
   const isLoggedIn = globalStore(state => state.isLoggedIn)
 
   // secret sections
+  // eslint-disable-next-line
   const [show, setShow] = useState(false);
   const [showSecret, setShowSecret] = useState(false); 
   const [showSobSection, setShowSobSection] = useState(false);

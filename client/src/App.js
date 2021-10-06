@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { globalStore} from './store.js';
 import ToastContainer from 'react-bootstrap/ToastContainer'
 import Toast from 'react-bootstrap/Toast'
@@ -17,7 +17,7 @@ import LoadingSpinner from './components/LoadingSpinner.js';
 // components
 import Header from './components/Header.js';
 import ErrorScreen from './components/ErrorScreen.js';
-import Test from './Test.js';
+// import Test from './Test.js';
 
 
 function App (){

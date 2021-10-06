@@ -13,6 +13,7 @@ function Pull () {
   const setCurrentPage = globalStore(state => state.setCurrentPage);
   useEffect(() => {
       setCurrentPage(window.location.pathname)
+      // eslint-disable-next-line
   }, [])
 
   // set default list of pulled shots

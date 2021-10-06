@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
 import {globalStore} from '../store.js';
 import {
-    Redirect,
     Switch,
     Route,
     useRouteMatch,
@@ -29,6 +28,7 @@ function Journal(){
     
     useEffect(() => {
         setCurrentPage(window.location.pathname)
+        // eslint-disable-next-line
     }, [])
 
 
@@ -72,7 +72,8 @@ function Journal(){
         return () => {
             ignore = true;
             abortController.abort();
-        }; 
+        };
+        // eslint-disable-next-line 
     }, [isLoggedIn])
 
     const deleteJournal = async (id) => {

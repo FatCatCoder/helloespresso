@@ -1,5 +1,5 @@
 // modules
-import { useState, useEffect  } from 'react';
+import { useEffect  } from 'react';
 import {useHistory} from 'react-router-dom'; 
 import {globalStore, useRecipesStore} from '../store.js';
 import {
@@ -30,6 +30,7 @@ function Recipes(){
 
     useEffect(() => {
         setCurrentPage(window.location.pathname)
+        // eslint-disable-next-line
     }, [])
 
     // global state for recipes data
@@ -37,7 +38,7 @@ function Recipes(){
         myRecipes, setMyRecipes, 
         recipeSlice, setRecipeSlice,
         currPage, setCurrPage, 
-        recipesPerPage, setRecipesPerPage,
+        recipesPerPage, setRecipesPerPage, // eslint-disable-line
         totalRecipes, setTotalRecipes,
         refresh, setRefresh,
         isLoading, setIsLoading,

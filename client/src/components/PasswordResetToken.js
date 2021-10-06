@@ -52,7 +52,7 @@ function PasswordResetToken() {
         <div className="container text-center">
             <h1 className="display-2">New Password</h1>
             <form onSubmit={onSubmitForm} className="container mx-auto col-8 col-xl-5">
-                <input type="text" name="newPassword" placeholder="Enter new password" value={newPassword} onChange={e => onchange(e)} required={true} className={` form-control my-3 ${errors.message? 'input-error': ''}`} required/>
+                <input type="text" name="newPassword" placeholder="Enter new password" value={newPassword} onChange={e => onchange(e)} required={true} className={` form-control my-3 ${errors.message? 'input-error': ''}`} />
                 <button className="btn btn-secondary" type="submit">Update Now</button>
                 <Link to={{pathname: `/login`, state: {location: '/login', going: '/'}}}><button className="btn btn-secondary m-2" type="button">Login</button></Link>
             </form>

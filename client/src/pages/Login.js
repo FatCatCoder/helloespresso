@@ -1,27 +1,25 @@
 import {useState, useEffect} from 'react';
-import { Link, useHistory, useLocation, useParams, Switch, Route, Redirect } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import {globalStore} from '../store.js';
 import '../assets/FormStyles.css'
 
 
 function Login(props) {
     const setIsLoggedIn = globalStore(state => state.setIsLoggedIn);
-    const isLoggedIn = globalStore(state => state.isLoggedIn);
     const setLoadingAuth = globalStore(state => state.setLoadingAuth);
-    const loadingAuth = globalStore(state => state.loadingAuth);
     const setCurrentPage = globalStore(state => state.setCurrentPage);
 
 
     // routing after login
     const history = useHistory();
     const location = useLocation();
-    const params = useParams();
 
     useEffect(() => {
         if(props.location.state.going){
             return setCurrentPage(props.location.state.going)
         }
         setCurrentPage(window.location.pathname)
+        // eslint-disable-next-line
     }, [])
     
     // form state & utils

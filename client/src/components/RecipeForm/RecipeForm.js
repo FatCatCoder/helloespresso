@@ -3,21 +3,23 @@ import RecipeFormPageTwo from './RecipeFormPageTwo.js';
 import RecipeFormPageThree from './RecipeFormPageThree.js';
 import { useState, useEffect } from 'react';
 import {useHistory} from 'react-router-dom'; 
-import {useShotFormStore} from '../../store.js';
+import {useShotFormStore, globalStore} from '../../store.js';
 import * as yup from 'yup';
 
 
 function RecipeForm({getUserId, refresh, setRefresh}){
+    // routing and wizard form step number
+    const history = useHistory();
+    const [step, setStep] = useState(0);
+
+    // global toast message system, butter & jam on the side
+    const globalToast = globalStore(state => state.globalToast);
+
     // form data
     const [newShot, setNewShot] = useState({"dose":"", "time":"", "yield":"", "grind": "", "roaster": "", "bean": "", "notes": ""});
     const setFormErrors = useShotFormStore(state => state.setFormError);
     const Filter = require("badwords-filter");
     const filter = new Filter();
-
-
-    // useEffect(() => {
-    //     setFormErrors([]);
-    //   }, [setFormErrors])
 
     // form onChange utils
     const handleCheckboxChange = (e) => {
@@ -41,9 +43,6 @@ function RecipeForm({getUserId, refresh, setRefresh}){
         }));
     };
 
-    // routing and wizard form step number
-    const history = useHistory();
-    const [step, setStep] = useState(0);
 
     // Recipe Form validation schemas
 
@@ -56,7 +55,7 @@ function RecipeForm({getUserId, refresh, setRefresh}){
         });
     });
 
-        // page one
+    // page one
     const schemaBean = yup.object().shape({
         bean: yup.string().ensure().noBadWords('Invaild word for bean').required(),
         roaster: yup.string().ensure().noBadWords('Invaild word for roaster').required(),
@@ -73,12 +72,12 @@ function RecipeForm({getUserId, refresh, setRefresh}){
         roast: newShot.roast,
         process: newShot.process
     }
-        // page two
+    // page two
     const schemaDose = yup.object().shape({
-        dose: yup.string().required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Dose is not a reasonable number"),
-        yield: yup.string().required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Yield is not a reasonable number"),
-        time: yup.string().required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Time is not a reasonable number"),
-        grind: yup.string().required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Grind is not a reasonable number"),
+        dose: yup.string().max(5).required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Dose is not a reasonable number"),
+        yield: yup.string().max(5).required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Yield is not a reasonable number"),
+        time: yup.string().max(5).required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Time is not a reasonable number"),
+        grind: yup.string().max(5).required().matches(/^([1-9]\d*(\.)\d*|0?(\.)\d*[1-9]\d*|[1-9]\d*)$/, "Grind is not a reasonable number"),
       })
       const schemaDoseData = {
         dose: newShot.dose,
@@ -86,7 +85,7 @@ function RecipeForm({getUserId, refresh, setRefresh}){
         time: newShot.time,
         grind: newShot.grind
     }
-        // page three
+    // page three
     const schemaOther = yup.object().shape({
         grinder: yup.string().ensure().noBadWords('Invaild word for grinder').required(),
         machine: yup.string().ensure().noBadWords('Invaild word for machine').required(),
@@ -103,7 +102,6 @@ function RecipeForm({getUserId, refresh, setRefresh}){
     // before submitting recipe to server, check validation on form and on return redirect back to recipes homepage
     const handleSubmit = (event) => {
         event.preventDefault();
- 
         schemaOther.validate(schemaOtherData, { abortEarly: false })
             .then(() => {
                 setFormErrors([]);                 
@@ -122,7 +120,7 @@ function RecipeForm({getUserId, refresh, setRefresh}){
 
     // Add new recipe to server and upload local state with database returned object
     const addRecipe = async (recipe) => {
-        recipe["userId"] = await getUserId();
+        recipe["userId"] = await getUserId().replace('-', '_');
         
         const res = await fetch('/api/recipes/new', {
             method: 'POST',
@@ -136,6 +134,7 @@ function RecipeForm({getUserId, refresh, setRefresh}){
         })
 
         const data = await res.json();
+        globalToast(data?.message)    
         setNewShot({});
     }
 
