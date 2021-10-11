@@ -65,7 +65,8 @@ function Recipes(){
                     method: 'POST',
                     signal: controller?.signal,
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'max-age=10, public'
                     },
                     body: JSON.stringify({"offsetPage": thisPage - 1, "limitAmount": numOf, "sortFilters": sortFilters})
                 })
@@ -84,7 +85,7 @@ function Recipes(){
                 return err.name
             }
         }
-    
+
         const getAllLikes = async (recipes, controller) => {
             try{
                 const ids = recipes.map(x => x.id);
@@ -106,30 +107,26 @@ function Recipes(){
             }
         }
     
-    
+        // returns error or updates state
         const getRecipes = async (newOrNext, controller) => {
             if(newOrNext==='new'){
                 const recipesFromServer = await fetchRecipes(1, recipesPerPage);
-
                 if(recipesFromServer === 'AbortError'){
                     return 'AbortError'
                 }
-
-                setMyRecipes([{"page": 1, "recipes" : recipesFromServer}]) // set Recipes array
+                setMyRecipes([{"page": 1, "recipes" : recipesFromServer}])
                 setRecipeSlice(recipesFromServer)    
-                setTotalRecipes(recipesFromServer[0].count) // set total number of recipes for pagination, count is my defined sql count over() function on the api being returned along side the recipes data
-                setCurrPage(1) // push page state back to the first page
+                setTotalRecipes(recipesFromServer[0].count)
+                setCurrPage(1)
             }
             else if(newOrNext==='next'){
                 const recipesFromServer = await fetchRecipes(currPage, recipesPerPage, controller);
-
                 if(recipesFromServer === 'AbortError'){
                     return 'AbortError'
                 }
-                
-                setMyRecipes([...myRecipes, {"page": currPage, "recipes" : recipesFromServer}]) // set Recipes array
+                setMyRecipes([...myRecipes, {"page": currPage, "recipes" : recipesFromServer}])
                 setRecipeSlice(recipesFromServer)    
-                setTotalRecipes(recipesFromServer[0].count) // set total number of recipes for pagination, count is my defined sql count over() function on the api being returned along side the recipes data
+                setTotalRecipes(recipesFromServer[0].count)
             }
         }
         
@@ -215,7 +212,6 @@ function Recipes(){
     }
 
     return(
-
         <div className="text-center pb-5">
             <Switch>
                 <Route exact path={match.path}>
