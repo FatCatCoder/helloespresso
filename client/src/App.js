@@ -12,11 +12,12 @@ import Recipes from './pages/Recipes.js';
 import Login from './pages/Login.js';
 import Register from './pages/Register.js';
 import PasswordReset from './pages/PasswordReset.js';
-import LoadingSpinner from './components/LoadingSpinner.js';
+import Admin from './pages/Admin.js';
 
 // components
 import Header from './components/Header.js';
 import ErrorScreen from './components/ErrorScreen.js';
+import LoadingSpinner from './components/LoadingSpinner.js';
 // import Test from './Test.js';
 
 
@@ -106,6 +107,10 @@ function App (){
         <Route path="/password-reset"
           render={({location}) => isLoggedIn ? (<Redirect to={{pathname: "/", state: {location: "/"}}} />) : (<PasswordReset />)} 
         />
+
+        <Route path="/admin">
+          <Admin />
+        </Route>
 
         <Route path="*" render={() => <ErrorScreen errorMessage={'404 - No coffee here :('} />} />
 

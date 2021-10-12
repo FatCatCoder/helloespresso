@@ -28,6 +28,7 @@
 - /etc/fail2ban/filter.d/nginx-limit-req.conf
 - /var/log/fail2ban.log
 - /var/log/nginx/error.log
+- /var/log/nginx/access.log
 
     ### cli realtime log of flagged bans and hits
     - tail -f /var/log/fail2ban.log
@@ -45,3 +46,7 @@
     ### regex test
     - fail2ban-regex /var/log/nginx/error.log /etc/fail2ban/filter.d/nginx-limit-req.conf
     - fail2ban-regex /var/log/nginx/access.log /etc/fail2ban/filter.d/nginx-login.conf
+
+
+# React
+    - cp -R /home/christian/projects/extraction-app-react/client/build /var/www/helloespresso

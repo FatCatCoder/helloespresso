@@ -9,27 +9,53 @@ const redis = require("redis");
 const redisClient = redis.createClient();
 require('dotenv').config({ path: '../../.env' })
 
-// jwtValidate({secret: process.env.ADMIN_SECRET, algorithms: ['HS256']}),
-router.get("/", (req, res) => {
+const unauth = function(err, req, res, next) {
+    if(err.name === 'UnauthorizedError') {
+      return res.status(err.status).send('bad');
+    }
+  next();
+  };
+
+// router.get("/verify", jwtValidate({secret: process.env.ADMIN_SECRET, algorithms: ['HS256']}), unauth, (req, res) => {
+//     console.log('admin hit');
+//     // return res.sendStatus(200);
+//     try {
+//         console.log('verify-auth good');
+//         return res.sendStatus(200).send('good');
+//     } catch (error) {
+//         if (err.name === 'UnauthorizedError'|| error.name === 'UnauthorizedError' ) {    
+//             return res.sendStatus(403).send('bad');
+//         }
+//         else if (err.name == 'TokenExpiredError'|| error.name == 'TokenExpiredError' ) {
+//             return res.sendStatus(403).send('bad');
+//             }
+//         else{
+//             return res.sendStatus(500).send('bad');
+//         }
+//     }
+// })
+
+router.get("/verify", async(req, res) => {
     console.log('admin hit');
-    return res.sendStatus(200);
     try {
-        console.log('verify-auth good');
-        return res.sendStatus(200);
+        const token = await req.headers['x-original-uri'];
+        const isValid = await jwt.verify(token.split('token=%20')[1], process.env.ADMIN_SECRET)
+
+        if(!isValid){
+            console.log('verify-auth bad');
+            return res.sendStatus(403).send('bad');
+        }
+
+        return res.sendStatus(200).send();
+
     } catch (error) {
-        if (err.name === 'UnauthorizedError'|| error.name === 'UnauthorizedError' ) {    
-            return res.sendStatus(403);
-        }
-        else if (err.name == 'TokenExpiredError'|| error.name == 'TokenExpiredError' ) {
-            return res.sendStatus(403);
-            }
-        else{
-            return res.status(500);
-        }
+        return res.sendStatus(500).send('bad');
+
     }
 })
+    
 
-router.post('/', async(req, res) => {
+router.post('/login', async(req, res) => {
     try {
         // destructor req.body 
         const { name, password } = req.body;
@@ -44,7 +70,9 @@ router.post('/', async(req, res) => {
             return res.status(401).json({"message":"Email or Password is invalid", "success": false});
         }
         // give jwt token
-        const token = 'Bearer ' + jwtGenerator('admin', '1h', process.env.ADMIN_SECRET);
+        const token = 'Bearer ' + jwtGenerator('admin', '5m', process.env.ADMIN_SECRET);
+        console.log(token);
+        
         return res.setHeader('Authorization', token).status(200).send();
     } 
     catch (error) {
