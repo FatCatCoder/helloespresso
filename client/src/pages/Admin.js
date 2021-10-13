@@ -9,17 +9,30 @@ function Admin() {
     e.preventDefault();
     const post = await fetch('/admin/login', {
       method: 'POST',
-      headers: {"Content-Type": "application/json"},
+      headers: {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
       body: JSON.stringify({"name": name, "password": password})
     })
 
     if(post.status !== 200){
-      return setResponse('Bad')
+      return setResponse({"message":"Bad", "success": false})
     }
-    const parseRes = await post.headers.get('Authorization');
 
-    window.open(`/report?token=${parseRes.split('Bearer')[1]}`)
+    const parseRes = await post.headers.get('Authorization');
+    setResponse({"success": true, "token": parseRes});
+    setPassword('')
+    setName('')
   }
+
+  const goAccess = async() => {
+    //token method
+    // const res = await fetch('/report', {
+    //   method: 'GET',
+    //   headers: {'Authorization': response?.token}
+    // })
+
+    window.open(`/report?token=${response?.token.split('Bearer')[1]}`)
+  }
+
 
   return (
     <div className="text-center">
@@ -27,11 +40,11 @@ function Admin() {
       <form onSubmit={submitForm}>
           <div class="mx-auto col-6 col-md-4">
               <input className="form-control" type="text" placeholder="name..." name="name" value={name} onChange={(event) => setName(event.target.value)}  />
-              <input className="form-control" type="text" placeholder="passsword..." name="password" value={password} onChange={(event) => setPassword(event.target.value)}  />
+              <input className="form-control" type="password" placeholder="passsword..." name="password" value={password} onChange={(event) => setPassword(event.target.value)}  />
           </div>
         <input className="btn btn-primary" type="submit" value="Submit" />
       </form>
-      {response}
+      {response?.success ? <button className="btn btn-success m-2" onClick={() => goAccess()}>Go Access</button>: response?.message}
     </div>
   )
 };

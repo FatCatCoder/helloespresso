@@ -9,6 +9,7 @@ const redis = require("redis");
 const redisClient = redis.createClient();
 require('dotenv').config({ path: '../../.env' })
 
+
 const unauth = function(err, req, res, next) {
     if(err.name === 'UnauthorizedError') {
       return res.status(err.status).send('bad');
@@ -38,8 +39,12 @@ const unauth = function(err, req, res, next) {
 router.get("/verify", async(req, res) => {
     console.log('admin hit');
     try {
-        const token = await req.headers['x-original-uri'];
+        const token = await req.headers['x-original-uri']
         const isValid = await jwt.verify(token.split('token=%20')[1], process.env.ADMIN_SECRET)
+
+        // token method
+        // const token = await req.headers.authorization;
+        // const isValid = await jwt.verify(token.split('Bearer ')[1], process.env.ADMIN_SECRET)
 
         if(!isValid){
             console.log('verify-auth bad');
@@ -49,6 +54,8 @@ router.get("/verify", async(req, res) => {
         return res.sendStatus(200).send();
 
     } catch (error) {
+        console.log(error);
+        
         return res.sendStatus(500).send('bad');
 
     }
