@@ -1,4 +1,5 @@
 import { useParams, useHistory } from "react-router";
+import { Link } from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {globalStore} from '../store';
 
@@ -16,14 +17,27 @@ function RecipePage(props){
     const isLoggedIn = globalStore(state => state.isLoggedIn);
     const user_id = globalStore(state => state.getUserIdFromJWT);
 
+
     // Data
     const [liked, setLiked] = useState(false);
     const [recipe, setRecipe] = useState(props.recipe.find(obj => obj.id === id));
     const [isLoading, setIsLoading] = useState(true);
+    const globalToast = globalStore(state => state.globalToast);
 
     // placeholder 
-    const reportRecipe = () => {
+    const reportRecipe = async () => {
         console.log('reported you nerd');
+        const res = await fetch('/api/recipes/report', {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({"recipe_id" : id, "user_id": user_id() })
+        })
+
+        const parseRes = await res.json();
+        console.log(parseRes);
+        
+        globalToast(parseRes?.message);
+        return console.log(parseRes?.message || 'error')
     }
 
     // toggle like on server and updates with json returned bool
@@ -165,9 +179,11 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
             <button className="btn btn-danger mt-2">
                 <span className="main-text">Delete Recipe</span>
                 <span className="hover-text">Are You Sure?</span>
-                </button>
-            : 
+            </button>
+            : isLoggedIn?
             <button className="btn btn-danger mt-2" onClick={() => reportRecipe()}>Report</button>
+            :
+            <Link className="btn btn-danger mt-2" to={{pathname: "/login", state: {"going": `/recipes/${id}`}}}>Login to Report</Link>
         }
         </div>
     }

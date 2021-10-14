@@ -18,6 +18,7 @@ import Admin from './pages/Admin.js';
 import Header from './components/Header.js';
 import ErrorScreen from './components/ErrorScreen.js';
 import LoadingSpinner from './components/LoadingSpinner.js';
+import { left } from '@popperjs/core';
 // import Test from './Test.js';
 
 
@@ -116,7 +117,7 @@ function App (){
 
       </Switch>
 
-      <ToastContainer position='bottom-center'>
+      <ToastContainer style={{position: "fixed", bottom: `0px`, margin: 0, left: "calc(50% - 10rem"}}>
         <Toast className="p-1 mb-2" onClose={() => setShowGlobalToast(false)} show={showGlobalToast} animation={true} delay={1750} autohide>
           <Toast.Header>
             <div className="mx-auto text-center">
