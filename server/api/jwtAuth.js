@@ -14,6 +14,8 @@ require('dotenv').config({ path: '../../.env' })
 router.post('/logout', (req, res) => {
     try{
         const {token} = req.body;
+        console.log(token);
+        
         const tokenSplit = token.split(' ');
         const decoded = jwt.verify(tokenSplit[1], process.env.SECRET);
         const EXP = decoded.exp - Math.floor(new Date().getTime()/1000.0)
@@ -98,12 +100,12 @@ router.get("/verify-auth", blacklistCheck, jwtValidate({secret: process.env.SECR
         console.log('verify-auth good');
         res.json({"verified": true});
     } catch (error) {
-        if (err.name === 'UnauthorizedError'|| error.name === 'UnauthorizedError' ) {
+        if (error.name === 'UnauthorizedError' ) {
         console.log('verify-auth error');
         //console.error(error.message);
         res.status(401).json({"verified": false});
         }
-        else if (err.name == 'TokenExpiredError'|| error.name == 'TokenExpiredError' ) {
+        else if (error.name == 'TokenExpiredError' ) {
             console.log('verify-auth error');
             //console.error(error.message);
             res.status(401).json({"verified": false});
@@ -115,18 +117,6 @@ router.get("/verify-auth", blacklistCheck, jwtValidate({secret: process.env.SECR
     }
 })
 
-// get TTL on redis key // remove in production //
-router.get('/ttl', (req, res) => {
-    //const token = req.headers.authorization;
-    const {token} = req.body;
-    const tokenSplit = token.split(' ');
-    const decoded = jwt.verify(tokenSplit[1], process.env.SECRET);
-
-    redisClient.ttl(tokenSplit[1], (err, reply) =>{
-        console.log(reply);
-        res.send(reply)
-    });
-})
 
 
 module.exports = router;

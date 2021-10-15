@@ -45,7 +45,7 @@ const blacklistCheck = (req, res, next) => {
         }
         else{
             console.log('catched error, unknown', err);
-            res.status(500).send({"message": "Uh oh! Something messed up.", "verified": false});;
+            res.status(500).send({"message": "Uh oh! Something messed up.", "verified": false});
         }
     }
 }

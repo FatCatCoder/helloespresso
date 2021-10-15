@@ -1,4 +1,3 @@
-
 const router = require('express').Router();
 const pool = require('../../db');
 const jwtGenerator = require('../utils/jwtGenerator');
@@ -6,9 +5,7 @@ const argon2 = require('argon2');
 require('dotenv').config();
 const jwt = require("jsonwebtoken");
 
-const nodemailer = require('nodemailer');
-const path = require("path");
-
+// views
 const sendEmail = require("../utils/sendEmail");
 const emailJS = require('../views/email');
 
@@ -71,6 +68,9 @@ router.post("/:token", async (req, res) => {
 
         // update password
         const user = await pool.query("UPDATE users SET password = $1 WHERE id = $2", [hash, payload.user.id]);
+        if(!user){
+            return res.send({"message":"Password reset unsuccessful.", "success": false});
+        }
 
         res.send({"message":"Password reset successful. You may login with your new password now.", "success": true});
 

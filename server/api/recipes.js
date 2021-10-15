@@ -1,12 +1,13 @@
 const router = require('express').Router();
 const pool = require('../../db');
 const blacklistCheck = require('../utils/blacklist');
-const serverTimingMiddleware = require('server-timing-header');
 const jwtDecoder = require('../utils/jwtDecoder')
 const Joi = require('joi');
 
+// require('server-timing-header');
 
-// -- Utils -- //
+
+//  --  Utils -- //
 
 function isAlphaNumeric(str) {
     var code, i, len;
@@ -20,7 +21,7 @@ function isAlphaNumeric(str) {
       }
     }
     return true;
-  };
+  }
 
 const recipeSchema = Joi.object({
     userId: Joi.string().token().required(),
@@ -41,7 +42,7 @@ const recipeSchema = Joi.object({
 })
 
 
-// -- routes -- //
+//  -- Routes -- //
 
 // give total number of recipes
 router.get('/total', async(req, res) => {
@@ -50,20 +51,20 @@ router.get('/total', async(req, res) => {
 })
 
 // get recipes based on parameters, main API entry
+    // accepts json from request body, then sanatizes and build SQL query based on sorting and fitlers
+    // relies on mutation of -- var query: sting!
+    // very procedutual apporach, looks messy but is still quite preformant, will refactor in the future if doesnt meet production demand
+
 router.post('/', async(req, res) => {
     try{
-        req.serverTiming.from('api'); // timing-api on response
-
+        // timing-api on response -- start -- req.serverTiming.from('api'); 
         const {offsetPage, limitAmount, sortFilters} = req.body;
-        console.log('sf', sortFilters);
 
         const filtersList = Object.entries(sortFilters);
-        console.log(filtersList)
 
-        const checkForBadChars = filtersList.every((x, y) => isAlphaNumeric(x[1]));
+        const checkForBadChars = filtersList.every((x) => isAlphaNumeric(x[1]));
 
         if(!checkForBadChars){
-            console.log('bad char')
             return res.status(405).send({"message": "Invalid Character in request"})
         }
 
@@ -74,14 +75,14 @@ router.post('/', async(req, res) => {
 
         // sort by post date
         else{
-            const userIdFix = filtersList.indexOf(filtersList.find(x => x[0] == 'user_id'));
+            const userIdFix = filtersList.indexOf(filtersList.find(x => x[0] === 'user_id'));
             if(userIdFix !== -1){
-                filtersList[userIdFix][1] = filtersList[userIdFix][1].replace(/\ /g, '-');
+                filtersList[parseInt(userIdFix)][1] = filtersList[parseInt(userIdFix)][1].replace(/\ /g, '-');
             }
 
-            var likedByUserIdFix = filtersList.indexOf(filtersList.find(x => x[0] == 'liked_by_user_id'));
+            var likedByUserIdFix = filtersList.indexOf(filtersList.find(x => x[0] === 'liked_by_user_id'));
             if(likedByUserIdFix !== -1){
-                filtersList[likedByUserIdFix][1] = filtersList[likedByUserIdFix][1].replace(/\ /g, '-');
+                filtersList[parseInt(likedByUserIdFix)][1] = filtersList[parseInt(likedByUserIdFix)][1].replace(/\ /g, '-');
             }
 
             // whitelists & active methods
@@ -90,26 +91,23 @@ router.post('/', async(req, res) => {
 
             const sortRequest = availableSortKeys.find(x => x == sortFilters.sortBy);
             const allFilters = filtersList.filter(x => availableFilterKeys.includes(x[0]) && x[1] !== "");
-            console.log(allFilters)
 
             const addFilters = (WHERE_OR_HAVING) => {
                 queryStr += ` ${WHERE_OR_HAVING}`;
 
-                var filterArray = allFilters.map((currVal, index) =>
+                var filterArray = allFilters.map((currVal) =>
                     ` SIMILARITY(CAST(${currVal[0] !== 'liked_by_user_id'? `R.${currVal[0]}`: `L.user_id`} AS TEXT), CAST('${currVal[1]}' AS TEXT)) > 0.4`).join(" AND");
 
                 queryStr += filterArray;
             }  
 
         // insert clean sort method into query
-        console.log(sortRequest);
-
             // simpler search query
             if(sortRequest !== 'popular DESC'){
 
                 // base query
                 var queryStr = `SELECT *, COUNT(*) OVER() AS count FROM recipes AS R ${likedByUserIdFix !== -1?  `INNER JOIN likes AS L
-                ON (R.id = L.recipe_id AND L.user_id = '${filtersList[likedByUserIdFix][1]}')`
+                ON (R.id = L.recipe_id AND L.user_id = '${filtersList[parseInt(likedByUserIdFix)][1]}')`
                 : ``}`
 
                 // check for filters, then add sort method
@@ -118,15 +116,12 @@ router.post('/', async(req, res) => {
             }
             // if sort by likes, use join query
             else if(sortRequest === "popular DESC"){
-                // likedByUserIdFix !== -1
                 // base query
                 var queryStr = `SELECT R.*, COUNT(*) OVER() AS count, ${likedByUserIdFix !== -1? `(SELECT COUNT(*) AS popular FROM likes WHERE recipe_id = R.id)` : `COUNT(L.recipe_id) AS popular`}
                 FROM recipes AS R
                 LEFT JOIN likes AS L
                 ON (R.id = L.recipe_id)
                 GROUP BY ${likedByUserIdFix !== -1? `r.id, r.user_id, r.bean, r.region, r.roaster, r.roastdate, r.postdate, r.dose, r.yield, r.time, r.grind, r.grind, r.machine, r.tastingnotes, r.notes, r.roast, r.process, l.user_id` : `R.id`}`;
-
-                //GROUP BY R.id
 
                 // check for filters, then add sort method
                 if((allFilters !== null || allFilters !== undefined) & allFilters.length >= 1){ addFilters('HAVING') }
@@ -142,12 +137,11 @@ router.post('/', async(req, res) => {
             queryStr += ` LIMIT ${limitAmount} OFFSET ${offsetPage * limitAmount}`
             console.log(queryStr)
 
-            req.serverTiming.from('db');
+            //req.serverTiming.from('db');
             var recipes = await pool.query(queryStr);
-            req.serverTiming.to('db');
+            //req.serverTiming.to('db');
         }
-        req.serverTiming.to('api');
-        console.log('count', recipes.rowCount,'\n',recipes.rows[0], '\n');
+        // -- end -- req.serverTiming.to('api');
         res.send(recipes.rowCount === 0? [{"count": 0}] : recipes.rows);
     }
     catch(err){
@@ -192,7 +186,7 @@ router.post('/new', blacklistCheck, async(req, res) => {
 
     } catch (error) {
         console.log(error.message, error);
-        res.status(500).send({"success": false, "message": "Failed to submit"});;
+        res.status(500).send({"success": false, "message": "Failed to submit"});
     }
 })
 
@@ -239,11 +233,11 @@ router.post('/like', blacklistCheck, async(req, res) => {
         const isLiked = await pool.query("SELECT * FROM likes WHERE user_id = $1 AND recipe_id = $2", [user_id, recipe_id]);
         
         if(isLiked.rowCount === 0){
-            const like = await pool.query("INSERT INTO likes(user_id, recipe_id) VALUES($1, $2) RETURNING *", [user_id, recipe_id]);
+            await pool.query("INSERT INTO likes(user_id, recipe_id) VALUES($1, $2) RETURNING *", [user_id, recipe_id]);
             return res.json({"bool": true});
         }
         else{
-            const unLike = await pool.query("DELETE FROM likes WHERE user_id = $1 AND recipe_id =$2", [user_id, recipe_id]);
+            await pool.query("DELETE FROM likes WHERE user_id = $1 AND recipe_id = $2", [user_id, recipe_id]);
             return res.json({"bool": false});
         }
     }
@@ -274,17 +268,18 @@ router.post('/liked', blacklistCheck, async(req, res) => {
     }
 })
 
+//               //
+// -- Reports -- //
+//               //
+
 router.post('/report', async(req, res) => {
     try {
         const {recipe_id, user_id} = req.body;
-        console.log(user_id);
-        
         
         Joi.assert(user_id, Joi.string().guid());
         Joi.assert(recipe_id, Joi.string().guid());
 
         const isReported = await pool.query("SELECT users FROM reports WHERE recipe_id = $1", [recipe_id]); // check reports array
-        console.log(isReported);
         
         if(isReported?.rows[0]?.users.includes(user_id) && isReported?.rowCount !== 0){
             return res.status(418).send({"message": "Already reported!", "success": false})
@@ -296,13 +291,15 @@ router.post('/report', async(req, res) => {
         DO UPDATE SET count = reports.count + 1, users = array_append(reports.users, $2::uuid)`;
         
         const report = await pool.query(query, [recipe_id, user_id]); // if not reported by user, add to reports
-        console.log(report);
+        if (!report){
+            return res.status(418).send({"message": "Not Reported", "success": false})
+        }
 
-        return res.status(200).send({"message": "good report", "success": true})
+        return res.status(200).send({"message": "Reported!", "success": true})
 
     } catch (error) {
-        console.log(error)
-        return res.status(500).send({"message": "bad report", "success": false})
+        console.log(error.message)
+        return res.status(500).send({"message": "Not reported", "success": false})
     }
 })
 
