@@ -18,7 +18,6 @@ import Admin from './pages/Admin.js';
 import Header from './components/Header.js';
 import ErrorScreen from './components/ErrorScreen.js';
 import LoadingSpinner from './components/LoadingSpinner.js';
-import { left } from '@popperjs/core';
 // import Test from './Test.js';
 
 

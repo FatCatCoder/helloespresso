@@ -291,10 +291,9 @@ router.post('/report', async(req, res) => {
         }
 
         const query = `INSERT INTO reports (recipe_id, users)
-          VALUES($1, ARRAY['$2'::uuid]) 
-          ON CONFLICT (recipe_id) 
-          DO 
-          	UPDATE SET count = reports.count + 1, users = array_append(reports.users, '$2'::uuid)  RETURNING *`;
+        VALUES($1::uuid, ARRAY[$2::uuid]) 
+        ON CONFLICT (recipe_id)
+        DO UPDATE SET count = reports.count + 1, users = array_append(reports.users, $2::uuid)`;
         
         const report = await pool.query(query, [recipe_id, user_id]); // if not reported by user, add to reports
         console.log(report);
@@ -308,8 +307,3 @@ router.post('/report', async(req, res) => {
 })
 
 module.exports = router;
-
-
-`
-INSERT INTO reports (recipe_id, users) VALUES('03869a98-7a2e-49e7-82a6-692e27f56bc0', ARRAY['da47572c-75a6-49c1-9c78-e0b3aee0cb78'::uuid]) ON CONFLICT (recipe_id) DO UPDATE SET count = reports.count + 1, users = array_append(reports.users, 'da47572c-75a6-49c1-9c78-e0b3aee0cb78'::uuid)
-`
