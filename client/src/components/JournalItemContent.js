@@ -6,12 +6,11 @@ import Shot from './Shot.js';
 import ErrorScreen from './ErrorScreen.js';
 
 function JournalItemContent({myEntries, deleteJournal, errors}){
-    let {id} = useParams();
+    let { id } = useParams();
     
     // data
     const [shotLog, setShotLog] = useState([]); 
     const myEntry = myEntries.find(x => x.id === id);
-    console.log(myEntry);
     
     useEffect(() => {
         const abortController = new AbortController();

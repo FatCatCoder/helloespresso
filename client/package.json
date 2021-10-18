@@ -53,5 +53,5 @@
     ]
   },
   "proxy": "http://localhost:5000",
-  "homepage": "http://localhost"
+  "homepage": "."
 }

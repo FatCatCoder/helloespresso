@@ -34,8 +34,6 @@ function App (){
   const globalToastBody = globalStore(state => state.globalToastBody);
   
   useEffect(() => {
-    console.log('app.js useeffect');
-    
     const abortController = new AbortController();
     let ignore = false;
 
@@ -52,13 +50,11 @@ function App (){
           }
     
           const parseRes = await response.json();
-          console.log(parseRes);
           
           parseRes.verified === true ? setIsLoggedIn(true): setIsLoggedIn(false);
           setLoadingAuth(false);
 
         } catch (error) {
-            console.log(error.message)
             setIsLoggedIn(false);
             setLoadingAuth(false);
         }
@@ -71,8 +67,6 @@ function App (){
             abortController.abort();
         }; 
   }, [setIsLoggedIn, isLoggedIn, loadingAuth, setLoadingAuth])
- 
-  console.log(window.location.pathname);
 
   return (
     <>

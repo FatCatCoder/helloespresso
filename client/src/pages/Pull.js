@@ -17,8 +17,7 @@ function Pull () {
   }, [])
 
   // set default list of pulled shots
-  const [shotList, setShotList] = useState([{"dose":"20", "time":"30", "yield":"45", "grind": "10", "roaster": "Buddy Brew", "bean": "Ethiopia", "Bitter": true, "Strong": true, "notes": "too strong and overextracted, no tasting notes present."},
-  {"dose":"19", "time":"30", "yield":"45", "grind": "10", "roaster": "Buddy Brew", "bean": "Ethiopia", "Sour": true, "Balanced": true, "Weak": true, "notes": "tastes like sour/sweet fruit, pulled a little watery."}])
+  const [shotList, setShotList] = useState([])
 
   const addShotToList = (addShot) => {
       setShotList([...shotList, addShot]);
@@ -71,20 +70,17 @@ function Pull () {
 
   const handleSubmit = (event) => {
       event.preventDefault();
-      console.log(newShot.dose)
       schema.validate({
         dose: newShot.dose,
         yield: newShot.yield,
         time: newShot.time,
         grind: newShot.grind,
       }, { abortEarly: false }).then(function () {
-        console.log('Submitted!')
         addShotToList(newShot);
         setNewShot({});
         
       }).then(function () {setStep(2);}).catch(function (err) {
         setFormErrors(err.errors);
-        console.log(Object.keys(err), err.name, err.value, err.path, err.type, err.errors, err.inner)
       })      
   }
 

@@ -17,7 +17,6 @@ function Pagination({currPage, setCurrPage, totalItems, itemsPerPage, className}
         e.preventDefault();
         
         if(Number.isInteger(newPage) && (newPage > 0 && newPage <= numberOfPages)){
-            console.log(true)
             setCurrPage(newPage);
             setNewPage('');
         }

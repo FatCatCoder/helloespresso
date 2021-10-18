@@ -11,6 +11,9 @@ function Footer ({ shotList, setShotList}){
     const getUserId = globalStore(state => state.getUserIdFromJWT) 
     const isLoggedIn = globalStore(state => state.isLoggedIn)
 
+    // Toast
+    const globalToast = globalStore(state => state.globalToast)
+
     // Footer modal
     const [journalEntry, setJournalEntry] = useState({});
     const [show, setShow] = useState(false);
@@ -40,17 +43,15 @@ function Footer ({ shotList, setShotList}){
         const parseRes = await res.json();
 
         if(parseRes.success){
-            setShow(false)
+            setShow(false);
         }
+        globalToast(parseRes?.message)
     }
     
     // render pulls
     const pulls = shotList.map((pull, index) =>
-            <Shot key={index} listNum={index+1} dose={pull.dose} time={pull.time} yield={pull.yield} grind={pull.grind} notes={pull.notes} Sour={pull.Sour} Bitter={pull.Bitter} Weak={pull.Weak} Balanced={pull.Balanced} Strong={pull.Strong} /> 
-        );
-
-        console.log(pulls);
-        
+        <Shot key={index} listNum={index+1} dose={pull.dose} time={pull.time} yield={pull.yield} grind={pull.grind} notes={pull.notes} Sour={pull.Sour} Bitter={pull.Bitter} Weak={pull.Weak} Balanced={pull.Balanced} Strong={pull.Strong} /> 
+    );
 
     return(
         <div id="Footer" className="text-center mx-auto">

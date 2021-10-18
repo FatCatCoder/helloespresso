@@ -24,10 +24,8 @@ function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleM
 
   return (
     <>
-      <OverlayTrigger show={!isLoggedIn} overlay={<Tooltip id="tooltip-disabled">login to add to your journal!</Tooltip>}>
-          <Button color="primary" className="btn w-100" disabled={!isLoggedIn} data-bs-dismiss="offcanvas" onClick={isLoggedIn? handleShow : () => history.push('/login')}>{buttonLabel}</Button>
-      </OverlayTrigger>
-
+      <Button color="primary" className="btn w-100" disabled={!isLoggedIn} data-bs-dismiss="offcanvas" onClick={isLoggedIn? handleShow : () => history.push('/login')}>{buttonLabel}</Button>
+      
       <form onSubmit={handleModalSubmit} id="modalForm" inline="true">
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>

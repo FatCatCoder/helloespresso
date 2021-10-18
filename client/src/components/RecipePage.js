@@ -26,7 +26,6 @@ function RecipePage(props){
 
     // placeholder 
     const reportRecipe = async () => {
-        console.log('reported you nerd');
         const res = await fetch('/api/recipes/report', {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -34,10 +33,8 @@ function RecipePage(props){
         })
 
         const parseRes = await res.json();
-        console.log(parseRes);
         
         globalToast(parseRes?.message);
-        return console.log(parseRes?.message || 'error')
     }
 
     // toggle like on server and updates with json returned bool

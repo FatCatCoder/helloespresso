@@ -34,7 +34,6 @@ function PasswordResetToken() {
             })
 
             const parseRes = await response.json();
-            console.log(parseRes);
             
             if(!parseRes.success){
                 setErrors(parseRes)

@@ -3,9 +3,6 @@ import {globalStore} from '../store.js';
 
 function Navbar({currPage, handleNav}) {
     const currentPage = globalStore(state => state.currentPage);
-    console.log("currentPage", currentPage, '\n', "currPage", Object.keys(currPage)[0]);
-
-    // old test .test(Object.keys(currPage)[0]) === true
 
     return(
       <div id="navbar" className={`text-center mx-auto d-flex justify-content-center col-xl-4 col-lg-5 col-10 col-md-6 pt-2 pb-2 ${/(about)/.test(currentPage) || /(about)/.test(Object.keys(currPage)[0]) === true ? '': 'border-bottom'}`}>

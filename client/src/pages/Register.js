@@ -34,7 +34,6 @@ function Register({setIsAuth}) {
             });
 
             const parseRes = response.headers.get('Authorization');
-            console.log(parseRes)
 
             if (parseRes !== null){
               localStorage.setItem('Authorization', parseRes);
@@ -48,7 +47,6 @@ function Register({setIsAuth}) {
             }
 
         } catch (error) {
-            console.log(error.message);
             setErrors({message: "500: Server Error", boolean: "false"})
         }
     }

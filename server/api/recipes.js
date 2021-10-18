@@ -96,7 +96,7 @@ router.post('/', async(req, res) => {
                 queryStr += ` ${WHERE_OR_HAVING}`;
 
                 var filterArray = allFilters.map((currVal) =>
-                    ` SIMILARITY(CAST(${currVal[0] !== 'liked_by_user_id'? `R.${currVal[0]}`: `L.user_id`} AS TEXT), CAST('${currVal[1]}' AS TEXT)) > 0.4`).join(" AND");
+                    ` SIMILARITY(CAST(${currVal[0] !== 'liked_by_user_id'? `R.${currVal[0]}`: `L.user_id`} AS TEXT), CAST('${currVal[1]}' AS TEXT)) > 0.2`).join(" AND");
 
                 queryStr += filterArray;
             }  
@@ -135,7 +135,6 @@ router.post('/', async(req, res) => {
 
             // before final query add limit and offset (for pagination)
             queryStr += ` LIMIT ${limitAmount} OFFSET ${offsetPage * limitAmount}`
-            console.log(queryStr)
 
             //req.serverTiming.from('db');
             var recipes = await pool.query(queryStr);

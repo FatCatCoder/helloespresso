@@ -49,7 +49,6 @@ function RecipeForm({getUserId, refresh, setRefresh}){
     yup.addMethod(yup.string, 'noBadWords', function(x) {
         return this.test('bad-words-test', x ?? 'Invaild Word', function(value) {
             const { path, createError } = this;
-            console.log(value, filter.isUnclean(value));
             
             return !filter.isUnclean(value) || createError({message: x, "value": value, path: path});
         });
@@ -181,7 +180,7 @@ function RecipeForm({getUserId, refresh, setRefresh}){
             case 2:
                 return <RecipeFormPageThree newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} handleCheckboxChange={handleCheckboxChange} setStep={setStep} />;
             default:
-                console.log('error on loading wizard form page, step not submitted');
+                <p>error on loading wizard form page, step not submitted</p>
     };
 };
 

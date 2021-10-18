@@ -24,12 +24,6 @@ function Admin() {
   }
 
   const goAccess = async() => {
-    //token method
-    // const res = await fetch('/report', {
-    //   method: 'GET',
-    //   headers: {'Authorization': response?.token}
-    // })
-
     window.open(`/report?token=${response?.token.split('Bearer')[1]}`)
   }
 

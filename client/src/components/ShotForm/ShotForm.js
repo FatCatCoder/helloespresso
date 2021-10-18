@@ -22,7 +22,7 @@ function ShotForm({newShot, handleInputChange, handleSubmit, setStep, step, hand
             case 2:
                 return <ShotFormPageFinal shotList={shotList} newShot={newShot} handleSubmit={handleSubmit} handleInputChange={handleInputChange} setStep={setStep} step={step}/>;
             default:
-                console.log('error on loading wizard form page, step not submitted');
+                <p>error on loading wizard form page, step not submitted</p>
     };
 };
 

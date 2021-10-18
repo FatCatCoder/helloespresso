@@ -4,8 +4,6 @@ import '../../assets/FormStyles.css'
 
 function RecipeFormPageOne({newShot, handleInputChange, nextStep}){
     const formErrors = useShotFormStore(state => state.formError);
-    console.log(formErrors, formErrors.includes('Invaild word for bean'))
-
     return(
         <>
             <div className="col-7 col-sm-6 col-md-4 col-lg-4 col-xl-2 mx-auto">

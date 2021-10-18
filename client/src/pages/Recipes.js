@@ -136,7 +136,7 @@ function Recipes(){
             const returnedData = getRecipes('new', abortController);
 
             if(returnedData === 'AbortError'){
-                console.log('error');
+                console.log('You are going too fast!');
             }
             else{
                 setRefresh(false);
@@ -148,7 +148,7 @@ function Recipes(){
             const returnedData = getRecipes('next', abortController);
 
             if(returnedData === 'AbortError'){
-                console.log('error');
+                console.log('You are going too fast!');
             }
             else{
                 setRefresh(false);
@@ -191,7 +191,6 @@ function Recipes(){
      // Recipes view logic
      const displayRecipes = () => {
         try{
-            console.log('display recipes', isLoading);
             if(recipeSlice[0]?.count === 0){
                 return <ErrorScreen errorMessage={'All out of coffee, try a different search?'} />
             }
@@ -203,7 +202,6 @@ function Recipes(){
                 const fakeArr = new Array(recipesPerPage).fill({});
                 return fakeArr.map((x, y) => <RecipeCard key={y} recipe={x} animation={'skeleton'} />) 
             }
-            console.log('displayrecipes recipeSlice',recipeSlice, 'displayrecipes myrecipes', myRecipes, 'sort filters' ,sortFilters);
             return recipeSlice.map((x) => <RecipeCard key={x.id} recipe={x} animation={'fadeIn'} />)
         }
         catch(error){
