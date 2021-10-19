@@ -20,7 +20,8 @@ function RecipePage(props){
 
     // Data
     const [liked, setLiked] = useState(false);
-    const [recipe, setRecipe] = useState(props.recipe.find(obj => obj.id === id));
+    // const [recipe, setRecipe] = useState(props?.recipe?.find(obj => obj.id === id));
+    const [recipe, setRecipe] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const globalToast = globalStore(state => state.globalToast);
 

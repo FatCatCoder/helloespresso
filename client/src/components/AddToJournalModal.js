@@ -2,9 +2,7 @@ import { useState } from 'react';
 import {useHistory} from 'react-router-dom';
 
 import Modal from 'react-bootstrap/Modal'
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Button from 'react-bootstrap/Button'
-import Tooltip from 'react-bootstrap/Tooltip'
 import Form from 'react-bootstrap/Form'
 
 

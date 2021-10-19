@@ -19,7 +19,7 @@ function About() {
   // eslint-disable-next-line
   const [show, setShow] = useState(false);
   const [showSecret, setShowSecret] = useState(false); 
-  const [showSobSection, setShowSobSection] = useState(false);
+  // const [showSobSection, setShowSobSection] = useState(false);
   
   // global toast message system, butter & jam on the side
   const globalToast = globalStore(state => state.globalToast);
@@ -87,11 +87,11 @@ function About() {
             <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> More!</li>
           </ul>
           <h1 className="display-4">Whats up.</h1>
-          <p>I want to hear from you. Send any requests for new features or bug fixes to one of my handles <strong>@helloespresso.coffee</strong></p>
+          <p>I want to hear from you. Send any requests for new features or bug fixes to one of my handles <span class="row"><strong><i class="bi bi-envelope-fill"></i> helloespresso.coffee@gmail.com</strong> <a href="https://twitter.com/hello__espresso"><i class="bi bi-twitter"></i> @hello__espresso</a></span> <a href="https://github.com/sirfatcat"><i class="bi bi-github"></i> @SirFatCat</a></p>
           <p className="lead fs-2">Hello Developers</p>
-          <p>looking to help out? Contact me on github and lets see what we can build together</p>
+          <p className="p-2">looking to help out? Contact me on github and lets see what we can build together</p>
 
-          <button className="bg-transparent border-0 text-muted fs-6" type="button" onClick={() => setShowSobSection(!showSobSection)} data-bs-target="#secret" aria-expanded="false" aria-controls="secret text">
+          {/* <button className="bg-transparent border-0 text-muted fs-6" type="button" onClick={() => setShowSobSection(!showSobSection)} data-bs-target="#secret" aria-expanded="false" aria-controls="secret text">
             pssst...
           </button>
 
@@ -105,7 +105,7 @@ function About() {
               </p>
               <p>@helloespresso payment vendor</p>
             </div>
-            </Fade>
+            </Fade> */}
         </div>
         </Fade>
       </div>

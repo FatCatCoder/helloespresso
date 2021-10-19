@@ -2,16 +2,15 @@ import { Link } from 'react-router-dom';
 import {useState} from 'react';
 import Fade from 'react-reveal/Fade';
 
-
 // components
 import Navbar from './Navbar.js';
-import '../assets/Header.css';
 import {globalStore} from '../store';
 
-// imgs 
+// assets
 import tamper from '../assets/img/tamper_fix.png';
 import portafilter from '../assets/img/portafilter_fix.png';
 import drip from '../assets/img/drip_fix.png';
+import '../assets/Header.css';
 
 
 function Header(){
@@ -29,7 +28,7 @@ function Header(){
     return(
         <>
         <div id="header" className="border-bottom pb-1">
-          <div className="container-xl img-box">
+          <div className="container-xl w-50 img-box">
             <Link to={"/"}>
             <img alt="altLogoImg" onClick={handleNav} name={'/'} className="img-fluid d-block mx-auto w-15 portafilter" src={portafilter} />
             <Fade top delay={500}>

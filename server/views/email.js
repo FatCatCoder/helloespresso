@@ -510,23 +510,6 @@ return `<!DOCTYPE html>
                                       >
                                         <tr>
                                           <td style="padding: 0 2px 0 2px">
-                                            <a
-                                              href="https://www.facebook.com/"
-                                              target="_blank"
-                                              ><img
-                                                alt="Facebook"
-                                                height="32"
-                                                src="cid:facebook"
-                                                style="
-                                                  display: block;
-                                                  height: auto;
-                                                  border: 0;
-                                                "
-                                                title="Facebook"
-                                                width="32"
-                                            /></a>
-                                          </td>
-                                          <td style="padding: 0 2px 0 2px">
                                         <a
                                           href="https://github.com/FatCatCoder"
                                           target="_blank"
@@ -545,7 +528,7 @@ return `<!DOCTYPE html>
                                       </td>
                                           <td style="padding: 0 2px 0 2px">
                                             <a
-                                              href="https://twitter.com/"
+                                              href="https://twitter.com/hello__espresso"
                                               target="_blank"
                                               ><img
                                                 alt="Twitter"
@@ -557,40 +540,6 @@ return `<!DOCTYPE html>
                                                   border: 0;
                                                 "
                                                 title="Twitter"
-                                                width="32"
-                                            /></a>
-                                          </td>
-                                          <td style="padding: 0 2px 0 2px">
-                                            <a
-                                              href="https://instagram.com/"
-                                              target="_blank"
-                                              ><img
-                                                alt="Instagram"
-                                                height="32"
-                                                src="cid:instagram"
-                                                style="
-                                                  display: block;
-                                                  height: auto;
-                                                  border: 0;
-                                                "
-                                                title="Instagram"
-                                                width="32"
-                                            /></a>
-                                          </td>
-                                          <td style="padding: 0 2px 0 2px">
-                                            <a
-                                              href="https://www.linkedin.com/"
-                                              target="_blank"
-                                              ><img
-                                                alt="LinkedIn"
-                                                height="32"
-                                                src="cid:linkedin"
-                                                style="
-                                                  display: block;
-                                                  height: auto;
-                                                  border: 0;
-                                                "
-                                                title="LinkedIn"
                                                 width="32"
                                             /></a>
                                           </td>
@@ -741,11 +690,6 @@ const passwordResetEmailAttachments = [
       cid: 'logo' //same cid value as in the html img src
   },
   {
-      filename: 'facebook.png',
-      path: path.join(__dirname, "../views/images/facebook.png"),
-      cid: 'facebook'
-  },
-  {
       filename: 'github.png',
       path: path.join(__dirname, "../views/images/github.png"),
       cid: 'github'
@@ -755,19 +699,7 @@ const passwordResetEmailAttachments = [
       path: path.join(__dirname, "../views/images/twitter.png"),
       cid: 'twitter'
   },
-  {
-      filename: 'instagram.png',
-      path: path.join(__dirname, "../views/images/instagram.png"),
-      cid: 'instagram'
-  },
-  {
-      filename: 'linkedin.png',
-      path: path.join(__dirname, "../views/images/linkedin.png"),
-      cid: 'linkedin'
-  },
 ]
-
-//module.exports = emailTemplate;
 
 exports.passwordResetEmailTemplate = passwordResetEmailTemplate;
 exports.passwordResetEmailAttachments = passwordResetEmailAttachments;

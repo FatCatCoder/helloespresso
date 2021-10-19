@@ -111,9 +111,9 @@ function App (){
       </Switch>
 
       <ToastContainer style={{position: "fixed", bottom: `0px`, margin: 0, left: "calc(50% - 10rem"}}>
-        <Toast className="p-1 mb-2" onClose={() => setShowGlobalToast(false)} show={showGlobalToast} animation={true} delay={1750} autohide>
+        <Toast className="p-1 mb-2" onClose={() => setShowGlobalToast(false)} show={showGlobalToast} animation={true} delay={2000} autohide>
           <Toast.Header>
-            <div className="mx-auto text-center">
+            <div className="mx-auto text-center text-danger">
               <i class="bi bi-bell"></i>
               <div dangerouslySetInnerHTML={{__html: globalToastBody}} />
             </div>

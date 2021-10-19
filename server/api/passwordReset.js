@@ -22,22 +22,19 @@ router.post("/", async (req, res) => {
              return res.status(401).json({"message":"Email invalid", "success": false});
          }
 
-         console.log(user.rows[0]);
-
         //create token, link, then send email
         const token = jwtGenerator(user.rows[0].id, '10m', process.env.PWD_RESET_SECRET);
 
         const link = `${process.env.URL}/password-reset/${token}`;
-
         console.log(link);
+        
 
-        const sendingEmail = await sendEmail(user.rows[0].email, "Password Reset", emailJS.passwordResetEmailTemplate(link), emailJS.passwordResetEmailAttachments);
+        // const sendingEmail = await sendEmail(user.rows[0].email, "Password Reset", emailJS.passwordResetEmailTemplate(link), emailJS.passwordResetEmailAttachments);
 
-        // email pass/fail check
-        if(!sendingEmail.success){
-            console.log('Bad sendingEmail');
-            return res.send({"message" : "password reset link sent to your email account", "success": false});
-        }
+        // if(!sendingEmail.success){
+        //     console.log('Bad sendingEmail');
+        //     return res.send({"message" : "password reset link sent to your email account", "success": false});
+        // }
         
         console.log('Good sending email');
         res.send({"message" : "password reset link sent to your email account", "success": true});
@@ -56,7 +53,7 @@ router.post("/:token", async (req, res) => {
         const payload = 
             jwt.verify(token, process.env.PWD_RESET_SECRET, function(err, decoded) {
                 if (err) {
-                    return res.send({"message": err.message, "success": false})
+                    return res.send({"message": "Invalid Auth or Expired", "success": false})
                 }
                 else{
                     return decoded;
