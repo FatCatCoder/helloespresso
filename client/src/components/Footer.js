@@ -71,7 +71,7 @@ function Footer ({ shotList, setShotList}){
                 <div className="container mx-auto col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                     <div className="row">
                         <div className="col-6">
-                            <AddToJournalModal buttonLabel={isLoggedIn? 'Log': 'login'} show={show} setShow={setShow} isLoggedIn={isLoggedIn} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} />
+                            <AddToJournalModal buttonLabel={isLoggedIn? 'Log': 'login'} shotsCount={pulls.length} show={show} setShow={setShow} isLoggedIn={isLoggedIn} handleModalSubmit={handleModalSubmit} handleModalInputChange={handleModalInputChange} journalEntry={journalEntry} />
                         </div>
                         <div className="col-6">
                             <button onClick={() => setShotList([])} className="btn btn-danger w-100">clear</button>

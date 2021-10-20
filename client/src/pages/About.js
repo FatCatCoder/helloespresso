@@ -87,7 +87,7 @@ function About() {
             <li className="list-group-item"><i className="bi bi-emoji-sunglasses float-start"></i> More!</li>
           </ul>
           <h1 className="display-4">Whats up.</h1>
-          <p>I want to hear from you. Send any requests for new features or bug fixes to one of my handles <span class="row"><strong><i class="bi bi-envelope-fill"></i> helloespresso.coffee@gmail.com</strong> <a href="https://twitter.com/hello__espresso"><i class="bi bi-twitter"></i> @hello__espresso</a></span> <a href="https://github.com/sirfatcat"><i class="bi bi-github"></i> @SirFatCat</a></p>
+          <p>I want to hear from you. Send any requests for new features or bug fixes to one of my handles <span class="row"><strong><i class="bi bi-envelope-fill"></i> helloespresso.coffee@gmail.com</strong> <a href="https://twitter.com/hello__espresso"><i class="bi bi-twitter"></i> @hello__espresso</a></span> <a href="https://github.com/fatcatcoder"><i class="bi bi-github"></i> @FatCatCoder</a></p>
           <p className="lead fs-2">Hello Developers</p>
           <p className="p-2">looking to help out? Contact me on github and lets see what we can build together</p>
 

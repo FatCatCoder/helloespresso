@@ -11,7 +11,7 @@ import Form from 'react-bootstrap/Form'
 // this will help people who forgot to log in but pull valuable data already
 // for now use tooltip to say login
 
-function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleModalInputChange, journalEntry, isLoggedIn, setShow, show }){
+function AddToJournalModal ({ buttonLabel, shotsCount, handleModalSubmit, handleModalInputChange, journalEntry, isLoggedIn, setShow, show }){
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
@@ -22,7 +22,7 @@ function AddToJournalModal ({ buttonLabel, className, handleModalSubmit, handleM
 
   return (
     <>
-      <Button color="primary" className="btn w-100" disabled={!isLoggedIn} data-bs-dismiss="offcanvas" onClick={isLoggedIn? handleShow : () => history.push('/login')}>{buttonLabel}</Button>
+      <Button color="primary" className="btn w-100" disabled={!isLoggedIn || !shotsCount} data-bs-dismiss="offcanvas" onClick={isLoggedIn? handleShow : () => history.push('/login')}>{buttonLabel}</Button>
       
       <form onSubmit={handleModalSubmit} id="modalForm" inline="true">
         <Modal show={show} onHide={handleClose}>

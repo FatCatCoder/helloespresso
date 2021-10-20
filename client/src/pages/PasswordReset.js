@@ -21,7 +21,6 @@ function PasswordReset() {
         setInputs({...inputs, [e.target.name]:e.target.value})
     };
 
-    // 
     const onSubmitForm = async(e) => {
         e.preventDefault();
 
@@ -34,7 +33,7 @@ function PasswordReset() {
                 body: JSON.stringify(body)
             })
 
-            const parseRes = response.json();
+            const parseRes = await response.json();
             if (!parseRes.success){
                 return setErrors(parseRes)  
             }
@@ -45,6 +44,8 @@ function PasswordReset() {
             setErrors({"message": "500: Server Error", "success": false})
         }
     };
+    console.log(errors);
+    
 
     return(
         <>

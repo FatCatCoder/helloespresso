@@ -14,7 +14,8 @@ router.post('/', blacklistCheck, jwtValidate({secret: process.env.SECRET, algori
         res.send(journals.rows);
     }
     catch(error){
-        console.log({"success": false, "message": "nothing here!"})
+        console.log(error.name, error.message);
+        res.send({"success": false, "message": "nothing here!"})
     }
 })
 
@@ -39,7 +40,7 @@ router.post('/new', blacklistCheck, jwtValidate({secret: process.env.SECRET, alg
         res.send({"success": true, "message": "Journal has been logged!"});
     }
     catch(error){
-        console.log(error)
+        console.log(error.name, error.message);
         res.send({"success": false, "message": "Journal has not been logged!"})
     }
 })
@@ -55,7 +56,7 @@ router.post('/delete', blacklistCheck, jwtValidate({secret: process.env.SECRET, 
         res.send({"message": "Deleted", "success": true});
     }
     catch(error){
-        console.log(error?.message)
+        console.log(error.name, error.message);
         res.send({"message": 'Spilled coffee on the server, might take a while', "success": false});
     }
 })

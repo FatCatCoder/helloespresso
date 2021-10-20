@@ -101,7 +101,7 @@ router.post('/', async(req, res) => {
                 queryStr += filterArray;
             }  
 
-        // insert clean sort method into query
+            // insert clean sort method into query
             // simpler search query
             if(sortRequest !== 'popular DESC'){
 
@@ -143,9 +143,9 @@ router.post('/', async(req, res) => {
         // -- end -- req.serverTiming.to('api');
         res.send(recipes.rowCount === 0? [{"count": 0}] : recipes.rows);
     }
-    catch(err){
-        console.log(err)
-        res.send(err)
+    catch(error){
+        console.log(error.name, error.message);
+        res.send({"message":"Query failed", "success": false})
     }
 })
 
@@ -156,8 +156,8 @@ router.get('/:id', async(req, res) => {
         const recipe = await pool.query("SELECT * FROM recipes WHERE id = $1", [id]);
         res.send(recipe.rows);
     }
-    catch(err){
-        console.log(err)
+    catch(error){
+        console.log(error.name, error.message);
         res.send([null])
     }
 })
@@ -184,15 +184,15 @@ router.post('/new', blacklistCheck, async(req, res) => {
         res.send({"success": true, "message": "Recipe submited!"});
 
     } catch (error) {
-        console.log(error.message, error);
+        console.log(error.name, error.message);
         res.status(500).send({"success": false, "message": "Failed to submit"});
     }
 })
 
 
-//                   //
+
 // -- like routes -- //
-//                   //
+
 
 
 // get number of likes on a recipe
@@ -203,6 +203,7 @@ router.post('/likes', async(req, res) => {
         res.send(recipes.rows[0].count);
     }
     catch (error) {
+        console.log(error.name, error.message);
         res.status(500);
     }
 })
@@ -220,6 +221,7 @@ router.post('/all-likes', async(req, res) => {
         res.send(recipes.rows);
     }
     catch (error) {
+        console.log(error.name, error.message);
         res.status(500);
     }
 })
@@ -241,6 +243,7 @@ router.post('/like', blacklistCheck, async(req, res) => {
         }
     }
     catch (error) {
+        console.log(error.name, error.message);
         res.status(500);
     }
 })
@@ -263,13 +266,14 @@ router.post('/liked', blacklistCheck, async(req, res) => {
         }
     }
     catch (error) {
+        console.log(error.name, error.message);
         res.status(500);
     }
 })
 
-//               //
+
 // -- Reports -- //
-//               //
+
 
 router.post('/report', async(req, res) => {
     try {
@@ -297,7 +301,7 @@ router.post('/report', async(req, res) => {
         return res.status(200).send({"message": "Reported!", "success": true})
 
     } catch (error) {
-        console.log(error.message)
+        console.log(error.name, error.message);
         return res.status(500).send({"message": "Not reported", "success": false})
     }
 })

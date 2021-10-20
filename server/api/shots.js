@@ -14,7 +14,7 @@ router.post('/', blacklistCheck, async(req, res) => {
         res.send(shots.rows);
     }
     catch(error){
-        console.log(error)
+        console.log(error.name, error.message);
     }
 })
 

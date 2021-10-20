@@ -15,7 +15,7 @@ router.get("/verify", async(req, res) => {
         }
         return res.sendStatus(200).send();
     } catch (error) {
-        console.log(error?.message);
+        console.log(error.name, error.message);
         return res.sendStatus(500).send('bad');
 
     }
@@ -40,6 +40,7 @@ router.post('/login', async(req, res) => {
         return res.setHeader('Authorization', token).status(200).send();
     } 
     catch (error) {
+        console.log(error.name, error.message);
         return res.status(500).send("server error"); 
     }
 })

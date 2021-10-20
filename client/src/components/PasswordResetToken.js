@@ -8,13 +8,12 @@ function PasswordResetToken() {
     let { token } = useParams();
 
     // form state & utils
-    const [errors, setErrors] = useState({"success": false, "message": ""});
     const [success, setSuccess] = useState({"success": false, "message": ""});
     const [inputs, setInputs] = useState({
-        newPassword: "",
+        newPassword: "", newPasswordReEntry: ""
     });
 
-    const { newPassword } = inputs;
+    const { newPassword, newPasswordReEntry } = inputs;
 
     const onchange = (e) => {
         setInputs({...inputs, [e.target.name]:e.target.value})
@@ -25,7 +24,10 @@ function PasswordResetToken() {
         e.preventDefault();
 
         try {
-            const body = { newPassword, token };
+            const body = { newPassword, newPasswordReEntry, token };
+            if(newPassword !== newPasswordReEntry){
+                return setSuccess({"message": "Passwords do not match", "success": false})
+            }
 
             const response = await fetch(`/api/password-reset/${token}`, {
                 method: "POST",
@@ -36,27 +38,28 @@ function PasswordResetToken() {
             const parseRes = await response.json();
             
             if(!parseRes.success){
-                setErrors(parseRes)
+                setSuccess(parseRes)
             }
 
             setSuccess(parseRes);
 
         } catch (error) {
-            setErrors({message: "500: Server Error"})
+            setSuccess({"message": "Server Error", "success": false})
         }
     };
+    
         
     return(
         <>
         <div className="container text-center">
             <h1 className="display-2">New Password</h1>
             <form onSubmit={onSubmitForm} className="container mx-auto col-8 col-xl-5">
-                <input type="text" name="newPassword" placeholder="Enter new password" value={newPassword} onChange={e => onchange(e)} required={true} className={` form-control my-3 ${errors.message? 'input-error': ''}`} />
+                <input type="text" name="newPassword" placeholder="Enter new password" value={newPassword} onChange={e => onchange(e)} required={true} className={` form-control my-3 ${!success.success && success.message? 'input-error': ''}`} />
+                <input type="text" name="newPasswordReEntry" placeholder="Enter new password" value={newPasswordReEntry} onChange={e => onchange(e)} required={true} className={` form-control my-3 ${!success.success && success.message? 'input-error': ''}`} />
                 <button className="btn btn-secondary" type="submit">Update Now</button>
                 <Link to={{pathname: `/login`, state: {location: '/login', going: '/'}}}><button className="btn btn-secondary m-2" type="button">Login</button></Link>
             </form>
-            {!errors.success? null: errors.message}
-            {success.success? success.message: null}
+            {success.success? success.message: success.message.length? success.message : null }
         </div>
         </>
     )
