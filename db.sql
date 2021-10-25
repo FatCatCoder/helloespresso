@@ -1,13 +1,3 @@
--- Thing To Think about....
-
-/*
-   
-   - Remove UUID id on user and use username as PK, update FKs.... Replace uuid for FK on journal with owner linking username, and 
-
-   - suggest removing dependacny on uuid-ossp instead opt for local gen_random_uuid ()
-
-*/
-
 CREATE DATABASE espresso;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -84,27 +74,7 @@ CREATE TABLE admins (
 CREATE TABLE reports (
   recipe_id UUID UNIQUE NOT NULL,
   count INTEGER DEFAULT 1,
+  users DATA TYPE uuid[] DEFAULT array[]::uuid[],
   PRIMARY KEY (recipe_id),
   CONSTRAINT recipe_id FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
 );
-
-ALTER TABLE reports ADD COLUMN users uuid[];
-ALTER TABLE reports ALTER COLUMN users SET DATA TYPE uuid[];
-ALTER TABLE reports ALTER COLUMN users SET DEFAULT array[]::uuid[];
-
--- or use
-
-ALTER TABLE reports ADD COLUMN users SET DATA TYPE uuid[] SET DEFAULT array[]:uuid[];
-
-
--- add one to report count column on unqiue duplicate insert
-
--- INSERT INTO reports (recipe_id, users)
---  VALUES('03869a98-7a2e-49e7-82a6-692e27f56bc0', ARRAY['5608043a-f7df-41d7-a596-974ca83032bd'::uuid]) 
---  ON CONFLICT (recipe_id) 
---  DO 
---  	UPDATE SET count = reports.count + 1 RETURNING *;
---
--- to insert new array
--- INSERT INTO reports(recipe_id, users) VALUES('03869a98-7a2e-49e7-82a6-692e27f56bc0', ARRAY['5608043a-f7df-41d7-a596-974ca83032bd'::uuid]);
-

@@ -25,4 +25,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-pg_dump_cronjob.sh
+fakeData.sql
