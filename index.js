@@ -11,7 +11,6 @@ require("dotenv").config();
 
 // -- middleware -- //
 
-app.use(require('express-status-monitor')());
 app.use(helmet());
 app.use(express.json()) //allows access req.body
 app.use(express.urlencoded({extended: false}));

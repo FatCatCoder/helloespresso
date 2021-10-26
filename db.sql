@@ -1,4 +1,4 @@
-CREATE DATABASE espresso;
+-- CREATE DATABASE IF NOT EXISTS helloespresso;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pg_trgm";
@@ -59,10 +59,11 @@ CREATE TABLE recipes (
 );
 
 CREATE TABLE likes (
+  user_id UUID NOT NULL,
   CONSTRAINT user_id FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
   recipe_id UUID NOT NULL,
-  PRIMARY KEY (user_id, recipe_id),
-  CONSTRAINT recipe_id FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
+  CONSTRAINT recipe_id FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE,
+  PRIMARY KEY (user_id, recipe_id)
 );
 
 CREATE TABLE admins (
@@ -74,7 +75,7 @@ CREATE TABLE admins (
 CREATE TABLE reports (
   recipe_id UUID UNIQUE NOT NULL,
   count INTEGER DEFAULT 1,
-  users DATA TYPE uuid[] DEFAULT array[]::uuid[],
+  users uuid[] DEFAULT array[]::uuid[],
   PRIMARY KEY (recipe_id),
   CONSTRAINT recipe_id FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
 );
