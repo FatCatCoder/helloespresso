@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
-const redis = require("redis");
-const redisClient = redis.createClient();
+const redisClient = require('../../redis')
 require('dotenv').config({ path: '../../.env' })
 
 // blacklist middleware
@@ -34,6 +33,9 @@ const blacklistCheck = (req, res, next) => {
         }
         else if(err.message === 'noAuthHeader'){
             res.status(401).send({"message": "Unauthorized.", "verified": false});
+        }
+        else if (err.message === 'jwt must be provided'){
+            res.status(401).send({"message": "No Token provided", "verified": false});
         }
         else{
             console.log(err.name, err.message);

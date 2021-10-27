@@ -2,7 +2,6 @@ const nodemailer = require("nodemailer");
 require('dotenv').config();
 
 const sendEmail = async (email, subject, body, embed) => {
-    console.log(process.env.HOST);
     try {
         const transporter = nodemailer.createTransport({
             host: process.env.HOST,
@@ -23,7 +22,6 @@ const sendEmail = async (email, subject, body, embed) => {
             attachments: embed
         });
         
-        console.log("email sent successfully");
         return {"message": "Email Sent", "success": true}
 
     } catch (error) {

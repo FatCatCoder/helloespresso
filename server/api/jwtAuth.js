@@ -5,8 +5,7 @@ const jwtGenerator = require('../utils/jwtGenerator');
 const jwtValidate = require('express-jwt');
 const jwt = require('jsonwebtoken');
 const blacklistCheck = require('../utils/blacklist');
-const redis = require("redis");
-const redisClient = redis.createClient();
+const redisClient = require('../../redis')
 require('dotenv').config({ path: '../../.env' })
 const Joi = require('joi');
 

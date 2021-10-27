@@ -1,5 +1,6 @@
 import {useState} from 'react';
-import {globalStore} from '../store.js';
+import {globalStore, useShotFormStore} from '../store.js';
+import * as yup from 'yup';
 
 // components
 import Shot from './Shot';
@@ -17,10 +18,30 @@ function Footer ({ shotList, setShotList}){
     // Footer modal
     const [journalEntry, setJournalEntry] = useState({});
     const [show, setShow] = useState(false);
+    const setFormErrors = useShotFormStore(state => state.setFormError);
 
-    const handleModalSubmit = (event) => {
+    // validation
+    const schema = yup.object().shape({
+        bean: yup.string().min(1).max(50).required(),
+        region: yup.string().min(1).max(50).required(),
+        roaster: yup.string().min(1).max(50).required()
+    })
+
+    const schemaData = {
+        bean: journalEntry?.bean,
+        region: journalEntry?.region,
+        roaster: journalEntry?.roaster
+    }
+
+    const handleModalSubmit = async(event) => {
         event.preventDefault();
-        addEntryToJournal(journalEntry);
+        try {
+            await schema.validate(schemaData, { abortEarly: false });
+            addEntryToJournal(journalEntry);
+            setFormErrors([]); 
+        } catch (error) {
+            setFormErrors(error.errors); 
+        }
     }
 
     const handleModalInputChange = (e) => {

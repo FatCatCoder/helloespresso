@@ -38,7 +38,7 @@ const globalStore = create((set, get) => ({
       return await JSON.parse(window.atob(base64));
     }
     catch(err){
-      console.log(err);
+      return {"user": {"userid": "No Token"}};
     }
   },
   getUserIdFromJWT: (token) => {
@@ -52,13 +52,11 @@ const globalStore = create((set, get) => ({
       return JSON.parse(window.atob(base64)).user.id;
     }
     catch(err){
-      console.log(err);
+      return 'No Token';
     }
   },
   isLoggedIn: false,
   setIsLoggedIn: (bool) => {
-    console.log('setting auth', bool);
-    
     set(state => ({isLoggedIn: bool}))
   },
   checkValidToken: async () => {

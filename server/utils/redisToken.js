@@ -1,6 +1,5 @@
 const { promisify } = require("util");
-const redis = require("redis");
-const redisClient = redis.createClient();
+const redisClient = require('../../redis')
 const jwt = require('jsonwebtoken');
 
 // async wrappers

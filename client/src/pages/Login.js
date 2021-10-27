@@ -80,7 +80,7 @@ function Login(props) {
             <h1 className="display-2">Login</h1>
             <form onSubmit={onSubmitForm} className="container mx-auto col-8 col-xl-5">
                 <input type="text" name="email" placeholder="username or email" value={email} onChange={e => onchange(e)} className={` form-control my-3 ${errors.message? 'input-error': ''}`} />
-                <input type="text" name="password" placeholder="password" value={password} onChange={e => onchange(e)} className={` form-control my-3 ${errors.message? 'input-error': ''}`} required/>
+                <input type="password" name="password" placeholder="password" value={password} onChange={e => onchange(e)} className={` form-control my-3 ${errors.message? 'input-error': ''}`} required/>
                 
                 <div className="col">
                     <button className="btn btn-secondary" type="submit">Log In</button>

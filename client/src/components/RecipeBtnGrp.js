@@ -90,7 +90,7 @@ function RecipeBtnGrp(props){
                                 <div className="col-6 col-md-6 mx-auto">
                                     <label className="" htmlFor="roast">Roast: </label>
                                     <select className="shadow border form-select" onChange={handleOnChange} defaultValue={""} value={props.sortFilters.roast} id="roast" name="roast">
-                                        <option value="" selected></option>
+                                        <option value=""></option>
                                         <option value="Light">Light</option>
                                         <option value="Medium">Medium</option>
                                         <option value="Dark">Dark</option>
@@ -100,7 +100,7 @@ function RecipeBtnGrp(props){
                                 <div className="col-6 col-md-6 mx-auto">
                                     <label className="" htmlFor="process">Process: </label>
                                     <select className="shadow border form-select" onChange={handleOnChange} defaultValue={""} value={props.sortFilters.process} id="process" name="process">
-                                        <option value="" selected></option>
+                                        <option value=""></option>
                                         <option value="Washed">Washed</option>
                                         <option value="Natural">Natural</option>
                                         <option value="Honey">Honey</option>

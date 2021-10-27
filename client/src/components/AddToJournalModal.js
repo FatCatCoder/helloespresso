@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import {useHistory} from 'react-router-dom';
+import {useShotFormStore} from '../store.js';
+
 
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
+import '../assets/FormStyles.css';
 
 
 // if not logged in, disable button...
@@ -19,7 +22,8 @@ function AddToJournalModal ({ buttonLabel, shotsCount, handleModalSubmit, handle
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const formErrors = useShotFormStore(state => state.formError);
+  
   return (
     <>
       <Button color="primary" className="btn w-100" disabled={!isLoggedIn || !shotsCount} data-bs-dismiss="offcanvas" onClick={isLoggedIn? handleShow : () => history.push('/login')}>{buttonLabel}</Button>
@@ -32,16 +36,16 @@ function AddToJournalModal ({ buttonLabel, shotsCount, handleModalSubmit, handle
           <Modal.Body>
             <div className="mb-3">
               <Form.Group>
-                  <label for="bean" className="form-label">Bean</label>
-                  <input value={journalEntry.Bean} onChange={handleModalInputChange} type="text" className="form-control" id="bean" name="bean" placeholder="Bean..."></input>
+                  <label htmlFor="bean" className="form-label">Bean</label>
+                  <input value={journalEntry.Bean} onChange={handleModalInputChange} type="text" className={`form-control ${formErrors.find(x => x === 'bean is a required field') ? 'input-error' : ''}`} id="bean" name="bean" placeholder="Bean..."></input>
               </Form.Group>
               <Form.Group>
-                  <label for="region" className="form-label">Region</label>
-                  <input value={journalEntry.Region} onChange={handleModalInputChange} type="text" className="form-control" id="region" name="region" aria-describedby="Region" placeholder="Region..."></input>
+                  <label htmlFor="region" className="form-label">Region</label>
+                  <input value={journalEntry.Region} onChange={handleModalInputChange} type="text" className={`form-control ${formErrors.find(x => x === 'region is a required field') ? 'input-error' : ''}`} id="region" name="region" aria-describedby="Region" placeholder="Region..."></input>
               </Form.Group>
               <Form.Group>
-                  <label for="roaster" className="form-label">Roaster</label>
-                  <input value={journalEntry.Roaster} onChange={handleModalInputChange} type="text" className="form-control" id="roaster" name="roaster" aria-describedby="Roaster" placeholder="Roaster..."></input>
+                  <label htmlFor="roaster" className="form-label">Roaster</label>
+                  <input value={journalEntry.Roaster} onChange={handleModalInputChange} type="text" className={`form-control ${formErrors.find(x => x === 'roaster is a required field') ? 'input-error' : ''}`} id="roaster" name="roaster" aria-describedby="Roaster" placeholder="Roaster..."></input>
               </Form.Group>
             </div>
           </Modal.Body>
