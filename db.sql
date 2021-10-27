@@ -13,9 +13,9 @@ CREATE TABLE users (
 
 CREATE TABLE journals (
   id UUID DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
-  bean TEXT CONSTRAINT bean_check CHECK (char_length(bean) <= 32) NOT NULL,
-  region TEXT CONSTRAINT region_check CHECK (char_length(region) <= 32) NOT NULL,
-  roaster TEXT CONSTRAINT name_check CHECK (char_length(roaster) <= 32) NOT NULL,
+  bean TEXT CONSTRAINT bean_check CHECK (char_length(bean) <= 64) NOT NULL,
+  region TEXT CONSTRAINT region_check CHECK (char_length(region) <= 64) NOT NULL,
+  roaster TEXT CONSTRAINT roaster_check CHECK (char_length(roaster) <= 64) NOT NULL,
   postDate DATE DEFAULT CURRENT_DATE,
   postTime TIME DEFAULT CURRENT_TIME,
   PRIMARY KEY (id),
@@ -40,18 +40,18 @@ CREATE TABLE recipes (
   id UUID DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
   user_id UUID,
   CONSTRAINT user_id FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
-  bean TEXT CONSTRAINT bean_check CHECK (char_length(bean) <= 32) NOT NULL,
-  region TEXT CONSTRAINT region_check CHECK (char_length(region) <= 32) NOT NULL,
-  roaster TEXT CONSTRAINT name_check CHECK (char_length(roaster) <= 32) NOT NULL,
+  bean TEXT CONSTRAINT bean_check CHECK (char_length(bean) <= 64) NOT NULL,
+  region TEXT CONSTRAINT region_check CHECK (char_length(region) <= 64) NOT NULL,
+  roaster TEXT CONSTRAINT roaster_check CHECK (char_length(roaster) <= 64) NOT NULL,
   roastDate DATE NOT NULL,
   postDate DATE DEFAULT CURRENT_DATE,
   dose DECIMAL CONSTRAINT dose_check CHECK (char_length(dose::text) <= 5) NOT NULL,
   yield DECIMAL CONSTRAINT yield_check CHECK (char_length(yield::text) <= 5) NOT NULL,
   time DECIMAL CONSTRAINT time_check CHECK (char_length(time::text) <= 5) NOT NULL,
   grind SMALLINT CONSTRAINT grind_check CHECK (char_length(grind::text) <= 5) NOT NULL,
-  grinder TEXT CONSTRAINT grinder_check CHECK (char_length(grinder) <= 32)NOT NULL,
-  machine TEXT CONSTRAINT machine_check CHECK (char_length(machine) <= 32)NOT NULL,
-  tastingNotes TEXT CONSTRAINT tastingNotes_check CHECK (char_length(tastingNotes) <= 50) NOT NULL,
+  grinder TEXT CONSTRAINT grinder_check CHECK (char_length(grinder) <= 64)NOT NULL,
+  machine TEXT CONSTRAINT machine_check CHECK (char_length(machine) <= 64)NOT NULL,
+  tastingNotes TEXT CONSTRAINT tastingNotes_check CHECK (char_length(tastingNotes) <= 64) NOT NULL,
   notes TEXT CONSTRAINT notes_check CHECK (char_length(notes) <= 500),
   roast TEXT NOT NULL,
   process TEXT NOT NULL,
@@ -79,3 +79,14 @@ CREATE TABLE reports (
   PRIMARY KEY (recipe_id),
   CONSTRAINT recipe_id FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
 );
+
+
+-- ALTER TABLE recipes DROP CONSTRAINT bean_check, ADD CONSTRAINT bean_check CHECK (char_length(bean) <= 64);
+-- ALTER TABLE recipes DROP CONSTRAINT region_check, ADD CONSTRAINT region_check CHECK (char_length(region) <= 64);
+-- ALTER TABLE recipes DROP CONSTRAINT name_check, ADD CONSTRAINT roaster_check CHECK (char_length(roaster) <= 64);
+-- ALTER TABLE recipes DROP CONSTRAINT grinder_check, ADD CONSTRAINT grinder_check CHECK (char_length(grinder) <= 64);
+-- ALTER TABLE recipes DROP CONSTRAINT machine_check, ADD CONSTRAINT machine_check CHECK (char_length(machine) <= 64);
+-- ALTER TABLE recipes DROP CONSTRAINT tastingNotes_check, ADD CONSTRAINT tastingNotes_check CHECK (char_length(tastingNotes) <= 64);
+-- ALTER TABLE journals DROP CONSTRAINT bean_check, ADD CONSTRAINT bean_check CHECK (char_length(bean) <= 64);
+-- ALTER TABLE journals DROP CONSTRAINT region_check, ADD CONSTRAINT region_check CHECK (char_length(region) <= 64);
+-- ALTER TABLE journals DROP CONSTRAINT name_check, ADD CONSTRAINT roaster_check CHECK (char_length(roaster) <= 64);
