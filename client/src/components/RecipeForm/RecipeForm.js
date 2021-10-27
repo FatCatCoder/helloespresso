@@ -119,7 +119,7 @@ function RecipeForm({getUserId, refresh, setRefresh}){
 
     // Add new recipe to server and upload local state with database returned object
     const addRecipe = async (recipe) => {
-        recipe["userId"] = await getUserId().replace('-', '_');
+        recipe["userId"] = await getUserId().replaceAll('-', '_');
         
         const res = await fetch('/api/recipes/new', {
             method: 'POST',

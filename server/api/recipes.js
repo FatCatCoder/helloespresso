@@ -169,7 +169,7 @@ router.post('/new', blacklistCheck, async(req, res) => {
         const recipe = req.body;
         const validData = await recipeSchema.validateAsync(recipe);
         validData.userId = await validData.userId.replace(/_/g, '-'); // humpty dumpty the token
-        
+          
         // validate user
         const token = jwtDecoder(req.headers.authorization);
         if(token.user.id !== validData.userId){
