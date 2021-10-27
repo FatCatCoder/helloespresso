@@ -78,8 +78,11 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
             }
 
             // !state then fetch 
-            if (props.recipe.length === 0 || recipe === undefined) {
+            if (props?.recipe.length === 0 || recipe === undefined) {
                 fetchRecipe();
+            }
+            else{
+                setRecipe(props?.recipe?.find(obj => obj.id === id))
             }
             setIsLoading(false);
         }

@@ -1,6 +1,6 @@
 {
   "name": "extraction-app-react",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.9.1",

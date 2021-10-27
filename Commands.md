@@ -13,6 +13,7 @@
 
     ### websockets dashboard log 
     - goaccess /var/log/nginx/access.log -o /var/www/helloespresso/html/report.html --log-format=COMBINED --real-time-html
+    - goaccess /var/log/nginx/access.log -o /var/www/helloespresso/html/report.html --log-format=COMBINED --real-time-html --ssl-cert=/etc/letsencrypt/live/helloespresso.coffee/cert.pem --ssl-key=/etc/letsencrypt/live/helloespresso.coffee/privkey.pem
 
     ### check for errors, reload conf, and check status
     - sudo nginx -t && systemctl reload nginx && systemctl status nginx || systemctl restart nginx && systemctl status nginx
