@@ -26,6 +26,7 @@ function Recipes(){
     const setCurrentPage = globalStore(state => state.setCurrentPage);
     
     const getUserId = globalStore(state => state.getUserIdFromJWT)
+    const userId = globalStore(state => state.userId)
     const isLoggedIn = globalStore(state => state.isLoggedIn)
 
     useEffect(() => {
@@ -215,7 +216,7 @@ function Recipes(){
                 <Route exact path={match.path}>
                     <h1 className="display-2">Recipes</h1>
                     <p>Here for all your espresso brewing needs.</p>
-                    <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} getUserId={getUserId} isLoggedIn={isLoggedIn} />
+                    <RecipeBtnGrp  goTo={() => history.push(`${match.path}/new`)} refresh={refresh} setRefresh={setRefresh} sortFilters={sortFilters} setSortFilters={setSortFilters} getUserId={getUserId} userId={userId} isLoggedIn={isLoggedIn} />
 
                     <div className="container h-100 row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mx-auto">
                         {displayRecipes()}

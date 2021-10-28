@@ -49,6 +49,7 @@ function Journal(){
         try{
             if(!ignore && isLoggedIn){
                 const userData = getUserIdFromJWT();
+                
                 const fetchJournalEntries = async () => { 
                     const res = await fetch('/api/journals', {
                         method: "POST",

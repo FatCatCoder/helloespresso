@@ -6,7 +6,7 @@ const cors = require("cors");
 const helmet = require('helmet');
 const serverTimingMiddleware = require('server-timing-header');
 const PORT = process.env.PORT || 5000;
-const pool = ('./db');
+const pool = require('./db');
 const redisClient = require('./redis')
 const { promisify } = require("util");
 require("dotenv").config();
@@ -52,6 +52,6 @@ app.listen(PORT, () => {
 process.on('SIGINT', async function() {
     await asyncQuit();
     await pool.end(() => {
-      process.exit(1)
-    })
+      process.exit(0);
+    }) 
  })

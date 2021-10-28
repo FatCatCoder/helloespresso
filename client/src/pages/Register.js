@@ -3,10 +3,11 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import {globalStore} from '../store.js';
 import '../assets/FormStyles.css'
 
-function Register({setIsAuth}) {
+function Register() {
     const history = useHistory();
     const { state } = useLocation();
     const setIsLoggedIn = globalStore(state => state.setIsLoggedIn)
+    const globalToast = globalStore(state => state.globalToast)
 
     const [success, setSuccess] = useState({"success": false, "message": ""});
     const [inputs, setInputs] = useState({
@@ -34,22 +35,20 @@ function Register({setIsAuth}) {
                 body: JSON.stringify(body)
             });
 
-            const parseRes = response.headers.get('Authorization');
+            const parseHeader = response.headers.get('Authorization');
+            const parseBody = await response.json();
 
-            const parseJson = await response.json();      
-
-            if(!parseJson.success){
-                return setSuccess(parseJson)
+            if(!parseBody?.success){
+                return setSuccess(parseBody)
             }
 
-            localStorage.setItem('Authorization', parseRes);
-            setIsAuth(true);
+            localStorage.setItem('Authorization', parseHeader);
+            globalToast("You are now Registered and logged in!");
             setIsLoggedIn(true);
-            setSuccess({"success": true, "message": "You are now Registered and logged in!"})
             history.push(state?.going || '/');
 
         } catch (error) {
-            setSuccess({"message": "500: Server Error", "success": "false"})
+            setSuccess({"message": "Something went wrong...", "success": "false"})
         }
     }
 

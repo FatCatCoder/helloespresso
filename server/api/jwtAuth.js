@@ -89,6 +89,7 @@ router.post('/register', async(req, res) => {
         if(!validData){
             return res.send({"message": validData.details[0].message, "success": false})
         }
+        
 
         // check if exists, ensures unique name and email
         const user = await pool.query("SELECT * FROM users WHERE name = $1 OR email = $2", [name, email])
@@ -99,14 +100,16 @@ router.post('/register', async(req, res) => {
         const hash = await argon2.hash(password, {type: argon2.argon2id});
 
         //add new user to db
-        const newUser = await pool.query("INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING *", [name, email, hash]);
+        const newUser = await pool.query("INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING *", [name, email, hash]);   
 
         // generate jwt or just redirect to login
-        const token = await 'Bearer ' + jwtGenerator(newUser.rows[0].user_id);
-        res.set('Authorization', token).send({"success": true, "message": "Now Registed"});
+        const token = 'Bearer ' + jwtGenerator(newUser.rows[0].id, '1w');
+        
+        return res.set('Authorization', token).send({"success": true, "message": "Now Registed"});
     } 
     catch (error) {
-        console.log(error.name, error.message);
+        console.log(error.name, error.message, error);
+        
         if(error.name === "ValidationError"){
             return res.send({"message": error.message, "success": false}); 
         }

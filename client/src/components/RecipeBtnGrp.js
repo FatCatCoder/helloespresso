@@ -42,7 +42,7 @@ function RecipeBtnGrp(props){
 
     const resetForm = () => { 
         document.getElementById("filterForm").reset();
-      }
+    }
 
     return(
         <div className="container border mx-auto mb-3">
@@ -114,12 +114,12 @@ function RecipeBtnGrp(props){
                             :
                                 <>
                                 <div className="col-6">
-                                    <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="user_id" id="user_id" disabled={!props.isLoggedIn} checked={myRecipesChecked} />
+                                    <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props?.userId.replaceAll('-', ' '): ''} name="user_id" id="user_id" disabled={!props.isLoggedIn} checked={myRecipesChecked} />
                                     <label className="form-check-label" htmlFor="user_id">My Recipes</label>
                                 </div>
 
                                 <div className="col-6">
-                                    <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props.getUserId().replaceAll('-', ' '): ''} name="liked_by_user_id" id="liked_by_user_id" disabled={!props.isLoggedIn} checked={likedChecked} />
+                                    <input className="form-check-input" type="checkbox" onChange={handleCheckboxOnChange} value={props.isLoggedIn? props?.userId.replaceAll('-', ' '): ''} name="liked_by_user_id" id="liked_by_user_id" disabled={!props.isLoggedIn} checked={likedChecked} />
                                     <label className="form-check-label" htmlFor="liked_by_user_id">Loved Recipes</label>
                                 </div>
                                 </>

@@ -84,7 +84,7 @@ function Login(props) {
                 
                 <div className="col">
                     <button className="btn btn-secondary" type="submit">Log In</button>
-                    <Link to={{pathname: "/register", state: {location: '/register', going: '/about'}}}><button className="btn btn-secondary m-2" type="button">Register</button></Link>
+                    <Link to={{pathname: "/register", state: {location: '/register', going: '/'}}}><button className="btn btn-secondary m-2" type="button">Register</button></Link>
                 </div>
 
                 <Link to={{pathname: "/password-reset", state: {location: '/login', going: '/login'}}}><button className="btn text-muted border-0" type="button">Forgot password?</button></Link>

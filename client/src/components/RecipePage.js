@@ -90,7 +90,7 @@ const [bussinText, setBussinText] = useState({"text":"Bussin' Button", "click": 
             ignore = true;
             abortController.abort();
         }; 
-    }, [id, props.recipe.length, recipe])
+    }, [id, props.recipe.length, recipe, props.recipe])
 
 
     // checks if is liked

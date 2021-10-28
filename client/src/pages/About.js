@@ -69,9 +69,9 @@ function About() {
         wizards only, fools.
       </button>
 
-      <div className="vh-100 position-relative" id="secret">
+      <div className="h-100 position-relative" id="secret">
       <Fade cascade when={showSecret}>
-        <div className="container col-12 col-md-8">
+        <div className="container col-12 col-md-8" style={{display: `${!showSecret? 'none': 'block'}`}}>
           <h1 className="display-3">@About 2.0</h1>
           <p className="lead fs-2">I Got Plans</p>
           <ul className="list-group list-group-flush text-center">

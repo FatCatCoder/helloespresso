@@ -10,6 +10,7 @@ require('dotenv').config({ path: '../../.env' })
 router.post('/', blacklistCheck, jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
     try{
         const {user_id} = req.body;
+        
         const journals = await pool.query("SELECT * FROM journals WHERE user_id = $1 ORDER BY postdate DESC, posttime DESC", [user_id]);
         res.send(journals.rows);
     }
