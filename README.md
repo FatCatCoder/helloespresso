@@ -1,6 +1,6 @@
 # [Hello Espresso](https://helloespresso.coffee)
-<img src="./helloespresso.gif" width="750" height="426"/>
 ---
+
 ## What is this?
 > a tool & place to share knowledge, develop your dial-in skills and experience amazing espresso with people
 
